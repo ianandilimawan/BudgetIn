@@ -308,3 +308,25 @@ div[wire\:key*="perPage"] select,
 .delay-500 {
     animation-delay: 500ms;
 }
+
+/* ==========================================================================
+   Cross-Browser Select Normalization & Fix Double Arrow Down
+   ========================================================================== */
+select.appearance-none,
+select[class*="appearance-none"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: none !important;
+}
+
+/* Remove default IE/Edge select arrow */
+select::-ms-expand {
+    display: none;
+}
+
+/* TomSelect Caret Normalization: Prevent stacking with custom absolute SVGs */
+.ts-wrapper.single .ts-control::after {
+    display: none !important;
+}
+

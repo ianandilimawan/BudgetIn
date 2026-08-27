@@ -25,7 +25,7 @@ class LaravelLogTest extends TestCase
 
     public function test_admin_can_view_laravel_logs_index(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin/laravel-logs');
+        $response = $this->actingAs($this->admin)->get(route('admin.laravel-logs.index'));
 
         $response->assertStatus(200);
     }
@@ -35,7 +35,7 @@ class LaravelLogTest extends TestCase
         $testLogFile = storage_path('logs/test-delete.log');
         File::put($testLogFile, '[2026-08-24 10:00:00] local.INFO: Sample log');
 
-        $response = $this->actingAs($this->admin)->delete('/admin/laravel-logs/test-delete.log');
+        $response = $this->actingAs($this->admin)->delete(route('admin.laravel-logs.destroy', 'test-delete.log'));
 
         $response->assertRedirect(route('admin.laravel-logs.index'));
         $this->assertFalse(File::exists($testLogFile));

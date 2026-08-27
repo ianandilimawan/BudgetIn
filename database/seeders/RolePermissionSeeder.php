@@ -22,6 +22,7 @@ class RolePermissionSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'password' => Hash::make('intechstudio.id'),
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
@@ -194,6 +195,126 @@ class RolePermissionSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
+            [
+                'display_name' => 'View Transaction Categories',
+                'name' => 'view-transaction_categories',
+                'description' => 'Can view transactioncategories list',
+                'module' => 'transaction_categories',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Create Transaction Categories',
+                'name' => 'create-transaction_categories',
+                'description' => 'Can create new transactioncategory',
+                'module' => 'transaction_categories',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Edit Transaction Categories',
+                'name' => 'edit-transaction_categories',
+                'description' => 'Can edit transactioncategory',
+                'module' => 'transaction_categories',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Delete Transaction Categories',
+                'name' => 'delete-transaction_categories',
+                'description' => 'Can delete transactioncategory',
+                'module' => 'transaction_categories',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'View Cash Transactions',
+                'name' => 'view-cash_transactions',
+                'description' => 'Can view cashtransactions list',
+                'module' => 'cash_transactions',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Create Cash Transactions',
+                'name' => 'create-cash_transactions',
+                'description' => 'Can create new cashtransaction',
+                'module' => 'cash_transactions',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Edit Cash Transactions',
+                'name' => 'edit-cash_transactions',
+                'description' => 'Can edit cashtransaction',
+                'module' => 'cash_transactions',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Delete Cash Transactions',
+                'name' => 'delete-cash_transactions',
+                'description' => 'Can delete cashtransaction',
+                'module' => 'cash_transactions',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'View Cash Accounts',
+                'name' => 'view-cash_accounts',
+                'description' => 'Can view cashaccounts list',
+                'module' => 'cash_accounts',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Create Cash Accounts',
+                'name' => 'create-cash_accounts',
+                'description' => 'Can create new cashaccount',
+                'module' => 'cash_accounts',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Edit Cash Accounts',
+                'name' => 'edit-cash_accounts',
+                'description' => 'Can edit cashaccount',
+                'module' => 'cash_accounts',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'display_name' => 'Delete Cash Accounts',
+                'name' => 'delete-cash_accounts',
+                'description' => 'Can delete cashaccount',
+                'module' => 'cash_accounts',
+                'is_active' => true,
+                'guard_name' => 'web',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ];
 
         foreach ($permissions as $permission) {
@@ -235,26 +356,50 @@ class RolePermissionSeeder extends Seeder
             $this->command->info('Admin user assigned to Super Admin role');
         }
 
-        // Create Developer Role
-        $developerRole = Role::updateOrCreate(
-            ['name' => 'developer', 'guard_name' => 'web'],
+        // Create Finance Role
+        $financeRole = Role::updateOrCreate(
+            ['name' => 'finance', 'guard_name' => 'web'],
             [
-                'display_name' => 'Developer',
-                'name' => 'developer',
-                'description' => 'Access to view Laravel logs and system debugging',
+                'display_name' => 'Finance',
+                'name' => 'finance',
+                'description' => 'Akses manajemen keuangan, akun kas, kategori, dan transaksi',
                 'is_active' => true,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]
         );
 
-        $this->command->info('Developer role created');
+        $this->command->info('Finance role created');
 
-        // Assign Laravel Logs permission to Developer role
-        $viewLaravelLogsPermission = Permission::where('name', 'view-laravel-logs')->first();
-        if ($viewLaravelLogsPermission) {
-            $developerRole->givePermissionTo($viewLaravelLogsPermission);
-            $this->command->info('Laravel Logs permission assigned to Developer role');
-        }
+        // Assign financial permissions to Finance role
+        $financePermissions = [
+            'view-cash_transactions',
+            'create-cash_transactions',
+            'edit-cash_transactions',
+            'delete-cash_transactions',
+            'view-cash_accounts',
+            'create-cash_accounts',
+            'edit-cash_accounts',
+            'delete-cash_accounts',
+            'view-transaction_categories',
+            'create-transaction_categories',
+            'edit-transaction_categories',
+            'delete-transaction_categories',
+        ];
+        $financeRole->syncPermissions($financePermissions);
+        $this->command->info('Financial permissions assigned to Finance role');
+
+        // Create Demo Finance User
+        $financeUser = User::firstOrCreate(
+            ['email' => 'finance@intechstudio.id'],
+            [
+                'name' => 'Staff Finance',
+                'password' => Hash::make('intechstudio.id'),
+                'is_active' => true,
+                'email_verified_at' => now(),
+            ]
+        );
+        $financeUser->syncRoles([$financeRole]);
+        $this->command->info('Finance user created: finance@intechstudio.id / intechstudio.id');
     }
 }

@@ -50,10 +50,10 @@ class Setting extends Model
                 if (!$settings) {
                     // Create default settings if none exist
                     $settings = self::create([
-                        'app_name' => 'InForge',
+                        'app_name' => 'BudgetIn',
                         'app_logo' => null,
                         'logo_type' => 'text',
-                        'logo_text' => 'InForge',
+                        'logo_text' => 'BudgetIn',
                     ]);
                 }
 
@@ -61,7 +61,7 @@ class Setting extends Model
             });
         } catch (\Throwable $e) {
             return new self([
-                'app_name' => config('app.name', 'InForge'),
+                'app_name' => config('app.name', 'BudgetIn'),
                 'theme_default' => 'dark',
                 'sidebar_style' => 'full',
             ]);

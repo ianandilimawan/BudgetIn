@@ -12,7 +12,7 @@ class AuthTest extends TestCase
 
     public function test_login_screen_can_be_rendered(): void
     {
-        $response = $this->get('/admin/login');
+        $response = $this->get(route('admin.login'));
 
         $response->assertStatus(200);
     }
@@ -24,13 +24,13 @@ class AuthTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->post('/admin/login', [
+        $response = $this->post(route('admin.login.post'), [
             'email' => 'admin@test.com',
             'password' => 'password123',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/admin/dashboard');
+        $response->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
@@ -40,7 +40,7 @@ class AuthTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $this->post('/admin/login', [
+        $this->post(route('admin.login.post'), [
             'email' => 'admin@test.com',
             'password' => 'wrong-password',
         ]);
@@ -52,9 +52,9 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/admin/logout');
+        $response = $this->actingAs($user)->post(route('admin.logout'));
 
         $this->assertGuest();
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect(route('admin.login'));
     }
 }

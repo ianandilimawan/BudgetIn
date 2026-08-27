@@ -38,6 +38,13 @@ class AuthController extends Controller
         if (Auth::validate($credentials)) {
             $user = User::where('email', $request->email)->first();
 
+            // Check if user is active
+            if (!$user->is_active) {
+                return back()->withErrors([
+                    'email' => 'Akun Anda sedang dinonaktifkan. Silakan hubungi Super Admin untuk mengaktifkan kembali akun Anda.',
+                ])->onlyInput('email');
+            }
+
             // Check if OTP is enabled in env
             if (env('ENABLE_OTP_LOGIN', false)) {
                 $this->generateAndSendOtp($user);
@@ -70,6 +77,69 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
+    public function showRegisterForm()
+    {
+        $settings = Setting::getSettings();
+        return view('admin.auth.register', compact('settings'));
+    }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email ini sudah terdaftar. Silakan gunakan email lain atau login.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput($request->only('name', 'email'));
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'is_active' => true,
+        ]);
+
+        // Assign role finance
+        $financeRole = \App\Models\Role::firstOrCreate(['name' => 'finance']);
+        $user->assignRole($financeRole);
+
+        // Create default starter cash account
+        \App\Models\CashAccount::create([
+            'user_id' => $user->id,
+            'name' => 'Dompet Kas Utama',
+            'type' => 'cash',
+            'color' => 'emerald',
+            'initial_balance' => 0,
+            'is_active' => true,
+        ]);
+
+        // Login the newly registered user
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        ActivityLogService::logCustom([
+            'action' => 'Register',
+            'model_type' => User::class,
+            'model_id' => $user->id,
+            'user_id' => $user->id,
+            'description' => 'User mendaftar sebagai akun Finance baru.',
+            'new_values' => ['ip_address' => $request->ip(), 'user_agent' => $request->userAgent()],
+        ]);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Selamat datang! Akun Finance Anda berhasil dibuat.');
+    }
+
     public function showOtpForm(Request $request)
     {
         if (!$request->session()->has('otp_user_id')) {
@@ -91,6 +161,14 @@ class AuthController extends Controller
         }
 
         $userId = $request->session()->get('otp_user_id');
+        $user = User::find($userId);
+
+        if (!$user || !$user->is_active) {
+            $request->session()->forget(['otp_user_id', 'otp_remember']);
+            return redirect()->route('admin.login')->withErrors([
+                'email' => 'Akun Anda sedang dinonaktifkan. Silakan hubungi Super Admin untuk mengaktifkan kembali akun Anda.',
+            ]);
+        }
         $attemptsKey = 'login_otp_attempts_' . $userId;
         $cachedOtp = Cache::get('login_otp_' . $userId);
 

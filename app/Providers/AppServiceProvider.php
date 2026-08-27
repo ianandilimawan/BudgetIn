@@ -30,6 +30,23 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useTailwind();
 
+        // Force HTTPS URL generation and bypass local Vite dev server when accessed via Ngrok or reverse proxy
+        $isNgrok = str_contains(request()->getHost(), 'ngrok')
+            || str_contains(request()->getHost(), 'ngrok-free.app')
+            || str_contains(request()->getHost(), 'loca.lt');
+
+        if (
+            $this->app->environment('production', 'staging') ||
+            (request()->server->has('HTTP_X_FORWARDED_PROTO') && request()->server->get('HTTP_X_FORWARDED_PROTO') === 'https') ||
+            $isNgrok
+        ) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
+        if ($isNgrok && !app()->runningInConsole()) {
+            \Illuminate\Support\Facades\Vite::useHotFile(storage_path('framework/non_existent_hot'));
+        }
+
         // Configure SMTP dynamically from cached settings
         try {
             $settings = Setting::getSettings();

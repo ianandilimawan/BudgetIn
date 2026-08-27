@@ -24,6 +24,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active',
+        'avatar',
     ];
 
     /**
@@ -46,7 +48,26 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Scope active users.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope finance role users.
+     */
+    public function scopeFinance($query)
+    {
+        return $query->whereHas('roles', function ($q) {
+            $q->where('name', 'finance');
+        });
     }
 
     /**
@@ -63,5 +84,20 @@ class User extends Authenticatable
         } catch (\Throwable $e) {
             return false;
         }
+    }
+
+    public function cashAccounts()
+    {
+        return $this->hasMany(CashAccount::class, 'user_id');
+    }
+
+    public function cashTransactions()
+    {
+        return $this->hasMany(CashTransaction::class, 'user_id');
+    }
+
+    public function transactionCategories()
+    {
+        return $this->hasMany(TransactionCategory::class, 'user_id');
     }
 }

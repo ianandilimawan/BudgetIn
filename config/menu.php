@@ -38,6 +38,12 @@ return [
             'permission' => 'view-users',
         ],
         [
+            'name' => 'Pengguna Finance',
+            'route' => 'admin.finance_users.index',
+            'icon' => 'user-group',
+            'permission' => 'view-users',
+        ],
+        [
             'name' => 'Roles',
             'route' => 'admin.roles.index',
             'icon' => 'shield',
@@ -69,6 +75,33 @@ return [
             'route' => 'admin.settings.index',
             'icon' => 'cog',
             'permission' => 'view-settings',
+        ],
+    ],
+
+    'Finance' => [
+        [
+            'name' => 'Cash Transactions',
+            'route' => 'admin.cash_transactions.index',
+            'icon' => 'banknotes',
+            'permission' => 'view-cash_transactions',
+        ],
+        [
+            'name' => 'Transaksi Berulang',
+            'route' => 'admin.recurring_transactions.index',
+            'icon' => 'arrow-path',
+            'permission' => 'view-cash_transactions',
+        ],
+        [
+            'name' => 'Cash Accounts',
+            'route' => 'admin.cash_accounts.index',
+            'icon' => 'wallet',
+            'permission' => 'view-cash_accounts',
+        ],
+        [
+            'name' => 'Transaction Categories',
+            'route' => 'admin.transaction_categories.index',
+            'icon' => 'tag',
+            'permission' => 'view-transaction_categories',
         ],
     ],
 

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="favBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="favAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+  </defs>
+
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#favBg)" />
+  <path d="M152 136C152 122.745 162.745 112 176 112H276C324.598 112 364 151.402 364 200C364 227.818 351.053 252.617 330.828 268.647C357.545 284.975 372 313.435 372 346C372 396.81 330.81 438 280 438H176C162.745 438 152 427.255 152 414V136Z" fill="#FFFFFF" />
+  <path d="M216 172H268C285.673 172 300 186.327 300 204C300 221.673 285.673 236 268 236H216V172Z" fill="url(#favBg)" />
+  <path d="M216 288H276C295.882 288 312 304.118 312 324C312 343.882 295.882 360 276 360H216V288Z" fill="url(#favBg)" />
+  <circle cx="348" cy="180" r="26" fill="url(#favAccent)" stroke="#FFFFFF" stroke-width="8" />
+</svg>

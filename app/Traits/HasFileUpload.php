@@ -26,7 +26,10 @@ trait HasFileUpload
                 str_contains($lowerFieldName, 'avatar') ||
                 str_contains($lowerFieldName, 'logo') ||
                 str_contains($lowerFieldName, 'icon') ||
-                str_contains($lowerFieldName, 'thumbnail')
+                str_contains($lowerFieldName, 'thumbnail') ||
+                str_contains($lowerFieldName, 'proof') ||
+                str_contains($lowerFieldName, 'receipt') ||
+                str_contains($lowerFieldName, 'attachment')
             ) {
                 $fileFields[] = $fieldName;
             }

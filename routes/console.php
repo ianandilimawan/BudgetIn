@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 
 // Prune activity logs older than 60 days daily
 Schedule::command('model:prune', ['--model' => [ActivityLog::class]])->daily();
+
+// Process due recurring transactions daily at midnight
+Schedule::command('app:generate-recurring-transactions')->dailyAt('00:05');
+

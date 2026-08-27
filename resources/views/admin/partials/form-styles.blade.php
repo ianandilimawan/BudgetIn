@@ -328,4 +328,22 @@
         min-height: 0 !important;
         line-height: inherit !important;
     }
+
+    /* Fix select double arrows: ensure appearance-none completely removes native browser arrows */
+    select.appearance-none,
+    select[class*="appearance-none"] {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        background-image: none !important;
+    }
+
+    select::-ms-expand {
+        display: none !important;
+    }
+
+    /* Prevent TomSelect from adding duplicate carets over custom SVG icons */
+    .ts-wrapper.single .ts-control::after {
+        display: none !important;
+    }
 </style>

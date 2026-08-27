@@ -233,6 +233,7 @@
                     if (sunIcon) sunIcon.style.display = 'block';
                     if (moonIcon) moonIcon.style.display = 'none';
                 }
+                window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: theme, isDark: theme === 'dark' } }));
             }
 
             // Initialize icons based on saved theme (theme class already applied in head)

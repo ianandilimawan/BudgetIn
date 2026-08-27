@@ -17,9 +17,9 @@
 
         <!-- Animated Background Gradients (Glassmorphism) -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 dark:bg-blue-600/10 blur-[120px] animate-pulse"
+            <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-emerald-500/20 dark:bg-emerald-600/10 blur-[120px] animate-pulse"
                 style="animation-duration: 8s;"></div>
-            <div class="absolute bottom-[10%] -right-[10%] w-[40%] h-[60%] rounded-full bg-purple-500/20 dark:bg-purple-600/10 blur-[120px] animate-pulse"
+            <div class="absolute bottom-[10%] -right-[10%] w-[40%] h-[60%] rounded-full bg-blue-500/20 dark:bg-blue-600/10 blur-[120px] animate-pulse"
                 style="animation-duration: 12s;"></div>
         </div>
 
@@ -28,7 +28,7 @@
 
             <!-- Left Side / Branding (Hidden on mobile) -->
             <div
-                class="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/80 dark:to-purple-900/80 text-zinc-900 dark:text-white relative overflow-hidden transition-colors duration-500">
+                class="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50 dark:from-emerald-950/80 dark:via-teal-950/80 dark:to-blue-950/80 text-zinc-900 dark:text-white relative overflow-hidden transition-colors duration-500">
                 <div
                     class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] dark:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 dark:opacity-20">
                 </div>
@@ -38,24 +38,39 @@
                             alt="{{ $settings->app_name }}"
                             class="h-12 object-contain mb-8 filter drop-shadow-sm dark:drop-shadow-lg">
                     @else
-                        <div
-                            class="h-12 w-12 bg-white/50 dark:bg-white/20 backdrop-blur-md rounded-xl shadow-sm dark:shadow-inner border border-zinc-200/50 dark:border-white/30 flex items-center justify-center mb-8 transition-colors duration-500">
-                            <svg class="h-6 w-6 text-blue-600 dark:text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                            </svg>
-                        </div>
+                        <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" class="w-12 h-12 rounded-2xl shadow-lg shadow-emerald-500/30 mb-8">
                     @endif
 
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 mb-4">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Manajemen Arus Kas & Keuangan
+                    </div>
+
                     <h1 class="text-4xl font-extrabold tracking-tight mb-4 drop-shadow-sm dark:drop-shadow-md">
-                        Welcome to<br>
-                        {{ isset($settings) && $settings->logo_text ? $settings->logo_text : (isset($settings) ? $settings->app_name : 'InForge') }}
+                        Selamat Datang Kembali
                     </h1>
-                    <p
-                        class="text-zinc-600 dark:text-blue-100/90 text-lg max-w-sm drop-shadow-none dark:drop-shadow-sm transition-colors duration-500">
-                        Experience the powerful and seamless management dashboard tailored for your business needs.
+                    <p class="text-zinc-600 dark:text-emerald-100/90 text-base max-w-sm drop-shadow-none dark:drop-shadow-sm transition-colors duration-500">
+                        Masuk untuk mencatat transaksi keuangan, memantau mutasi rekening kas, dan melihat rekap arus kas terkini.
                     </p>
+
+                    <div class="mt-8 space-y-3">
+                        <div class="flex items-center gap-3 text-sm text-zinc-700 dark:text-zinc-200">
+                            <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span>Data keuangan 100% aman & terisolasi</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-zinc-700 dark:text-zinc-200">
+                            <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span>Dashboard visual & rekapitulasi otomatis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 pt-6 text-xs text-zinc-500 dark:text-zinc-400">
+                    Didukung oleh sistem keamanan role-based access control.
                 </div>
             </div>
 
@@ -67,21 +82,13 @@
                         <img src="{{ \App\Services\FileUploadService::getFileUrl($settings->app_logo) }}"
                             alt="{{ $settings->app_name }}" class="h-12 mx-auto object-contain">
                     @else
-                        <div
-                            class="mx-auto h-12 w-12 bg-zinc-100 dark:bg-zinc-800 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-zinc-900 dark:text-zinc-100" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                            </svg>
-                        </div>
+                        <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" class="w-12 h-12 rounded-2xl shadow-lg shadow-emerald-500/30 mx-auto mb-3">
                     @endif
                 </div>
 
                 <div class="text-center lg:text-left mb-8">
-                    <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Sign in</h2>
-                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Please enter your details to access your
-                        account.</p>
+                    <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Masuk Akun</h2>
+                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Masukkan email dan password Anda untuk masuk.</p>
                 </div>
 
                 <!-- Login Form -->
@@ -108,7 +115,7 @@
 
                     <!-- Email Field -->
                     <div>
-                        <x-input-floating type="email" name="email" label="Email address" value="{{ old('email') }}"
+                        <x-input-floating type="email" name="email" label="Alamat Email" value="{{ old('email') }}"
                             required="true" :show-error="false" />
                     </div>
 
@@ -116,9 +123,9 @@
                     <div>
                         <div class="relative">
                             <input type="password" name="password" id="password" required placeholder=" "
-                                class="block px-4 pb-3 pt-3 w-full text-sm text-zinc-900 bg-transparent rounded-xl border-2 border-zinc-200 appearance-none dark:text-white dark:border-zinc-700 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-500 peer transition-colors pr-12">
+                                class="block px-4 pb-3 pt-3 w-full text-sm text-zinc-900 bg-transparent rounded-xl border-2 border-zinc-200 appearance-none dark:text-white dark:border-zinc-700 dark:focus:border-emerald-500 focus:outline-none focus:ring-0 focus:border-emerald-500 peer transition-colors pr-12">
                             <label for="password"
-                                class="absolute text-sm text-zinc-500 dark:text-zinc-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white/70 dark:bg-zinc-900/70 backdrop-blur px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-2 cursor-text rounded-md">Password</label>
+                                class="absolute text-sm text-zinc-500 dark:text-zinc-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white/70 dark:bg-zinc-900/70 backdrop-blur px-2 peer-focus:px-2 peer-focus:text-emerald-600 peer-focus:dark:text-emerald-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-2 cursor-text rounded-md">Password</label>
 
                             <button type="button" id="togglePassword"
                                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-colors z-20">
@@ -146,10 +153,10 @@
                     <div class="flex items-center justify-between pt-2">
                         <div class="flex items-center">
                             <input id="remember-me" name="remember" type="checkbox"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-zinc-300 dark:border-zinc-600 rounded bg-transparent transition-colors">
+                                class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-zinc-300 dark:border-zinc-600 rounded bg-transparent transition-colors">
                             <label for="remember-me"
                                 class="ml-2 block text-sm text-zinc-700 dark:text-zinc-300 cursor-pointer">
-                                Remember me
+                                Ingat saya
                             </label>
                         </div>
                     </div>
@@ -157,8 +164,8 @@
                     <!-- Submit Button -->
                     <div class="pt-4">
                         <button type="submit" id="submitBtn"
-                            class="w-full flex justify-center items-center py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md shadow-blue-500/30 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            <span id="submitText">Sign in securely</span>
+                            class="w-full flex justify-center items-center py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-500/30 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                            <span id="submitText">Masuk Sekarang</span>
                             <svg id="submitSpinner" class="animate-spin ml-2 h-5 w-5 text-white hidden"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -169,13 +176,23 @@
                             </svg>
                         </button>
                     </div>
+
+                    <!-- Register Link -->
+                    <div class="text-center pt-2">
+                        <p class="text-sm text-zinc-600 dark:text-zinc-400">
+                            Belum punya akun?
+                            <a href="{{ route('admin.register') }}" class="font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+                                Daftar Akun Finance
+                            </a>
+                        </p>
+                    </div>
                 </form>
 
                 <!-- Footer Info -->
                 <div class="text-center mt-10">
                     <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                        © {{ date('Y') }} {{ isset($settings) ? $settings->app_name : 'InForge' }}. Created By
-                        <a class="text-blue-600 dark:text-blue-400" href="https://intechstudio.id">Intech Studio</a>
+                        © {{ date('Y') }} {{ isset($settings) ? $settings->app_name : 'BudgetIn' }}. Created By
+                        <a class="text-emerald-600 dark:text-emerald-400" href="https://intechstudio.id">Intech Studio</a>
                     </p>
                 </div>
             </div>
@@ -185,7 +202,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
-            // Get saved theme or default to DB setting to ensure proper rendering if head script missed it
             const dbTheme = '{{ \App\Models\Setting::getSettings()->theme_default ?? 'light' }}';
             let savedTheme = localStorage.getItem('adminTheme');
             if (!savedTheme) {
@@ -250,7 +266,7 @@
                     if (btn && !btn.disabled) {
                         btn.disabled = true;
                         btn.classList.add('opacity-75', 'cursor-not-allowed');
-                        text.textContent = 'Signing in...';
+                        text.textContent = 'Memproses...';
                         spinner.classList.remove('hidden');
                     }
                 });

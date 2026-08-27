@@ -21,14 +21,23 @@ class PermissionTable extends PowerGridComponent
 
     public function setUp(): array
     {
-        $this->showCheckBox();
+        $canDelete = auth()->user() && auth()->user()->hasPermission('delete-permissions');
+
+        if ($canDelete) {
+            $this->showCheckBox();
+        }
+
+        $header = PowerGrid::header()
+            ->showSearchInput();
+
+        if ($canDelete) {
+            $header->includeViewOnTop('components.admin.bulk-action-button');
+        }
 
         return [
             PowerGrid::exportable('export_permissions_' . now()->format('Ymd_His'))
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            PowerGrid::header()
-                ->showSearchInput()
-                ->includeViewOnTop('components.admin.bulk-action-button'),
+            $header,
             PowerGrid::footer()
                 ->showPerPage(10, [10, 25, 50, 100])
                 ->showRecordCount(),

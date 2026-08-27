@@ -7,9 +7,12 @@
                         <img src="{{ \App\Services\FileUploadService::getFileUrl($settings->app_logo) }}"
                             alt="{{ $settings->app_name }}" class="h-10 max-w-full object-contain">
                     @else
-                        <h1 class="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
-                            {{ isset($settings) && $settings->logo_text ? $settings->logo_text : (isset($settings) ? $settings->app_name : 'InForge') }}
-                        </h1>
+                        <div class="flex items-center">
+                            <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-8 h-8 rounded-xl shadow-xs mr-1">
+                            <h1 class="text-base font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                                udget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
+                            </h1>
+                        </div>
                     @endif
                     <button id="closeSidebar"
                         class="lg:hidden text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors">

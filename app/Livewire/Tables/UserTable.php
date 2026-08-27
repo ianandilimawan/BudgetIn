@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\ActivityLogService;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Column;
@@ -23,14 +24,23 @@ class UserTable extends PowerGridComponent
 
     public function setUp(): array
     {
-        $this->showCheckBox();
+        $canDelete = auth()->user() && auth()->user()->hasPermission('delete-users');
+
+        if ($canDelete) {
+            $this->showCheckBox();
+        }
+
+        $header = PowerGrid::header()
+            ->showSearchInput();
+
+        if ($canDelete) {
+            $header->includeViewOnTop('components.admin.bulk-action-button');
+        }
 
         return [
             PowerGrid::exportable('export_users_' . now()->format('Ymd_His'))
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            PowerGrid::header()
-                ->showSearchInput()
-                ->includeViewOnTop('components.admin.bulk-action-button'),
+            $header,
             PowerGrid::footer()
                 ->showPerPage(10, [10, 25, 50, 100])
                 ->showRecordCount(),
@@ -59,7 +69,10 @@ class UserTable extends PowerGridComponent
                 })->implode(' ');
             })
             ->add('status_display', function (User $row) {
-                return '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>';
+                if ($row->is_active) {
+                    return '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">Active</span>';
+                }
+                return '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300">Inactive</span>';
             })
             ->add('action', function (User $row) {
                 $html = '<div class="flex items-center justify-center gap-1">';
@@ -110,7 +123,12 @@ class UserTable extends PowerGridComponent
         ];
     }
 
-
+    public function filters(): array
+    {
+        return [
+            Filter::boolean('status_display', 'is_active'),
+        ];
+    }
 
     #[On('triggerBulkDelete')]
     public function triggerBulkDelete(?array $ids = null): void

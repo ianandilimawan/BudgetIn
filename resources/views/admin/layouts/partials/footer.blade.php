@@ -5,7 +5,7 @@
             &copy; {{ date('Y') }}
             <a href="/"
                 class="font-bold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
-                {{ isset($settings) ? $settings->app_name : config('app.name', 'InForge') }}
+                {{ isset($settings) ? $settings->app_name : config('app.name', 'BudgetIn') }}
             </a>.
             <span class="hidden sm:inline-block ml-0.5">
                 Created by <a href="https://intechstudio.id"

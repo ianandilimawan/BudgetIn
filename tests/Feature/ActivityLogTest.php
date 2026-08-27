@@ -38,7 +38,7 @@ class ActivityLogTest extends TestCase
             'description' => 'Test log description',
         ]);
 
-        $response = $this->actingAs($this->admin)->get('/admin/activity-logs');
+        $response = $this->actingAs($this->admin)->get(route('admin.activity-logs.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Test log description');
@@ -54,7 +54,7 @@ class ActivityLogTest extends TestCase
             'description' => 'User created sample data',
         ]);
 
-        $response = $this->actingAs($this->admin)->get('/admin/activity-logs?action=create&search=sample');
+        $response = $this->actingAs($this->admin)->get(route('admin.activity-logs.index', ['action' => 'create', 'search' => 'sample']));
 
         $response->assertStatus(200);
         $response->assertSee('User created sample data');

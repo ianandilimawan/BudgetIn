@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 160" fill="none">
+  <defs>
+    <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+  </defs>
+
+  <!-- Icon Mark (140x140) -->
+  <g transform="translate(10, 10)">
+    <rect width="140" height="140" rx="36" fill="url(#logoBg)" />
+    <!-- B Logo -->
+    <path d="M46 36C46 32 49 29 53 29H82C96 29 108 40 108 54C108 62 104 69 98 74C106 78 111 87 111 96C111 111 99 123 84 123H53C49 123 46 120 46 116V36Z" fill="#FFFFFF" />
+    <path d="M64 45H80C85 45 89 49 89 54C89 59 85 63 80 63H64V45Z" fill="url(#logoBg)" />
+    <path d="M64 78H82C88 78 92 82 92 88C92 94 88 98 82 98H64V78Z" fill="url(#logoBg)" />
+    <circle cx="102" cy="48" r="8" fill="url(#accent)" stroke="#FFFFFF" stroke-width="2.5" />
+  </g>
+
+  <!-- Typography "BudgetIn." -->
+  <text x="175" y="105" font-family="'Outfit', 'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="76" letter-spacing="-2" fill="#0F172A">
+    Budget<tspan fill="url(#textGrad)">In</tspan><tspan fill="#10B981">.</tspan>
+  </text>
+</svg>
