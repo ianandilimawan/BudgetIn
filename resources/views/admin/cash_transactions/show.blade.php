@@ -182,13 +182,30 @@
 
     <!-- Image Zoom Modal -->
     @if($cashTransaction->proof && !str_ends_with(strtolower($cashTransaction->proof), '.pdf'))
-    <div x-show="showImageModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
-            <div x-show="showImageModal" @click="showImageModal = false" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"></div>
-            <div x-show="showImageModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="relative bg-zinc-900 rounded-2xl max-w-3xl w-full p-2 overflow-hidden shadow-2xl z-10">
+    <template x-teleport="body">
+        <div x-show="showImageModal" style="display: none;"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="showImageModal = false"
+             class="fixed inset-0 z-[100] overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+             role="dialog" aria-modal="true">
+
+            <div @click.away="showImageModal = false"
+                 x-show="showImageModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="relative bg-zinc-900 rounded-2xl max-w-3xl w-full p-2 overflow-hidden shadow-2xl z-10 my-auto">
                 <div class="flex items-center justify-between p-3 border-b border-zinc-800 text-white">
                     <span class="text-xs font-semibold">Bukti Struk Transaksi #TRX-{{ str_pad($cashTransaction->id, 5, '0', STR_PAD_LEFT) }}</span>
-                    <button type="button" @click="showImageModal = false" class="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+                    <button type="button" @click="showImageModal = false" class="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
@@ -197,7 +214,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </template>
     @endif
 </div>
 @endsection

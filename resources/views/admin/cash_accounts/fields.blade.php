@@ -178,46 +178,66 @@
     </div>
 
     <!-- Quick Add Type Modal (Inline within form) -->
-    <div x-show="openQuickTypeModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="openQuickTypeModal" @click="openQuickTypeModal = false" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm transition-opacity"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div x-show="openQuickTypeModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-2xl px-5 pt-5 pb-6 text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full border border-zinc-200 dark:border-zinc-800">
-                <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+    <template x-teleport="body">
+        <div x-show="openQuickTypeModal" style="display: none;"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="openQuickTypeModal = false"
+             class="fixed inset-0 z-[100] overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+             role="dialog" aria-modal="true">
+
+            <div @click.away="openQuickTypeModal = false"
+                 x-show="openQuickTypeModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col my-auto">
+                
+                <!-- Modal Header -->
+                <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0">
                     <h3 class="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                         <span class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         </span>
                         Tambah Tipe Akun Baru
                     </h3>
-                    <button type="button" @click="openQuickTypeModal = false" class="text-zinc-400 hover:text-zinc-500 dark:hover:text-zinc-300 p-1 rounded-lg">
+                    <button type="button" @click="openQuickTypeModal = false" class="text-zinc-400 hover:text-zinc-500 dark:hover:text-zinc-300 p-1 rounded-lg cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
 
-                <div class="space-y-4">
+                <!-- Modal Body -->
+                <div class="p-5 space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Nama Tipe Akun <span class="text-rose-500">*</span></label>
-                        <input type="text" x-model="newTypeName" placeholder="Contoh: Koperasi, Tabungan Khusus, Crypto" class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                        <input type="text" x-model="newTypeName" placeholder="Contoh: Koperasi, Tabungan Khusus, Crypto" class="w-full px-3.5 py-2 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 rounded-xl text-xs sm:text-sm text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Deskripsi / Keterangan (Opsional)</label>
-                        <input type="text" x-model="newTypeDesc" placeholder="Keterangan singkat tipe akun..." class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                        <input type="text" x-model="newTypeDesc" placeholder="Keterangan singkat tipe akun..." class="w-full px-3.5 py-2 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 rounded-xl text-xs sm:text-sm text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                     </div>
                 </div>
 
-                <div class="mt-6 flex items-center justify-end gap-2.5">
-                    <button type="button" @click="openQuickTypeModal = false" class="px-4 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors">
+                <!-- Modal Footer -->
+                <div class="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-2.5 bg-zinc-50/50 dark:bg-zinc-900">
+                    <button type="button" @click="openQuickTypeModal = false" class="px-4 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer">
                         Batal
                     </button>
-                    <button type="button" @click="saveQuickType()" :disabled="savingType || !newTypeName.trim()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+                    <button type="button" @click="saveQuickType()" :disabled="savingType || !newTypeName.trim()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
                         <svg x-show="savingType" class="animate-spin -ml-1 mr-1 h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
                         <span x-text="savingType ? 'Menyimpan...' : 'Simpan Tipe'"></span>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 </div>
 
 @push('scripts')
