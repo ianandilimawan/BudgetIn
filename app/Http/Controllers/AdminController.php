@@ -72,6 +72,21 @@ class AdminController extends Controller
 
         $systemStats = null;
         if ($isSuperAdmin) {
+            $userGrowthTrends = [];
+            for ($i = 5; $i >= 0; $i--) {
+                $d = now()->subMonths($i);
+                $m = (int) $d->format('m');
+                $y = (int) $d->format('Y');
+                $count = \App\Models\User::finance()
+                    ->whereMonth('created_at', $m)
+                    ->whereYear('created_at', $y)
+                    ->count();
+                $userGrowthTrends[] = [
+                    'month_name' => $d->translatedFormat('M Y'),
+                    'new_users' => $count,
+                ];
+            }
+
             $systemStats = [
                 'total_users' => \App\Models\User::count(),
                 'active_users' => \App\Models\User::where('is_active', true)->count(),
@@ -79,6 +94,9 @@ class AdminController extends Controller
                 'finance_users_count' => \App\Models\User::finance()->count(),
                 'active_finance_users' => \App\Models\User::finance()->where('is_active', true)->count(),
                 'inactive_finance_users' => \App\Models\User::finance()->where('is_active', false)->count(),
+                'new_finance_users_this_month' => \App\Models\User::finance()->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
+                'new_finance_users_this_week' => \App\Models\User::finance()->where('created_at', '>=', now()->subDays(7))->count(),
+                'user_growth_trends' => $userGrowthTrends,
                 'total_platform_transactions' => CashTransaction::count(),
                 'total_platform_income' => (float) CashTransaction::where('type', 'income')->sum('amount'),
                 'total_platform_expense' => (float) CashTransaction::where('type', 'expense')->sum('amount'),
@@ -86,7 +104,7 @@ class AdminController extends Controller
                 'total_platform_categories' => TransactionCategory::count(),
                 'total_recurring_schedules' => \App\Models\RecurringTransaction::count(),
                 'active_recurring_schedules' => \App\Models\RecurringTransaction::where('is_active', true)->count(),
-                'recent_users' => \App\Models\User::with('roles')->latest()->take(6)->get(),
+                'recent_users' => \App\Models\User::finance()->latest()->take(6)->get(),
                 'recent_activities' => \App\Models\ActivityLog::with('user')->latest()->take(8)->get(),
                 'server_info' => [
                     'php_version' => PHP_VERSION,

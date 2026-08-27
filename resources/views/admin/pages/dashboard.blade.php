@@ -107,7 +107,7 @@
 
         <!-- 4 Platform Metric Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <!-- Card 1: Total Users -->
+            <!-- Card 1: Total Finance Users -->
             <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="flex items-center justify-between mb-3">
                     <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
@@ -115,15 +115,16 @@
                     </div>
                     <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/50">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        {{ $systemStats['active_users'] }} Aktif
+                        {{ $systemStats['active_finance_users'] }} Aktif
                     </span>
                 </div>
                 <div class="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
-                    {{ number_format($systemStats['total_users']) }}
+                    {{ number_format($systemStats['finance_users_count']) }}
                 </div>
-                <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
-                    Total Pengguna Platform ({{ $systemStats['finance_users_count'] }} Finance)
-                </p>
+                <div class="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+                    <span>Pengguna Finance</span>
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">+{{ $systemStats['new_finance_users_this_month'] }} bln ini</span>
+                </div>
             </div>
 
             <!-- Card 2: Cash Accounts -->
@@ -178,6 +179,66 @@
                 <p class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium mt-1">
                     <span class="text-emerald-600 dark:text-emerald-400 font-bold">In: {{ number_format($systemStats['total_platform_income'], 0, ',', '.') }}</span> • <span class="text-rose-600 dark:text-rose-400 font-bold">Out: {{ number_format($systemStats['total_platform_expense'], 0, ',', '.') }}</span>
                 </p>
+            </div>
+        </div>
+
+        <!-- User Registration Growth Analytics Chart & Growth Highlights -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+            <!-- Main Registration Chart -->
+            <div class="lg:col-span-2 p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <span>Tren Pertumbuhan Pengguna Baru (6 Bulan Terakhir)</span>
+                        </h2>
+                        <p class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">Statistik pendaftaran akun pengguna finance per bulan</p>
+                    </div>
+                    <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200/50">
+                        +{{ $systemStats['new_finance_users_this_month'] }} Bulan Ini
+                    </span>
+                </div>
+                <div class="h-52 w-full">
+                    <div id="userRegistrationChart" class="h-full w-full"></div>
+                </div>
+            </div>
+
+            <!-- User Growth Highlights Card -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex flex-col justify-between">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Aktivitas & Pertumbuhan Pengguna</span>
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-zinc-400 font-medium block">Pengguna Baru (7 Hari)</span>
+                                <span class="text-base font-black text-zinc-900 dark:text-white">+{{ $systemStats['new_finance_users_this_week'] }} Akun</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
+                                7D
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-zinc-400 font-medium block">Tingkat Akun Aktif</span>
+                                <span class="text-base font-black text-emerald-600 dark:text-emerald-400">
+                                    {{ $systemStats['finance_users_count'] > 0 ? round(($systemStats['active_finance_users'] / $systemStats['finance_users_count']) * 100, 1) : 100 }}%
+                                </span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xs">
+                                {{ $systemStats['active_finance_users'] }}/{{ $systemStats['finance_users_count'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
+                    <span class="text-zinc-500 dark:text-zinc-400 text-[11px]">Akun Nonaktif / Ditangguhkan:</span>
+                    <span class="font-bold text-rose-600 dark:text-rose-400">{{ $systemStats['inactive_finance_users'] }} User</span>
+                </div>
             </div>
         </div>
 
@@ -1321,45 +1382,113 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let donutChart = new ApexCharts(document.querySelector("#categoryDonutChart"), donutOptions);
         donutChart.render();
+    }
 
-        function updateChartsTheme(dark) {
-            if (trendChart) {
-                trendChart.updateOptions({
-                    xaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
-                    yaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
-                    grid: { borderColor: dark ? '#27272A' : '#F4F4F5' },
-                    tooltip: { theme: dark ? 'dark' : 'light' }
-                }, false, false);
+    // 3. User Registration Growth Chart (Super Admin)
+    let userRegChart = null;
+    @if($isSuperAdmin && isset($systemStats['user_growth_trends']))
+    const userGrowthTrends = @json($systemStats['user_growth_trends']);
+    if (document.querySelector("#userRegistrationChart") && userGrowthTrends.length > 0) {
+        const userMonths = userGrowthTrends.map(item => item.month_name);
+        const userCounts = userGrowthTrends.map(item => item.new_users);
+
+        const userRegistrationOptions = {
+            series: [{
+                name: 'Pengguna Baru',
+                data: userCounts
+            }],
+            chart: {
+                type: 'bar',
+                height: '100%',
+                fontFamily: 'inherit',
+                toolbar: { show: false }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 6,
+                    columnWidth: '38%',
+                    distributed: false,
+                }
+            },
+            colors: ['#6366F1'],
+            dataLabels: { enabled: false },
+            xaxis: {
+                categories: userMonths,
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: {
+                    style: { colors: isDark ? '#9CA3AF' : '#6B7280', fontSize: '11px', fontWeight: 500 }
+                }
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(val) { return Math.round(val); },
+                    style: { colors: isDark ? '#9CA3AF' : '#6B7280', fontSize: '10px' }
+                }
+            },
+            grid: {
+                borderColor: isDark ? '#27272A' : '#F4F4F5',
+                strokeDashArray: 4,
+                padding: { top: 0, right: 0, bottom: 0, left: 10 }
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                y: {
+                    formatter: function(val) { return val + ' Pengguna Finance'; }
+                }
             }
-            if (donutChart) {
-                donutChart.updateOptions({
-                    legend: { labels: { colors: dark ? '#A1A1AA' : '#52525B' } },
-                    plotOptions: {
-                        pie: {
-                            donut: {
-                                labels: {
-                                    name: { color: dark ? '#A1A1AA' : '#71717A' },
-                                    value: { color: dark ? '#FFFFFF' : '#18181B' },
-                                    total: { color: dark ? '#A1A1AA' : '#71717A' }
-                                }
+        };
+
+        userRegChart = new ApexCharts(document.querySelector("#userRegistrationChart"), userRegistrationOptions);
+        userRegChart.render();
+    }
+    @endif
+
+    function updateChartsTheme(dark) {
+        if (trendChart) {
+            trendChart.updateOptions({
+                xaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
+                yaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
+                grid: { borderColor: dark ? '#27272A' : '#F4F4F5' },
+                tooltip: { theme: dark ? 'dark' : 'light' }
+            }, false, false);
+        }
+        if (typeof donutChart !== 'undefined' && donutChart) {
+            donutChart.updateOptions({
+                legend: { labels: { colors: dark ? '#A1A1AA' : '#52525B' } },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                name: { color: dark ? '#A1A1AA' : '#71717A' },
+                                value: { color: dark ? '#FFFFFF' : '#18181B' },
+                                total: { color: dark ? '#A1A1AA' : '#71717A' }
                             }
                         }
-                    },
-                    tooltip: { theme: dark ? 'dark' : 'light' }
-                }, false, false);
-            }
+                    }
+                },
+                tooltip: { theme: dark ? 'dark' : 'light' }
+            }, false, false);
         }
-
-        window.addEventListener('theme-changed', (e) => {
-            updateChartsTheme(e.detail.isDark);
-        });
-
-        const themeObserver = new MutationObserver(() => {
-            const dark = document.documentElement.classList.contains('dark');
-            updateChartsTheme(dark);
-        });
-        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        if (userRegChart) {
+            userRegChart.updateOptions({
+                xaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
+                yaxis: { labels: { style: { colors: dark ? '#9CA3AF' : '#6B7280' } } },
+                grid: { borderColor: dark ? '#27272A' : '#F4F4F5' },
+                tooltip: { theme: dark ? 'dark' : 'light' }
+            }, false, false);
+        }
     }
+
+    window.addEventListener('theme-changed', (e) => {
+        updateChartsTheme(e.detail.isDark);
+    });
+
+    const themeObserver = new MutationObserver(() => {
+        const dark = document.documentElement.classList.contains('dark');
+        updateChartsTheme(dark);
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 });
 
 async function saveAllBudgets() {
