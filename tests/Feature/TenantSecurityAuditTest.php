@@ -326,8 +326,8 @@ class TenantSecurityAuditTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('admin.dashboard'));
         $response->assertStatus(200);
         $response->assertSee('Dashboard Super Admin');
-        $response->assertSee('Platform & Sistem', false);
-        $response->assertSee('Keuangan Pribadi (Admin)');
+        $response->assertSee('Dashboard Platform');
+        $response->assertSee('Keuangan Pribadi');
         $response->assertSee('Pusat Administrasi & Kontrol Cepat', false);
     }
 
