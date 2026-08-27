@@ -497,13 +497,6 @@
                 </svg>
                 Kategori
             </a>
-            <a href="{{ route('admin.category_budgets.index') }}"
-                class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-xl border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition shadow-xs whitespace-nowrap flex-shrink-0">
-                <svg class="w-3.5 h-3.5 mr-1.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-                Target Anggaran
-            </a>
         </div>
     </div>
 
@@ -698,17 +691,12 @@
                     </div>
                     <div class="flex items-center gap-2">
                         @if($budgetProgress['has_budgets'])
-                            <div class="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                            <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
                                 <span class="{{ $budgetProgress['actual_overall_percentage'] >= 100 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400' }} font-bold">
                                     {{ $budgetProgress['total_spent_formatted'] }} / {{ $budgetProgress['total_budget_formatted'] }} ({{ $budgetProgress['actual_overall_percentage'] }}%)
                                 </span>
                             </div>
                         @endif
-                        <a href="{{ route('admin.category_budgets.index') }}"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-semibold transition shadow-xs">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                            <span>Kelola Anggaran</span>
-                        </a>
                     </div>
                 </div>
 
