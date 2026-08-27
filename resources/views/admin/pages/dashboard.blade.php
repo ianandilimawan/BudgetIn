@@ -44,7 +44,6 @@
 <div x-data="{ 
     activeTab: '{{ request('view', ($isSuperAdmin ? 'system' : 'personal')) }}',
     quickModal: false, 
-    budgetModal: {{ request('budget') ? 'true' : 'false' }}, 
     quickType: 'expense', 
     quickProofName: '', 
     quickProofPreview: '',
@@ -498,13 +497,13 @@
                 </svg>
                 Kategori
             </a>
-            <button type="button" @click="budgetModal = true"
-                class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-xl border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition shadow-xs whitespace-nowrap flex-shrink-0 cursor-pointer">
+            <a href="{{ route('admin.category_budgets.index') }}"
+                class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-xl border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition shadow-xs whitespace-nowrap flex-shrink-0">
                 <svg class="w-3.5 h-3.5 mr-1.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
-                Target Budget
-            </button>
+                Target Anggaran
+            </a>
         </div>
     </div>
 
@@ -705,11 +704,11 @@
                                 </span>
                             </div>
                         @endif
-                        <button type="button" @click="budgetModal = true"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-semibold transition shadow-xs cursor-pointer">
+                        <a href="{{ route('admin.category_budgets.index') }}"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-semibold transition shadow-xs">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                            <span>Atur Limit</span>
-                        </button>
+                            <span>Kelola Anggaran</span>
+                        </a>
                     </div>
                 </div>
 
@@ -767,10 +766,10 @@
                         </div>
                         <h4 class="text-xs font-bold text-zinc-800 dark:text-zinc-200">Belum Ada Target Anggaran</h4>
                         <p class="text-[11px] text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-0.5 mb-2.5">Tentukan batas pengeluaran bulanan per kategori untuk mengontrol pengeluaran harian Anda.</p>
-                        <button type="button" @click="budgetModal = true" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold transition shadow-xs shadow-emerald-500/20 cursor-pointer">
+                        <a href="{{ route('admin.category_budgets.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold transition shadow-xs shadow-emerald-500/20">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             <span>Mulai Atur Anggaran</span>
-                        </button>
+                        </a>
                     </div>
                 @endif
             </div>
@@ -1220,87 +1219,6 @@
             </div>
         </div>
     </template>
-
-    <!-- 2. Modal Manage Category Budget Limits -->
-    <template x-teleport="body">
-        <div x-show="budgetModal" style="display: none;"
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             @keydown.escape.window="budgetModal = false"
-             class="fixed inset-0 z-[100] overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6">
-            <div @click.away="budgetModal = false"
-                 x-show="budgetModal"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 scale-95"
-                 x-transition:enter-end="opacity-100 scale-100"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 scale-100"
-                 x-transition:leave-end="opacity-0 scale-95"
-                 class="w-full max-w-xl bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] my-auto">
-
-                <!-- Modal Header -->
-                <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Atur Limit Anggaran Pengeluaran</h3>
-                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Tentukan batas pengeluaran bulanan per kategori (kosongkan jika tidak ada limit)</p>
-                        </div>
-                    </div>
-                    <button type="button" @click="budgetModal = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-
-                <!-- Categories List with Inputs -->
-                <div class="p-5 overflow-y-auto space-y-3 flex-1" id="budgetInputsContainer">
-                    @foreach($expenseCategories as $cat)
-                        @php
-                            $currentLimit = $existingBudgets[$cat->id] ?? 0;
-                        @endphp
-                        <div class="flex items-center justify-between gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                {!! \App\Helpers\CategoryIconHelper::renderBadge($cat->icon, 'expense', 'w-8 h-8') !!}
-                                <div>
-                                    <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate">{{ $cat->name }}</h4>
-                                    <span class="text-[10px] text-zinc-400">Limit saat ini: {{ $currentLimit > 0 ? 'Rp ' . number_format($currentLimit, 0, ',', '.') : 'Belum diatur' }}</span>
-                                </div>
-                            </div>
-                            <div class="w-40 sm:w-48 relative flex-shrink-0">
-                                <span class="absolute left-2.5 top-2.5 text-xs text-zinc-400 font-bold">Rp</span>
-                                <input type="text"
-                                       data-category-id="{{ $cat->id }}"
-                                       placeholder="0 (Tanpa limit)"
-                                       value="{{ $currentLimit > 0 ? number_format($currentLimit, 0, ',', '.') : '' }}"
-                                       class="budget-amount-input w-full text-xs font-bold pl-8 pr-2.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                                       onkeyup="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0 bg-zinc-50/50 dark:bg-zinc-900">
-                    <span class="text-[11px] text-zinc-400">Nilai 0 akan menghapus limit anggaran</span>
-                    <div class="flex items-center gap-2">
-                        <button type="button" @click="budgetModal = false" class="px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl cursor-pointer">
-                            Tutup
-                        </button>
-                        <button type="button" onclick="saveAllBudgets(this)" class="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-md shadow-emerald-500/20 flex items-center gap-1.5 cursor-pointer">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span>Simpan Limit Anggaran</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </template>
 </div>
 @endsection
 
@@ -1564,58 +1482,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 });
-
-async function saveAllBudgets(btn) {
-    const inputs = document.querySelectorAll('.budget-amount-input');
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-    const originalText = btn ? btn.innerHTML : '';
-
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<svg class="animate-spin -ml-1 mr-1 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...`;
-    }
-
-    let promises = [];
-    inputs.forEach(input => {
-        const categoryId = input.getAttribute('data-category-id');
-        const rawValue = input.value.replace(/\./g, '').trim();
-        const amount = rawValue === '' ? 0 : parseFloat(rawValue);
-
-        promises.push(
-            fetch('{{ route('admin.category_budgets.update') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    category_id: categoryId,
-                    amount: amount
-                })
-            })
-        );
-    });
-
-    try {
-        await Promise.all(promises);
-        if (typeof showToast === 'function') {
-            showToast('Target limit anggaran berhasil disimpan.', 'success');
-        }
-        setTimeout(() => {
-            window.location.href = '{{ route('admin.dashboard', ['view' => 'personal']) }}';
-        }, 600);
-    } catch (err) {
-        if (typeof showToast === 'function') {
-            showToast('Gagal menyimpan limit anggaran. Silakan coba lagi.', 'error');
-        } else {
-            alert('Gagal menyimpan limit anggaran. Silakan coba lagi.');
-        }
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    }
-}
 </script>
 @endpush

@@ -131,4 +131,78 @@ class CategoryBudgetTest extends TestCase
         $this->assertTrue($progress['categories'][0]['is_over_budget']);
         $this->assertEquals('over', $progress['categories'][0]['status']);
     }
+
+    public function test_user_can_access_dedicated_category_budgets_index_page(): void
+    {
+        $response = $this->actingAs($this->user)->get(route('admin.category_budgets.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Target Anggaran');
+        $response->assertSee('Total Target Anggaran');
+    }
+
+    public function test_user_can_batch_update_category_budgets(): void
+    {
+        $cat2 = TransactionCategory::create([
+            'user_id' => $this->user->id,
+            'name' => 'Transportasi',
+            'type' => 'expense',
+            'icon' => 'car',
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($this->user)->postJson(route('admin.category_budgets.batch_update'), [
+            'month' => 3,
+            'year' => 2026,
+            'budgets' => [
+                ['category_id' => $this->category->id, 'amount' => 2500000],
+                ['category_id' => $cat2->id, 'amount' => 750000],
+            ],
+        ]);
+
+        $response->assertStatus(200)->assertJson(['success' => true]);
+
+        $this->assertDatabaseHas('category_budgets', [
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+            'month' => 3,
+            'year' => 2026,
+            'amount' => 2500000,
+        ]);
+
+        $this->assertDatabaseHas('category_budgets', [
+            'user_id' => $this->user->id,
+            'category_id' => $cat2->id,
+            'month' => 3,
+            'year' => 2026,
+            'amount' => 750000,
+        ]);
+    }
+
+    public function test_user_can_copy_category_budgets_from_previous_month(): void
+    {
+        // Setup previous month (Feb 2026) budget
+        CategoryBudget::create([
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+            'month' => 2,
+            'year' => 2026,
+            'amount' => 1800000,
+        ]);
+
+        // Copy to current month (Mar 2026)
+        $response = $this->actingAs($this->user)->postJson(route('admin.category_budgets.copy_previous'), [
+            'month' => 3,
+            'year' => 2026,
+        ]);
+
+        $response->assertStatus(200)->assertJson(['success' => true]);
+
+        $this->assertDatabaseHas('category_budgets', [
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+            'month' => 3,
+            'year' => 2026,
+            'amount' => 1800000,
+        ]);
+    }
 }

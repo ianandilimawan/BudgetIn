@@ -93,7 +93,7 @@ return [
         ],
         [
             'name' => 'Target Anggaran',
-            'url' => '/dashboard?view=personal&budget=1',
+            'route' => 'admin.category_budgets.index',
             'icon' => 'fa fa-bullseye',
             'permission' => 'view-cash_transactions',
         ],

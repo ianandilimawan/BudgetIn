@@ -95,8 +95,11 @@ Route::name('admin.')->group(function () {
         Route::post('profile/check-password', [\App\Http\Controllers\ProfileController::class, 'checkPassword'])->name('profile.check-password');
 
         // Category Budget limits
+        Route::get('category_budgets', [\App\Http\Controllers\CategoryBudgetController::class, 'index'])->name('category_budgets.index');
         Route::get('category_budgets/list', [\App\Http\Controllers\CategoryBudgetController::class, 'list'])->name('category_budgets.list');
         Route::post('category_budgets/update', [\App\Http\Controllers\CategoryBudgetController::class, 'updateBudget'])->name('category_budgets.update');
+        Route::post('category_budgets/batch_update', [\App\Http\Controllers\CategoryBudgetController::class, 'batchUpdate'])->name('category_budgets.batch_update');
+        Route::post('category_budgets/copy_previous', [\App\Http\Controllers\CategoryBudgetController::class, 'copyFromPreviousMonth'])->name('category_budgets.copy_previous');
 
         // Recurring Transactions
         Route::post('recurring_transactions/{recurring_transaction}/toggle-status', [\App\Http\Controllers\RecurringTransactionController::class, 'toggleStatus'])->name('recurring_transactions.toggle_status');
