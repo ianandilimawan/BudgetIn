@@ -61,7 +61,7 @@
                                 {{ $cashTransaction->type === 'income' ? '+' : ($cashTransaction->type === 'expense' ? '-' : '') }}Rp {{ number_format($cashTransaction->amount, 0, ',', '.') }}
                             </h2>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $cashTransaction->type === 'income' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : ($cashTransaction->type === 'expense' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300' : 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300') }}">
-                                {{ $cashTransaction->type === 'income' ? 'Pemasukan' : ($cashTransaction->type === 'expense' ? 'Pengeluaran' : 'Tarik Tunai / Transfer') }}
+                                {{ $cashTransaction->type === 'income' ? 'Pemasukan' : ($cashTransaction->type === 'expense' ? 'Pengeluaran' : 'Transfer / Pindah Kas') }}
                             </span>
                         </div>
                     </div>

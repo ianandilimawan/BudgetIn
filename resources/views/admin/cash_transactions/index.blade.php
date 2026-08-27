@@ -8,7 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div>
             <h1 class="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-white">Pencatatan Keuangan</h1>
-            <p class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Input cepat transaksi pengeluaran, pemasukan, lampiran bukti, dan tarik tunai antar dompet</p>
+            <p class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Input cepat transaksi pengeluaran, pemasukan, lampiran bukti, dan transfer/pindah kas antar akun</p>
         </div>
         <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
             <a href="{{ route('admin.dashboard') }}"
@@ -99,33 +99,33 @@
                     </template>
                 </div>
                 <div>
-                    <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white" x-text="trxType === 'expense' ? 'Input Pengeluaran' : (trxType === 'income' ? 'Input Pemasukan' : 'Tarik Tunai / Pindah Saldo')"></h2>
+                    <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white" x-text="trxType === 'expense' ? 'Input Pengeluaran' : (trxType === 'income' ? 'Input Pemasukan' : 'Transfer / Pindah Kas Antar Akun')"></h2>
                     <p class="text-[10px] sm:text-[11px] text-zinc-500">Pencatatan kas otomatis update saldo dompet seketika</p>
                 </div>
             </div>
 
             <!-- Mode Selector Tabs -->
-            <div class="inline-flex p-0.5 sm:p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-xs font-semibold self-start sm:self-auto">
+            <div class="inline-flex p-0.5 sm:p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-xs font-semibold self-start sm:self-auto flex-wrap">
                 <button type="button" 
                         @click="setType('expense')"
                         :class="trxType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs">
+                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     <span>Pengeluaran</span>
                 </button>
                 <button type="button" 
                         @click="setType('income')"
                         :class="trxType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs">
+                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                     <span>Pemasukan</span>
                 </button>
                 <button type="button" 
                         @click="setType('transfer')"
                         :class="trxType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs">
+                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                    <span>Tarik Tunai</span>
+                    <span>Transfer / Pindah Kas</span>
                 </button>
             </div>
         </div>
@@ -138,7 +138,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 items-start">
                 
                 <!-- 1. Kategori (Expense / Income) ATAU Dari Akun (Transfer) -->
-                <div>
+                <div class="min-w-0">
                     <!-- Mode Pengeluaran: Kategori Pengeluaran -->
                     <div x-show="trxType === 'expense'">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
@@ -146,7 +146,7 @@
                                 Kategori <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="category_id" id="expense_category_id" class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'" required>
+                        <select name="category_id" id="expense_category_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'" required>
                             <option value="">Pilih Kategori...</option>
                             @foreach($expenseCategories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -161,7 +161,7 @@
                                 Kategori <span class="text-emerald-500">*</span>
                             </label>
                         </div>
-                        <select name="category_id" id="income_category_id" class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
+                        <select name="category_id" id="income_category_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
                             <option value="">Pilih Kategori...</option>
                             @foreach($incomeCategories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -173,10 +173,10 @@
                     <div x-show="trxType === 'transfer'" style="display: none;">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                             <label for="transfer_account_id" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400">
-                                1. Dari Bank / Akun <span class="text-rose-500">*</span>
+                                1. Dari Akun Asal <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="account_id" id="transfer_account_id" class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'transfer'">
+                        <select name="account_id" id="transfer_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}" {{ $acc->type === 'bank' ? 'selected' : '' }}>{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -185,7 +185,7 @@
                 </div>
 
                 <!-- 2. Akun Sumber/Tujuan (Non-Transfer) ATAU Ke Dompet Tujuan (Transfer) -->
-                <div>
+                <div class="min-w-0">
                     <!-- Non-Transfer Mode -->
                     <div x-show="trxType !== 'transfer'">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
@@ -193,7 +193,7 @@
                                 Akun / Dompet <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="account_id" id="quick_account_id" class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" :disabled="trxType === 'transfer'">
+                        <select name="account_id" id="quick_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" :disabled="trxType === 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -204,10 +204,10 @@
                     <div x-show="trxType === 'transfer'" style="display: none;">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                             <label for="transfer_to_account_id" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400">
-                                2. Ke Dompet / Akun <span class="text-emerald-500">*</span>
+                                2. Ke Akun Tujuan <span class="text-emerald-500">*</span>
                             </label>
                         </div>
-                        <select name="to_account_id" id="transfer_to_account_id" class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
+                        <select name="to_account_id" id="transfer_to_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}" {{ $acc->type === 'cash' ? 'selected' : '' }}>{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -216,7 +216,7 @@
                 </div>
 
                 <!-- 3. Nominal (Single Unified Input) -->
-                <div>
+                <div class="min-w-0">
                     <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                         <label for="quick_amount" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">
                             Nominal (Rp) <span class="text-rose-500">*</span>
@@ -228,12 +228,12 @@
                            placeholder="Rp 0" 
                            data-currency 
                            required 
-                           class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
+                           class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
                 </div>
 
                 <!-- 4. Tanggal (Single Unified Input) -->
-                <div>
-                    <div class="flex items-center justify-between min-h-[22px] mb-1.5">
+                <div class="min-w-0">
+                    <div class="flex items-center justify-between min-h-[22px] mb-1.5 flex-wrap gap-1">
                         <label for="quick_transaction_date" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">
                             Tanggal <span class="text-rose-500">*</span>
                         </label>
@@ -248,11 +248,11 @@
                            id="quick_transaction_date" 
                            value="{{ date('Y-m-d') }}" 
                            required 
-                           class="w-full h-[40px] px-2.5 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors cursor-pointer" />
+                           class="w-full max-w-full min-w-0 box-border h-[40px] px-2.5 sm:px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors cursor-pointer" />
                 </div>
 
                 <!-- 5. Catatan & Bukti File Picker -->
-                <div>
+                <div class="min-w-0">
                     <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                         <label for="quick_note" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">
                             Catatan / Bukti
@@ -268,7 +268,7 @@
                                name="note" 
                                id="quick_note" 
                                placeholder="Contoh: Belanja dapur" 
-                               class="w-full h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
+                               class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
                         
                         <!-- Attached File Badge -->
                         <div x-show="proofName" class="mt-1 flex items-center justify-between px-2 py-1 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-[10px] text-indigo-700 dark:text-indigo-300" style="display: none;">
@@ -303,7 +303,7 @@
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span x-text="loading ? 'Menyimpan...' : (trxType === 'expense' ? 'Simpan Pengeluaran' : (trxType === 'income' ? 'Simpan Pemasukan' : 'Proses Tarik Tunai'))"></span>
+                        <span x-text="loading ? 'Menyimpan...' : (trxType === 'expense' ? 'Simpan Pengeluaran' : (trxType === 'income' ? 'Simpan Pemasukan' : 'Proses Pindah Kas'))"></span>
                     </button>
                 </div>
             </div>
@@ -411,7 +411,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Riwayat Transaksi & Mutasi Kas ({{ $dateRange['label'] }})</h2>
-                <p class="text-[10px] sm:text-[11px] text-zinc-500">Mutasi kas, tarik tunai, lampiran struk, dan transaksi harian</p>
+                <p class="text-[10px] sm:text-[11px] text-zinc-500">Mutasi kas, transfer/pindah saldo, lampiran struk, dan transaksi harian</p>
             </div>
         </div>
 
@@ -458,7 +458,7 @@
                                     <div class="min-w-0">
                                         <p class="text-xs font-semibold text-zinc-900 dark:text-white truncate">
                                             @if($tx->type === 'transfer')
-                                                Tarik: {{ $tx->account->name ?? 'Bank' }} ➔ {{ $tx->toAccount->name ?? 'Cash' }}
+                                                Pindah: {{ $tx->account->name ?? 'Bank' }} ➔ {{ $tx->toAccount->name ?? 'Kas' }}
                                             @else
                                                 {{ $tx->category->name ?? 'Kategori Lain' }}
                                             @endif

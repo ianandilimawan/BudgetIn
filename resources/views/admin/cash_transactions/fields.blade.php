@@ -57,7 +57,7 @@
                     :class="trxType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
                     class="px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                <span>Tarik Tunai / Transfer</span>
+                <span>Transfer / Pindah Kas</span>
             </button>
         </div>
         <input type="hidden" name="type" :value="trxType">
@@ -98,7 +98,7 @@
 
     <!-- Akun / Dompet Asal -->
     <div>
-        <label class="block text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1.5" x-text="trxType === 'transfer' ? 'Dari Akun / Sumber Dana *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
+        <label class="block text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1.5" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
             Akun / Dompet
         </label>
         <select name="account_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" required>
@@ -113,7 +113,7 @@
     <!-- Ke Akun (Hanya tampil untuk Transfer) -->
     <div x-show="trxType === 'transfer'" style="display: none;">
         <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
-            Ke Dompet / Akun Tujuan <span class="text-emerald-500">*</span>
+            Ke Akun Tujuan <span class="text-emerald-500">*</span>
         </label>
         <select name="to_account_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
             <option value="">Pilih Akun Tujuan...</option>

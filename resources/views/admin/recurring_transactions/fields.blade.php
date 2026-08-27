@@ -39,7 +39,7 @@
                     :class="trxType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
                     class="px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                <span>Tarik / Transfer</span>
+                <span>Transfer / Pindah Kas</span>
             </button>
         </div>
         <input type="hidden" name="type" :value="trxType">

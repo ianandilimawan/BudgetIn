@@ -262,7 +262,7 @@
                     <option value="">Semua Tipe</option>
                     <option value="expense">🔴 Pengeluaran</option>
                     <option value="income">🟢 Pemasukan</option>
-                    <option value="transfer">🔄 Transfer / Tarik Tunai</option>
+                    <option value="transfer">🔄 Transfer / Pindah Kas</option>
                 </select>
             </div>
 

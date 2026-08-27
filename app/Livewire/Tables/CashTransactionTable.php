@@ -93,7 +93,7 @@ class CashTransactionTable extends PowerGridComponent
             ->add('id')
             ->add('category_name', function (CashTransaction $model) {
                 if ($model->type === 'transfer') {
-                    return '<span class="text-xs text-indigo-600 dark:text-indigo-400 font-medium inline-flex items-center gap-1.5"><div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div> Tarik Tunai / Transfer</span>';
+                    return '<span class="text-xs text-indigo-600 dark:text-indigo-400 font-medium inline-flex items-center gap-1.5"><div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div> Transfer / Pindah Kas</span>';
                 }
                 if ($model->category) {
                     $badge = \App\Helpers\CategoryIconHelper::renderBadge($model->category->icon, $model->category->type ?? $model->type, 'w-6 h-6');

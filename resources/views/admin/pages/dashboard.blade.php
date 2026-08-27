@@ -906,7 +906,7 @@
                         <div class="min-w-0">
                             <p class="text-xs font-semibold text-zinc-900 dark:text-white truncate">
                                 @if($tx->type === 'transfer')
-                                    Tarik: {{ $tx->account->name ?? 'Bank' }} ➔ {{ $tx->toAccount->name ?? 'Cash' }}
+                                    Pindah: {{ $tx->account->name ?? 'Bank' }} ➔ {{ $tx->toAccount->name ?? 'Kas' }}
                                 @else
                                     {{ $tx->category->name ?? 'Kategori Lain' }}
                                 @endif
@@ -1091,7 +1091,7 @@
                         <button type="button" @click="quickType = 'transfer'"
                                 :class="quickType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
                                 class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
-                            Transfer / Tarik
+                            Transfer / Pindah Kas
                         </button>
                     </div>
                     <input type="hidden" name="type" :value="quickType">
@@ -1130,7 +1130,7 @@
                     <!-- Dompet / Akun Asal & Tujuan -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1" x-text="quickType === 'transfer' ? 'Dari Dompet *' : (quickType === 'expense' ? 'Dari Dompet *' : 'Ke Dompet *')">Dompet</label>
+                            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1" x-text="quickType === 'transfer' ? 'Dari Akun Asal *' : (quickType === 'expense' ? 'Dari Dompet *' : 'Ke Dompet *')">Dompet</label>
                             <select name="account_id" required class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
                                 @foreach($cashAccounts as $acc)
                                     <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
@@ -1139,7 +1139,7 @@
                         </div>
 
                         <div x-show="quickType === 'transfer'" style="display: none;">
-                            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Ke Dompet Tujuan *</label>
+                            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Ke Akun Tujuan *</label>
                             <select name="to_account_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30" :disabled="quickType !== 'transfer'">
                                 <option value="">Pilih Akun Tujuan...</option>
                                 @foreach($cashAccounts as $acc)
