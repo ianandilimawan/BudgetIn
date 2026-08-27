@@ -499,6 +499,7 @@ class CashSummaryService
             'total_spent' => $totalSpent,
             'total_spent_formatted' => 'Rp ' . number_format($totalSpent, 0, ',', '.'),
             'overall_percentage' => min(100, $overallPercentage),
+            'percentage' => min(100, $overallPercentage),
             'actual_overall_percentage' => $overallPercentage,
             'has_budgets' => count($result) > 0,
             'categories' => $result,

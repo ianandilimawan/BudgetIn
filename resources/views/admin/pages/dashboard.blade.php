@@ -42,9 +42,9 @@
 
 @section('content')
 <div x-data="{ 
-    activeTab: '{{ $isSuperAdmin ? 'system' : 'personal' }}',
+    activeTab: '{{ request('view', ($isSuperAdmin ? 'system' : 'personal')) }}',
     quickModal: false, 
-    budgetModal: false, 
+    budgetModal: {{ request('budget') ? 'true' : 'false' }}, 
     quickType: 'expense', 
     quickProofName: '', 
     quickProofPreview: '' 
@@ -475,6 +475,13 @@
                 </svg>
                 Kategori
             </a>
+            <button type="button" @click="budgetModal = true"
+                class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-xl border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition shadow-xs whitespace-nowrap flex-shrink-0 cursor-pointer">
+                <svg class="w-3.5 h-3.5 mr-1.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Target Budget
+            </button>
         </div>
     </div>
 
@@ -694,7 +701,7 @@
                         </div>
                         <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
                             <div class="h-full rounded-full transition-all duration-500 {{ $budgetProgress['actual_overall_percentage'] >= 100 ? 'bg-rose-500' : ($budgetProgress['actual_overall_percentage'] >= 80 ? 'bg-amber-500' : 'bg-emerald-500') }}"
-                                 style="width: {{ $budgetProgress['percentage'] }}%"></div>
+                                 style="width: {{ $budgetProgress['overall_percentage'] ?? $budgetProgress['percentage'] ?? 0 }}%"></div>
                         </div>
                     </div>
 

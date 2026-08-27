@@ -92,6 +92,12 @@ return [
             'permission' => 'view-cash_transactions',
         ],
         [
+            'name' => 'Target Anggaran',
+            'url' => '/dashboard?view=personal&budget=1',
+            'icon' => 'fa fa-bullseye',
+            'permission' => 'view-cash_transactions',
+        ],
+        [
             'name' => 'Cash Accounts',
             'route' => 'admin.cash_accounts.index',
             'icon' => 'wallet',
