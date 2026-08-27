@@ -67,7 +67,41 @@ class AdminController extends Controller
         $cashAccounts = CashAccount::where('user_id', $userId)->where('is_active', true)->get();
         $existingBudgets = \App\Models\CategoryBudget::where('user_id', $userId)->pluck('amount', 'category_id')->toArray();
 
+        $user = auth()->user();
+        $isSuperAdmin = $user && $user->hasRole('super-admin');
+
+        $systemStats = null;
+        if ($isSuperAdmin) {
+            $systemStats = [
+                'total_users' => \App\Models\User::count(),
+                'active_users' => \App\Models\User::where('is_active', true)->count(),
+                'inactive_users' => \App\Models\User::where('is_active', false)->count(),
+                'finance_users_count' => \App\Models\User::finance()->count(),
+                'active_finance_users' => \App\Models\User::finance()->where('is_active', true)->count(),
+                'inactive_finance_users' => \App\Models\User::finance()->where('is_active', false)->count(),
+                'total_platform_transactions' => CashTransaction::count(),
+                'total_platform_income' => (float) CashTransaction::where('type', 'income')->sum('amount'),
+                'total_platform_expense' => (float) CashTransaction::where('type', 'expense')->sum('amount'),
+                'total_platform_accounts' => CashAccount::count(),
+                'total_platform_categories' => TransactionCategory::count(),
+                'total_recurring_schedules' => \App\Models\RecurringTransaction::count(),
+                'active_recurring_schedules' => \App\Models\RecurringTransaction::where('is_active', true)->count(),
+                'recent_users' => \App\Models\User::with('roles')->latest()->take(6)->get(),
+                'recent_activities' => \App\Models\ActivityLog::with('user')->latest()->take(8)->get(),
+                'server_info' => [
+                    'php_version' => PHP_VERSION,
+                    'laravel_version' => app()->version(),
+                    'environment' => app()->environment(),
+                    'db_driver' => config('database.default'),
+                    'cache_driver' => config('cache.default'),
+                    'queue_driver' => config('queue.default'),
+                ],
+            ];
+        }
+
         return view('admin.pages.dashboard', compact(
+            'isSuperAdmin',
+            'systemStats',
             'balance',
             'filteredSummary',
             'dateRange',

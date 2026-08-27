@@ -317,4 +317,29 @@ class TenantSecurityAuditTest extends TestCase
         $response->assertStatus(200);
         $response->assertHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
+
+    /**
+     * Test Super Admin dashboard renders system telemetry and role tab switcher.
+     */
+    public function test_super_admin_dashboard_renders_system_and_personal_tabs(): void
+    {
+        $response = $this->actingAs($this->adminUser)->get(route('admin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard Super Admin');
+        $response->assertSee('Platform & Sistem', false);
+        $response->assertSee('Keuangan Pribadi (Admin)');
+        $response->assertSee('Pusat Administrasi & Kontrol Cepat', false);
+    }
+
+    /**
+     * Test Finance user dashboard renders personal finance directly.
+     */
+    public function test_finance_user_dashboard_renders_personal_finance(): void
+    {
+        $response = $this->actingAs($this->financeUser)->get(route('admin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard Keuangan');
+        $response->assertSee('Saldo Dompet & Rekening', false);
+        $response->assertDontSee('Platform & Sistem', false);
+    }
 }

@@ -41,8 +41,343 @@
 @endpush
 
 @section('content')
-<div x-data="{ quickModal: false, budgetModal: false, quickType: 'expense', quickProofName: '', quickProofPreview: '' }" class="space-y-4 sm:space-y-5 pb-16 md:pb-0">
+<div x-data="{ 
+    activeTab: '{{ $isSuperAdmin ? 'system' : 'personal' }}',
+    quickModal: false, 
+    budgetModal: false, 
+    quickType: 'expense', 
+    quickProofName: '', 
+    quickProofPreview: '' 
+}" class="space-y-4 sm:space-y-5 pb-16 md:pb-0">
 
+    @if($isSuperAdmin)
+    <!-- Top Role Tab Switcher for Super Admin -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div class="flex items-center gap-1.5 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 w-full sm:w-auto">
+            <button type="button" @click="activeTab = 'system'"
+                :class="activeTab === 'system' ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-xs font-bold' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-medium'"
+                class="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs transition-all cursor-pointer flex-1 sm:flex-initial">
+                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span>Platform & Sistem</span>
+            </button>
+            <button type="button" @click="activeTab = 'personal'"
+                :class="activeTab === 'personal' ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-xs font-bold' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-medium'"
+                class="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs transition-all cursor-pointer flex-1 sm:flex-initial">
+                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Keuangan Pribadi (Admin)</span>
+            </button>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Super Admin Mode
+            </span>
+        </div>
+    </div>
+
+    <!-- Super Admin System & Platform View -->
+    <div x-show="activeTab === 'system'" x-cloak class="space-y-4 sm:space-y-6">
+        <!-- Super Admin Header & Shortcuts -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                    <span>Dashboard Super Admin</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-200 dark:border-emerald-800">Sistem & Platform</span>
+                </h1>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Pantau pertumbuhan pengguna, volume transaksi platform, status server, dan log aktivitas sistem.</p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+                <a href="{{ route('admin.finance_users.index') }}"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm shadow-emerald-600/20">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span>Kelola Pengguna Finance</span>
+                </a>
+                <a href="{{ route('admin.settings.index') }}"
+                    class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition shadow-2xs">
+                    <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span>Pengaturan</span>
+                </a>
+                <a href="{{ route('admin.laravel-logs.index') }}"
+                    class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition shadow-2xs">
+                    <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Log Server</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 4 Platform Metric Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <!-- Card 1: Total Users -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/50">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        {{ $systemStats['active_users'] }} Aktif
+                    </span>
+                </div>
+                <div class="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
+                    {{ number_format($systemStats['total_users']) }}
+                </div>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+                    Total Pengguna Platform ({{ $systemStats['finance_users_count'] }} Finance)
+                </p>
+            </div>
+
+            <!-- Card 2: Cash Accounts -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    </div>
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200/50">
+                        Multi-Wallet
+                    </span>
+                </div>
+                <div class="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
+                    {{ number_format($systemStats['total_platform_accounts']) }}
+                </div>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+                    Dompet & Rekening Kas Terdaftar
+                </p>
+            </div>
+
+            <!-- Card 3: Total Transactions -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-xs">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 dark:bg-purple-950/80 dark:text-purple-300 border border-purple-200/50">
+                        {{ $systemStats['active_recurring_schedules'] }} Rutin Aktif
+                    </span>
+                </div>
+                <div class="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
+                    {{ number_format($systemStats['total_platform_transactions']) }}
+                </div>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+                    Total Mutasi Transaksi Kas Tercatat
+                </p>
+            </div>
+
+            <!-- Card 4: Platform Cash Flow Volume -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-xs">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-200/50">
+                        Volume Kas
+                    </span>
+                </div>
+                <div class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+                    Rp {{ number_format($systemStats['total_platform_income'] + $systemStats['total_platform_expense'], 0, ',', '.') }}
+                </div>
+                <p class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">In: {{ number_format($systemStats['total_platform_income'], 0, ',', '.') }}</span> • <span class="text-rose-600 dark:text-rose-400 font-bold">Out: {{ number_format($systemStats['total_platform_expense'], 0, ',', '.') }}</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Management Hub -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                <span>Pusat Administrasi & Kontrol Cepat</span>
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+                <a href="{{ route('admin.finance_users.index') }}" class="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-emerald-200 dark:hover:border-emerald-800 transition group">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">User Finance</h3>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Aktivasi akun</p>
+                    </div>
+                </a>
+                <a href="{{ route('admin.roles.index') }}" class="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-indigo-200 dark:hover:border-indigo-800 transition group">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">Roles & Akses</h3>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Hak permission</p>
+                    </div>
+                </a>
+                <a href="{{ route('admin.activity-logs.index') }}" class="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-blue-200 dark:hover:border-blue-800 transition group">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">Activity Logs</h3>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Audit trail user</p>
+                    </div>
+                </a>
+                <a href="{{ route('admin.laravel-logs.index') }}" class="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 hover:bg-amber-50 dark:hover:bg-amber-950/40 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-amber-200 dark:hover:border-amber-800 transition group">
+                    <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition">Server Logs</h3>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Monitor error</p>
+                    </div>
+                </a>
+                <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 hover:bg-purple-50 dark:hover:bg-purple-950/40 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-purple-200 dark:hover:border-purple-800 transition group">
+                    <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition">Settings</h3>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Branding & mail</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Two-Column Split: Users & Server vs Activities -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+            <!-- Left: Recent Registered Users & Server Telemetry -->
+            <div class="space-y-4">
+                <!-- Recent Users -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <span>Pengguna Terdaftar Terbaru</span>
+                        </h2>
+                        <a href="{{ route('admin.finance_users.index') }}" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Lihat Semua &rarr;</a>
+                    </div>
+                    <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                        @forelse($systemStats['recent_users'] as $recentUser)
+                            <div class="py-2.5 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                                        {{ strtoupper(substr($recentUser->name, 0, 1)) }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate">{{ $recentUser->name }}</h4>
+                                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">{{ $recentUser->email }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 flex-shrink-0">
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold {{ $recentUser->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300' }}">
+                                        {{ $recentUser->is_active ? 'Aktif' : 'Nonaktif' }}
+                                    </span>
+                                    <span class="text-[10px] text-zinc-400">
+                                        {{ $recentUser->created_at ? $recentUser->created_at->diffForHumans(null, true) : '-' }}
+                                    </span>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="py-4 text-center text-xs text-zinc-400">Belum ada pengguna terdaftar.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Server & Environment Telemetry -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                        <span>Server & Framework Telemetry</span>
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">PHP Version</span>
+                            <span class="font-bold text-zinc-800 dark:text-zinc-200">{{ $systemStats['server_info']['php_version'] }}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">Laravel Engine</span>
+                            <span class="font-bold text-zinc-800 dark:text-zinc-200">v{{ $systemStats['server_info']['laravel_version'] }}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">Environment</span>
+                            <span class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">{{ $systemStats['server_info']['environment'] }}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">Database Driver</span>
+                            <span class="font-bold text-zinc-800 dark:text-zinc-200 uppercase">{{ $systemStats['server_info']['db_driver'] }}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">Cache Store</span>
+                            <span class="font-bold text-zinc-800 dark:text-zinc-200 uppercase">{{ $systemStats['server_info']['cache_driver'] }}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] text-zinc-400 block font-medium">Queue Driver</span>
+                            <span class="font-bold text-zinc-800 dark:text-zinc-200 uppercase">{{ $systemStats['server_info']['queue_driver'] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Recent Activity Feed & Security Posture -->
+            <div class="space-y-4">
+                <!-- Activity Logs Feed -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>Audit Log Aktivitas Terkini</span>
+                        </h2>
+                        <a href="{{ route('admin.activity-logs.index') }}" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Semua Log &rarr;</a>
+                    </div>
+                    <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                        @forelse($systemStats['recent_activities'] as $act)
+                            <div class="py-2.5 flex items-start gap-2.5">
+                                <div class="w-6 h-6 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    {{ strtoupper(substr($act->action ?? 'A', 0, 1)) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="text-xs font-bold text-zinc-900 dark:text-white truncate">
+                                            {{ $act->user->name ?? 'System' }}
+                                        </span>
+                                        <span class="text-[10px] text-zinc-400 flex-shrink-0">
+                                            {{ $act->created_at ? $act->created_at->diffForHumans(null, true) : '-' }}
+                                        </span>
+                                    </div>
+                                    <p class="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                                        <span class="font-semibold text-zinc-700 dark:text-zinc-300">[{{ $act->action }}]</span> {{ $act->description }}
+                                    </p>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="py-4 text-center text-xs text-zinc-400">Belum ada catatan aktivitas sistem.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Platform Security Posture Card -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-900/10 via-teal-900/10 to-zinc-900/10 dark:from-emerald-950/40 dark:via-teal-950/40 dark:to-zinc-900/60 border border-emerald-500/20 dark:border-emerald-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                            Status Keamanan & Isolasi Multi-Tenant
+                        </h3>
+                    </div>
+                    <p class="text-xs text-zinc-600 dark:text-zinc-400 mb-3 leading-relaxed">
+                        Sistem berjalan dengan isolasi data tingkat pengguna (<span class="font-semibold text-zinc-800 dark:text-zinc-200">Strict Tenant Scoping</span>) dan perlindungan proteksi brute-force login.
+                    </p>
+                    <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
+                        <div class="p-2 rounded-xl bg-white/70 dark:bg-zinc-900/70 border border-emerald-200/50 dark:border-emerald-900/50 font-bold text-emerald-700 dark:text-emerald-300">
+                            ✓ IDOR Protected
+                        </div>
+                        <div class="p-2 rounded-xl bg-white/70 dark:bg-zinc-900/70 border border-emerald-200/50 dark:border-emerald-900/50 font-bold text-emerald-700 dark:text-emerald-300">
+                            ✓ 2FA OTP Active
+                        </div>
+                        <div class="p-2 rounded-xl bg-white/70 dark:bg-zinc-900/70 border border-emerald-200/50 dark:border-emerald-900/50 font-bold text-emerald-700 dark:text-emerald-300">
+                            ✓ Session Sealed
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Personal Finance View Container (Always for Finance users, or when Personal tab is active for Super Admin) -->
+    <div x-show="activeTab === 'personal'" class="space-y-4 sm:space-y-5">
     <!-- 1. Header & Actions Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -612,6 +947,9 @@
         </button>
     </div>
     @endif
+
+    </div>
+    <!-- End Personal Finance View Container -->
 
     <!-- 1. Modal Quick Add Transaction -->
     <div x-show="quickModal" style="display: none;"
