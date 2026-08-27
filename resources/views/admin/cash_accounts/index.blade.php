@@ -3,30 +3,30 @@
 @section('title', 'Dompet & Akun Kas')
 
 @section('content')
-    <div class="space-y-6" x-data="accountTypesManager()">
+    <div class="space-y-4 sm:space-y-5 pb-6" x-data="accountTypesManager()">
 
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white">Dompet & Rekening Kas</h2>
-                <p class="mt-0.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">Kelola sumber dana, dompet tunai, rekening bank, dan master tipe akun.</p>
+                <h1 class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-zinc-900 dark:text-white">Dompet & Rekening Kas</h1>
+                <p class="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">Kelola sumber dana, dompet tunai, rekening bank, dan master tipe akun.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <button type="button" @click="openModal = true; loadTypes();"
-                    class="px-3.5 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 rounded-xl text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1.5 shadow-sm cursor-pointer">
-                    <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="px-3 py-1.5 sm:px-3.5 sm:py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 rounded-xl text-xs font-semibold transition-colors inline-flex items-center gap-1.5 shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
-                    Master Tipe Akun
+                    <span>Master Tipe Akun</span>
                 </button>
 
                 @if(auth()->user() && auth()->user()->hasPermission('create-cash_accounts'))
                 <a href="{{ route('admin.cash_accounts.create') }}"
-                    class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/20">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="px-3 py-1.5 sm:px-3.5 sm:py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-semibold transition-colors inline-flex items-center gap-1.5 shadow-sm shadow-emerald-500/20 hover:scale-[1.02]">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Tambah Akun
+                    <span>Tambah Akun</span>
                 </a>
                 @endif
             </div>
