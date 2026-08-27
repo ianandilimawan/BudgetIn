@@ -1,0 +1,254 @@
+<?php
+
+namespace {{CONTROLLER_NAMESPACE}};
+
+use App\Http\Controllers\Controller;
+use App\Helpers\ApiResponseHelper;
+use App\Enums\ResponseStatus;
+use App\Services\FileUploadService;
+use App\Services\ActivityLogService;
+use {{NAMESPACE}}\{{MODEL_NAME}};
+use {{REQUEST_NAMESPACE}}\{{CREATE_REQUEST_CLASS}};
+use {{REQUEST_NAMESPACE}}\{{UPDATE_REQUEST_CLASS}};
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+class {{CONTROLLER_NAME}} extends Controller
+{
+
+    /**
+     * Display a listing of the resource.
+     * Supports search by slug if slug field exists
+     */
+    public function index(Request $request)
+    {
+        $query = {{MODEL_NAME}}::query();
+
+        // Check if model has slug field and search by slug if provided
+        $hasSlug = Schema::hasColumn('{{TABLE_NAME}}', 'slug');
+        if ($hasSlug && $request->has('slug')) {
+            $query->where('slug', $request->get('slug'));
+        }
+
+        // Search by other fields
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function($q) use ($search) {
+                $fillableFields = (new {{MODEL_NAME}}())->getFillable();
+                foreach ($fillableFields as $field) {
+                    $q->orWhere($field, 'like', "%{$search}%");
+                }
+            });
+        }
+
+        // Load relationships if requested
+        if ($request->has('with')) {
+            $relations = explode(',', $request->get('with'));
+            $query->with($relations);
+        }
+
+        // Pagination
+        $perPage = $request->get('per_page', 15);
+        $items = $query->paginate($perPage);
+
+        // Format pagination data
+        $paginationData = [
+            'rows' => $items->items(),
+            'limit' => $items->perPage(),
+            'page' => $items->currentPage(),
+            'total_rows' => $items->total(),
+            'total_pages' => $items->lastPage(),
+        ];
+
+        return ApiResponseHelper::response(ResponseStatus::SUCCESS, null, $paginationData, null, $request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store({{CREATE_REQUEST_CLASS}} $request)
+    {
+        $data = $request->validated();
+
+        // Handle file uploads
+        $fileFields = $this->getFileFields();
+        foreach ($fileFields as $fieldName) {
+            if ($request->hasFile($fieldName)) {
+                $data[$fieldName] = FileUploadService::uploadFile(
+                    $request->file($fieldName),
+                    null,
+                    '{{MODEL_NAME_SNAKE}}'
+                );
+            } else {
+                unset($data[$fieldName]);
+            }
+        }
+
+        ${{MODEL_VARIABLE}} = {{MODEL_NAME}}::create($data);
+
+        // Load relationships if requested
+        if ($request->has('with')) {
+            $relations = explode(',', $request->get('with'));
+            ${{MODEL_VARIABLE}}->load($relations);
+        }
+
+        // Log activity
+        ActivityLogService::logCreate(${{MODEL_VARIABLE}});
+
+        return ApiResponseHelper::response(ResponseStatus::CREATED, null, ${{MODEL_VARIABLE}}, null, $request);
+    }
+
+    /**
+     * Display the specified resource.
+     * Supports finding by slug if slug field exists
+     */
+    public function show(Request $request, $id)
+    {
+        $query = {{MODEL_NAME}}::query();
+
+        // Check if model has slug field and search by slug if id looks like a slug
+        $hasSlug = Schema::hasColumn('{{TABLE_NAME}}', 'slug');
+        if ($hasSlug && !is_numeric($id)) {
+            $query->where('slug', $id);
+        } else {
+            $query->where('id', $id);
+        }
+
+        // Load relationships if requested
+        if ($request->has('with')) {
+            $relations = explode(',', $request->get('with'));
+            $query->with($relations);
+        }
+
+        ${{MODEL_VARIABLE}} = $query->first();
+
+        if (!${{MODEL_VARIABLE}}) {
+            return ApiResponseHelper::notFound('{{MODEL_NAME}} not found.', $request);
+        }
+
+        return ApiResponseHelper::response(ResponseStatus::SUCCESS, null, ${{MODEL_VARIABLE}}, null, $request);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update({{UPDATE_REQUEST_CLASS}} $request, $id)
+    {
+        $query = {{MODEL_NAME}}::query();
+
+        // Check if model has slug field and search by slug if id looks like a slug
+        $hasSlug = Schema::hasColumn('{{TABLE_NAME}}', 'slug');
+        if ($hasSlug && !is_numeric($id)) {
+            $query->where('slug', $id);
+        } else {
+            $query->where('id', $id);
+        }
+
+        ${{MODEL_VARIABLE}} = $query->first();
+
+        if (!${{MODEL_VARIABLE}}) {
+            return ApiResponseHelper::notFound('{{MODEL_NAME}} not found.', $request);
+        }
+
+        $data = $request->validated();
+
+        // Handle file uploads
+        $fileFields = $this->getFileFields();
+        foreach ($fileFields as $fieldName) {
+            if ($request->hasFile($fieldName)) {
+                $oldFilePath = ${{MODEL_VARIABLE}}->{$fieldName} ?? null;
+                $data[$fieldName] = FileUploadService::uploadFile(
+                    $request->file($fieldName),
+                    $oldFilePath,
+                    '{{MODEL_NAME_SNAKE}}'
+                );
+            } else {
+                unset($data[$fieldName]);
+            }
+        }
+
+        // Get old values before update for logging
+        $oldValues = ${{MODEL_VARIABLE}}->getOriginal();
+
+        ${{MODEL_VARIABLE}}->update($data);
+
+        // Load relationships if requested
+        if ($request->has('with')) {
+            $relations = explode(',', $request->get('with'));
+            ${{MODEL_VARIABLE}}->load($relations);
+        }
+
+        // Log activity
+        ActivityLogService::logUpdate(${{MODEL_VARIABLE}}, $oldValues);
+
+        return ApiResponseHelper::response(ResponseStatus::UPDATED, null, ${{MODEL_VARIABLE}}, null, $request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request, $id)
+    {
+        $query = {{MODEL_NAME}}::query();
+
+        // Check if model has slug field and search by slug if id looks like a slug
+        $hasSlug = Schema::hasColumn('{{TABLE_NAME}}', 'slug');
+        if ($hasSlug && !is_numeric($id)) {
+            $query->where('slug', $id);
+        } else {
+            $query->where('id', $id);
+        }
+
+        ${{MODEL_VARIABLE}} = $query->first();
+
+        if (!${{MODEL_VARIABLE}}) {
+            return ApiResponseHelper::notFound('{{MODEL_NAME}} not found.', $request);
+        }
+
+        // Delete associated files
+        $fileFields = $this->getFileFields();
+        foreach ($fileFields as $fieldName) {
+            $filePath = ${{MODEL_VARIABLE}}->{$fieldName} ?? null;
+            if ($filePath) {
+                FileUploadService::deleteFile($filePath);
+            }
+        }
+
+        // Log activity before delete
+        ActivityLogService::logDelete(${{MODEL_VARIABLE}});
+
+        ${{MODEL_VARIABLE}}->delete();
+
+        return ApiResponseHelper::response(ResponseStatus::DELETED, null, null, null, $request);
+    }
+
+    /**
+     * Get list of file field names from model fields
+     */
+    private function getFileFields(): array
+    {
+        $fileFields = [];
+
+        $model = new {{MODEL_NAME}}();
+        $fillableFields = $model->getFillable();
+
+        foreach ($fillableFields as $fieldName) {
+            $lowerFieldName = strtolower($fieldName);
+            if (
+                str_contains($lowerFieldName, 'image') ||
+                str_contains($lowerFieldName, 'file') ||
+                str_contains($lowerFieldName, 'photo') ||
+                str_contains($lowerFieldName, 'banner') ||
+                str_contains($lowerFieldName, 'avatar') ||
+                str_contains($lowerFieldName, 'logo') ||
+                str_contains($lowerFieldName, 'icon') ||
+                str_contains($lowerFieldName, 'thumbnail')
+            ) {
+                $fileFields[] = $fieldName;
+            }
+        }
+
+        return $fileFields;
+    }
+}

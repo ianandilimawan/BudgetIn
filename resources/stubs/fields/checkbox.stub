@@ -1,0 +1,1 @@
+<x-toggle name="{{ name }}" label="{{ label }}" :checked="{{ checked }}" />

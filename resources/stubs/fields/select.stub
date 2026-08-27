@@ -1,0 +1,1 @@
+<x-select-floating name="{{ name }}" label="{{ label }}" value="{{ value }}" :options="{{ options }}" />

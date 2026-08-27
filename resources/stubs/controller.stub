@@ -1,0 +1,105 @@
+<?php
+
+namespace {{CONTROLLER_NAMESPACE}};
+
+use App\Http\Controllers\Controller;
+use App\Services\ActivityLogService;
+use {{NAMESPACE}}\{{MODEL_NAME}};
+use {{REQUEST_NAMESPACE}}\{{CREATE_REQUEST_CLASS}};
+use {{REQUEST_NAMESPACE}}\{{UPDATE_REQUEST_CLASS}};
+use Illuminate\Http\Request;
+{{USE_TRAITS_IMPORTS}}
+
+class {{CONTROLLER_NAME}} extends Controller
+{
+    {{USE_TRAITS_STATEMENTS}}
+
+    public function __construct()
+    {
+        $this->middleware('permission:view-{{MODEL_NAME_SNAKE_PLURAL}}')->only(['index', 'show']);
+        $this->middleware('permission:create-{{MODEL_NAME_SNAKE_PLURAL}}')->only(['create', 'store'{{IMPORT_PERMISSIONS}}]);
+        $this->middleware('permission:edit-{{MODEL_NAME_SNAKE_PLURAL}}')->only(['edit', 'update']);
+        $this->middleware('permission:delete-{{MODEL_NAME_SNAKE_PLURAL}}')->only('destroy');
+    }
+
+    public function index()
+    {
+        return view('{{VIEW_PATH}}.index');
+    }
+
+    public function create()
+    {
+        ${{MODEL_VARIABLE}} = new {{MODEL_NAME}}();
+        $fileUrls = $this->getFileUrls({{MODEL_NAME}}::class);
+{{RELATED_VARIABLES_FETCH}}
+        return view('{{VIEW_PATH}}.create', compact('{{MODEL_VARIABLE}}', 'fileUrls'{{RELATED_VARIABLES_COMPACT}}));
+    }
+
+    public function store({{CREATE_REQUEST_CLASS}} $request)
+    {
+        $data = $request->validated();
+
+        $this->handleFileUploads($request, $data, {{MODEL_NAME}}::class, '{{MODEL_NAME_SNAKE}}');
+
+        ${{MODEL_VARIABLE}} = {{MODEL_NAME}}::create($data);
+
+        ActivityLogService::logCreate(${{MODEL_VARIABLE}});
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => '{{MODEL_NAME_TITLE}} created successfully.',
+                'redirect' => route('{{ROUTE_NAME}}.index')
+            ]);
+        }
+
+        return redirect()->route('{{ROUTE_NAME}}.index')->with('success', '{{MODEL_NAME_TITLE}} created successfully.');
+    }
+
+    public function show({{MODEL_NAME}} ${{MODEL_VARIABLE}})
+    {
+        return view('{{VIEW_PATH}}.show', compact('{{MODEL_VARIABLE}}'));
+    }
+
+    public function edit({{MODEL_NAME}} ${{MODEL_VARIABLE}})
+    {
+        $fileUrls = $this->getFileUrls({{MODEL_NAME}}::class, ${{MODEL_VARIABLE}});
+{{RELATED_VARIABLES_FETCH}}
+        return view('{{VIEW_PATH}}.edit', compact('{{MODEL_VARIABLE}}', 'fileUrls'{{RELATED_VARIABLES_COMPACT}}));
+    }
+
+    public function update({{UPDATE_REQUEST_CLASS}} $request, {{MODEL_NAME}} ${{MODEL_VARIABLE}})
+    {
+        $data = $request->validated();
+
+        $this->handleFileUploads($request, $data, {{MODEL_NAME}}::class, '{{MODEL_NAME_SNAKE}}', ${{MODEL_VARIABLE}});
+
+        $oldValues = ${{MODEL_VARIABLE}}->getOriginal();
+
+        ${{MODEL_VARIABLE}}->update($data);
+
+        ActivityLogService::logUpdate(${{MODEL_VARIABLE}}, $oldValues);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => '{{MODEL_NAME_TITLE}} updated successfully.',
+                'redirect' => route('{{ROUTE_NAME}}.index')
+            ]);
+        }
+
+        return redirect()->route('{{ROUTE_NAME}}.index')->with('success', '{{MODEL_NAME_TITLE}} updated successfully.');
+    }
+
+    public function destroy({{MODEL_NAME}} ${{MODEL_VARIABLE}})
+    {
+        $this->deleteAssociatedFiles({{MODEL_NAME}}::class, ${{MODEL_VARIABLE}});
+
+        ActivityLogService::logDelete(${{MODEL_VARIABLE}});
+
+        ${{MODEL_VARIABLE}}->delete();
+        return redirect()->route('{{ROUTE_NAME}}.index')->with('success', '{{MODEL_NAME_TITLE}} deleted successfully.');
+    }
+
+{{IMPORT_EXPORT_ABSTRACT_METHODS}}
+}

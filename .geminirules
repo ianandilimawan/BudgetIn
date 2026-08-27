@@ -1,0 +1,8 @@
+# PROJECT AI RULES
+# These rules apply globally to this workspace.
+
+CRITICAL INSTRUCTION:
+1. STRICTLY PROHIBITED to create modules, Controllers, Models, or Views manually from scratch!
+2. Whenever the user asks to create a new module, feature, or CRUD, you MUST use the generator command (e.g., `php artisan crud:generate` or `php artisan generate:scaffold`).
+3. NEVER attempt to write boilerplate code manually. Rely entirely on the scaffold generator to ensure 100% compliance with the admin-template's UI and architecture.
+4. ALWAYS check README-AI.md for detailed structural guidelines before starting a new module.

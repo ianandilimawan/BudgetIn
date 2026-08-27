@@ -1,0 +1,1 @@
+<x-textarea-floating name="{{ name }}" label="{{ label }}" :value="{{ value }}" />

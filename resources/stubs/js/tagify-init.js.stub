@@ -1,0 +1,42 @@
+(function() {
+    var {{fieldName}}Input = document.querySelector('#{{fieldName}}');
+    if ({{fieldName}}Input) {
+        var {{fieldName}}Tagify = new Tagify({{fieldName}}Input, {
+            duplicates: false,
+            trim: true,
+            placeholder: 'Add tags...'
+        });
+
+        // Set border-color inline after Tagify initialization
+        setTimeout(function() {
+            var {{fieldName}}TagsElement = {{fieldName}}Input.closest('tags') ||
+                document.querySelector('tags[id="{{fieldName}}"]') || document.querySelector('tags');
+            if ({{fieldName}}TagsElement) {
+                var isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    {{fieldName}}TagsElement.style.borderColor = 'var(--color-gray-700, oklch(37.3% 0.034 259.733))';
+                } else {
+                    {{fieldName}}TagsElement.style.borderColor = 'rgb(229, 231, 235)';
+                }
+            }
+        }, 100);
+
+        // Update border-color on theme change
+        var {{fieldName}}Observer = new MutationObserver(function() {
+            var {{fieldName}}TagsElement = {{fieldName}}Input.closest('tags') || 
+                document.querySelector('tags[id="{{fieldName}}"]') || document.querySelector('tags');
+            if ({{fieldName}}TagsElement) {
+                var isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    {{fieldName}}TagsElement.style.borderColor = 'var(--color-gray-700, oklch(37.3% 0.034 259.733))';
+                } else {
+                    {{fieldName}}TagsElement.style.borderColor = 'rgb(229, 231, 235)';
+                }
+            }
+        });
+        {{fieldName}}Observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+})();

@@ -1,0 +1,63 @@
+variables:
+  K8S_APP_NAME: "inforge"
+  K8S_CONTAINER_PORT: 80
+  K8S_SERVICE_PORT: 80
+  K8S_APP_DOMAIN: ""
+  K8S_TLS_SECRET: ""
+  K8S_STORAGES: ""
+
+before_script:
+  - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+
+stages:
+  - build_stag
+  - prebuilt_stag
+  - deploy_stag
+  - deploy_prod
+
+build:
+  stage: build_stag
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:stag"
+  only:
+    - main
+
+prebuilt staging:
+  stage: prebuilt_stag
+  image:
+    name: alpine:latest
+  script:
+    - apk add --no-cache gettext
+    - echo $K8S_CRED > k8s.config
+    - envsubst < kubernetes/deployment.yaml > deployment.yaml
+    - envsubst < kubernetes/pvc.yaml > pvc.yaml
+  artifacts:
+    paths:
+      - k8s.config
+      - deployment.yaml
+      - pvc.yaml
+    expire_in: 1 day
+  when: on_success
+  only:
+    - main
+
+deploy kubernetes staging:
+  stage: deploy_stag
+  image:
+    name: bitnamilegacy/kubectl:1.22
+    entrypoint: [""]
+  script:
+    - export KUBECONFIG=k8s.config
+    - kubectl version --client
+    - kubectl apply -f pvc.yaml
+    - kubectl delete deployment intechstudio-deployment -n staging || true
+    - kubectl apply -f deployment.yaml
+  when: on_success
+  only:
+    - main

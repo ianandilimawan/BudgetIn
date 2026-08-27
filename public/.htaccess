@@ -1,0 +1,96 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Enable Expires module for caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Images - 1 year with immutable flag
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+
+    # CSS - 1 year with immutable flag
+    ExpiresByType text/css "access plus 1 year"
+
+    # JavaScript - 1 year with immutable flag
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+
+    # Fonts - 1 year with immutable flag
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType application/x-font-opentype "access plus 1 year"
+
+    # HTML - 1 hour (shorter cache for dynamic content)
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# Set Cache-Control headers
+<IfModule mod_headers.c>
+    # Set environment variable for CMS images in /storage/
+    SetEnvIf Request_URI "^/storage/" IS_CMS_IMAGE
+
+    # Images - Different cache for CMS (/storage/) vs static assets
+    # For CMS images in /storage/, cache 7 days with must-revalidate
+    <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp|avif)$">
+        Header set Cache-Control "public, max-age=604800, must-revalidate" env=IS_CMS_IMAGE
+        Header set Cache-Control "public, max-age=31536000, immutable" env=!IS_CMS_IMAGE
+    </FilesMatch>
+
+    # CSS - 1 year, immutable
+    <FilesMatch "\.css$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # JavaScript - 1 year, immutable
+    <FilesMatch "\.js$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Fonts - 1 year, immutable
+    <FilesMatch "\.(woff|woff2|ttf|eot|otf)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML - 1 hour with must-revalidate
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+</IfModule>
