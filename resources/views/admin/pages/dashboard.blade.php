@@ -1020,220 +1020,228 @@
     <!-- End Personal Finance View Container -->
 
     <!-- 1. Modal Quick Add Transaction -->
-    <div x-show="quickModal" style="display: none;"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-150"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.away="quickModal = false"
-             x-show="quickModal"
+    <template x-teleport="body">
+        <div x-show="quickModal" style="display: none;"
              x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
              x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95"
-             class="w-full max-w-lg bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="quickModal = false"
+             class="fixed inset-0 z-[100] overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6">
+            <div @click.away="quickModal = false"
+                 x-show="quickModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="w-full max-w-lg bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden my-auto">
 
-            <!-- Modal Header -->
-            <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <!-- Modal Header -->
+                <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Catat Transaksi Cepat</h3>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Input mutasi kas dalam hitungan detik</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Catat Transaksi Cepat</h3>
-                        <p class="text-[11px] text-zinc-500">Input mutasi kas dalam hitungan detik</p>
-                    </div>
+                    <button type="button" @click="quickModal = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <button type="button" @click="quickModal = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+
+                <!-- Modal Form -->
+                <form action="{{ route('admin.cash_transactions.store') }}" method="POST" enctype="multipart/form-data" x-data="ajaxForm" @submit.prevent="submit" class="p-5 space-y-4">
+                    @csrf
+                    <input type="hidden" name="redirect_to" value="{{ route('admin.dashboard', ['view' => 'personal']) }}">
+
+                    <!-- Switcher Type -->
+                    <div class="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full">
+                        <button type="button" @click="quickType = 'expense'"
+                                :class="quickType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
+                            Pengeluaran
+                        </button>
+                        <button type="button" @click="quickType = 'income'"
+                                :class="quickType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
+                            Pemasukan
+                        </button>
+                        <button type="button" @click="quickType = 'transfer'"
+                                :class="quickType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
+                            Transfer / Tarik
+                        </button>
+                    </div>
+                    <input type="hidden" name="type" :value="quickType">
+
+                    <!-- Nominal -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Nominal (Rp) <span class="text-rose-500">*</span></label>
+                        <input type="text" name="amount" required placeholder="0"
+                               class="w-full text-base font-bold px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                               onkeyup="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
+                    </div>
+
+                    <!-- Kategori (Expense / Income) -->
+                    <div x-show="quickType !== 'transfer'">
+                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Kategori <span class="text-rose-500">*</span></label>
+
+                        <div x-show="quickType === 'expense'">
+                            <select name="category_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/30" :disabled="quickType !== 'expense'">
+                                <option value="">Pilih Kategori Pengeluaran...</option>
+                                @foreach($expenseCategories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div x-show="quickType === 'income'" style="display: none;">
+                            <select name="category_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30" :disabled="quickType !== 'income'">
+                                <option value="">Pilih Kategori Pemasukan...</option>
+                                @foreach($incomeCategories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dompet / Akun Asal & Tujuan -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1" x-text="quickType === 'transfer' ? 'Dari Dompet *' : (quickType === 'expense' ? 'Dari Dompet *' : 'Ke Dompet *')">Dompet</label>
+                            <select name="account_id" required class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                                @foreach($cashAccounts as $acc)
+                                    <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div x-show="quickType === 'transfer'" style="display: none;">
+                            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Ke Dompet Tujuan *</label>
+                            <select name="to_account_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30" :disabled="quickType !== 'transfer'">
+                                <option value="">Pilih Akun Tujuan...</option>
+                                @foreach($cashAccounts as $acc)
+                                    <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div :class="quickType === 'transfer' ? 'col-span-2' : ''">
+                            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Tanggal *</label>
+                            <input type="date" name="transaction_date" required value="{{ date('Y-m-d') }}"
+                                   class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                        </div>
+                    </div>
+
+                    <!-- Catatan -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Catatan (Opsional)</label>
+                        <input type="text" name="note" placeholder="Keterangan transaksi..."
+                               class="w-full text-xs px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                        <button type="button" @click="quickModal = false" class="px-4 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl cursor-pointer">
+                            Batal
+                        </button>
+                        <button type="submit" :disabled="loading" class="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-md shadow-emerald-500/20 cursor-pointer disabled:opacity-50">
+                            <svg x-show="loading" class="animate-spin -ml-1 mr-1 h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span x-text="loading ? 'Menyimpan...' : 'Simpan Transaksi'">Simpan Transaksi</span>
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <!-- Modal Form -->
-            <form action="{{ route('admin.cash_transactions.store') }}" method="POST" enctype="multipart/form-data" class="p-5 space-y-4">
-                @csrf
-
-                <!-- Switcher Type -->
-                <div class="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full">
-                    <button type="button" @click="quickType = 'expense'"
-                            :class="quickType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                            class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
-                        Pengeluaran
-                    </button>
-                    <button type="button" @click="quickType = 'income'"
-                            :class="quickType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                            class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
-                        Pemasukan
-                    </button>
-                    <button type="button" @click="quickType = 'transfer'"
-                            :class="quickType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                            class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
-                        Transfer / Tarik
-                    </button>
-                </div>
-                <input type="hidden" name="type" :value="quickType">
-
-                <!-- Nominal -->
-                <div>
-                    <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Nominal (Rp) <span class="text-rose-500">*</span></label>
-                    <input type="text" name="amount" required placeholder="0"
-                           class="w-full text-base font-bold px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
-                           onkeyup="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
-                </div>
-
-                <!-- Kategori (Expense / Income) -->
-                <div x-show="quickType !== 'transfer'">
-                    <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Kategori <span class="text-rose-500">*</span></label>
-
-                    <div x-show="quickType === 'expense'">
-                        <select name="category_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/30" :disabled="quickType !== 'expense'">
-                            <option value="">Pilih Kategori Pengeluaran...</option>
-                            @foreach($expenseCategories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div x-show="quickType === 'income'" style="display: none;">
-                        <select name="category_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30" :disabled="quickType !== 'income'">
-                            <option value="">Pilih Kategori Pemasukan...</option>
-                            @foreach($incomeCategories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Dompet / Akun Asal & Tujuan -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1" x-text="quickType === 'transfer' ? 'Dari Dompet *' : (quickType === 'expense' ? 'Dari Dompet *' : 'Ke Dompet *')">Dompet</label>
-                        <select name="account_id" required class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
-                            @foreach($cashAccounts as $acc)
-                                <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div x-show="quickType === 'transfer'" style="display: none;">
-                        <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">Ke Dompet Tujuan *</label>
-                        <select name="to_account_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30" :disabled="quickType !== 'transfer'">
-                            <option value="">Pilih Akun Tujuan...</option>
-                            @foreach($cashAccounts as $acc)
-                                <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div :class="quickType === 'transfer' ? 'col-span-2' : ''">
-                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Tanggal *</label>
-                        <input type="date" name="transaction_date" required value="{{ date('Y-m-d') }}"
-                               class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
-                    </div>
-                </div>
-
-                <!-- Catatan -->
-                <div>
-                    <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Catatan (Opsional)</label>
-                    <input type="text" name="note" placeholder="Keterangan transaksi..."
-                           class="w-full text-xs px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
-                </div>
-
-                <!-- Actions -->
-                <div class="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                    <button type="button" @click="quickModal = false" class="px-4 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl cursor-pointer">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-md shadow-emerald-500/20 cursor-pointer">
-                        Simpan Transaksi
-                    </button>
-                </div>
-            </form>
         </div>
-    </div>
+    </template>
 
     <!-- 2. Modal Manage Category Budget Limits -->
-    <div x-show="budgetModal" style="display: none;"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-150"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.away="budgetModal = false"
-             x-show="budgetModal"
+    <template x-teleport="body">
+        <div x-show="budgetModal" style="display: none;"
              x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
              x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95"
-             class="w-full max-w-xl bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh]">
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="budgetModal = false"
+             class="fixed inset-0 z-[100] overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6">
+            <div @click.away="budgetModal = false"
+                 x-show="budgetModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="w-full max-w-xl bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] my-auto">
 
-            <!-- Modal Header -->
-            <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                <!-- Modal Header -->
+                <div class="px-5 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Atur Limit Anggaran Pengeluaran</h3>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Tentukan batas pengeluaran bulanan per kategori (kosongkan jika tidak ada limit)</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Atur Limit Anggaran Pengeluaran</h3>
-                        <p class="text-[11px] text-zinc-500">Tentukan batas pengeluaran bulanan per kategori (kosongkan jika tidak ada limit)</p>
-                    </div>
+                    <button type="button" @click="budgetModal = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <button type="button" @click="budgetModal = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
 
-            <!-- Categories List with Inputs -->
-            <div class="p-5 overflow-y-auto space-y-3 flex-1" id="budgetInputsContainer">
-                @foreach($expenseCategories as $cat)
-                    @php
-                        $currentLimit = $existingBudgets[$cat->id] ?? 0;
-                    @endphp
-                    <div class="flex items-center justify-between gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            {!! \App\Helpers\CategoryIconHelper::renderBadge($cat->icon, 'expense', 'w-8 h-8') !!}
-                            <div>
-                                <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate">{{ $cat->name }}</h4>
-                                <span class="text-[10px] text-zinc-400">Limit saat ini: {{ $currentLimit > 0 ? 'Rp ' . number_format($currentLimit, 0, ',', '.') : 'Belum diatur' }}</span>
+                <!-- Categories List with Inputs -->
+                <div class="p-5 overflow-y-auto space-y-3 flex-1" id="budgetInputsContainer">
+                    @foreach($expenseCategories as $cat)
+                        @php
+                            $currentLimit = $existingBudgets[$cat->id] ?? 0;
+                        @endphp
+                        <div class="flex items-center justify-between gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                {!! \App\Helpers\CategoryIconHelper::renderBadge($cat->icon, 'expense', 'w-8 h-8') !!}
+                                <div>
+                                    <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate">{{ $cat->name }}</h4>
+                                    <span class="text-[10px] text-zinc-400">Limit saat ini: {{ $currentLimit > 0 ? 'Rp ' . number_format($currentLimit, 0, ',', '.') : 'Belum diatur' }}</span>
+                                </div>
+                            </div>
+                            <div class="w-40 sm:w-48 relative flex-shrink-0">
+                                <span class="absolute left-2.5 top-2.5 text-xs text-zinc-400 font-bold">Rp</span>
+                                <input type="text"
+                                       data-category-id="{{ $cat->id }}"
+                                       placeholder="0 (Tanpa limit)"
+                                       value="{{ $currentLimit > 0 ? number_format($currentLimit, 0, ',', '.') : '' }}"
+                                       class="budget-amount-input w-full text-xs font-bold pl-8 pr-2.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                       onkeyup="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
                             </div>
                         </div>
-                        <div class="w-40 sm:w-48 relative flex-shrink-0">
-                            <span class="absolute left-2.5 top-2.5 text-xs text-zinc-400 font-bold">Rp</span>
-                            <input type="text"
-                                   data-category-id="{{ $cat->id }}"
-                                   placeholder="0 (Tanpa limit)"
-                                   value="{{ $currentLimit > 0 ? number_format($currentLimit, 0, ',', '.') : '' }}"
-                                   class="budget-amount-input w-full text-xs font-bold pl-8 pr-2.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                                   onkeyup="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
 
-            <!-- Modal Footer -->
-            <div class="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0 bg-zinc-50/50 dark:bg-zinc-900">
-                <span class="text-[11px] text-zinc-400">Nilai 0 akan menghapus limit anggaran</span>
-                <div class="flex items-center gap-2">
-                    <button type="button" @click="budgetModal = false" class="px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl cursor-pointer">
-                        Tutup
-                    </button>
-                    <button type="button" onclick="saveAllBudgets()" class="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-md shadow-emerald-500/20 flex items-center gap-1.5 cursor-pointer">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span>Simpan Limit Anggaran</span>
-                    </button>
+                <!-- Modal Footer -->
+                <div class="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-shrink-0 bg-zinc-50/50 dark:bg-zinc-900">
+                    <span class="text-[11px] text-zinc-400">Nilai 0 akan menghapus limit anggaran</span>
+                    <div class="flex items-center gap-2">
+                        <button type="button" @click="budgetModal = false" class="px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl cursor-pointer">
+                            Tutup
+                        </button>
+                        <button type="button" onclick="saveAllBudgets(this)" class="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-md shadow-emerald-500/20 flex items-center gap-1.5 cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Simpan Limit Anggaran</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 </div>
 @endsection
 
@@ -1498,9 +1506,15 @@ document.addEventListener('DOMContentLoaded', function() {
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 });
 
-async function saveAllBudgets() {
+async function saveAllBudgets(btn) {
     const inputs = document.querySelectorAll('.budget-amount-input');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    const originalText = btn ? btn.innerHTML : '';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<svg class="animate-spin -ml-1 mr-1 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...`;
+    }
 
     let promises = [];
     inputs.forEach(input => {
@@ -1526,9 +1540,22 @@ async function saveAllBudgets() {
 
     try {
         await Promise.all(promises);
-        window.location.reload();
+        if (typeof showToast === 'function') {
+            showToast('Target limit anggaran berhasil disimpan.', 'success');
+        }
+        setTimeout(() => {
+            window.location.href = '{{ route('admin.dashboard', ['view' => 'personal']) }}';
+        }, 600);
     } catch (err) {
-        alert('Gagal menyimpan limit anggaran. Silakan coba lagi.');
+        if (typeof showToast === 'function') {
+            showToast('Gagal menyimpan limit anggaran. Silakan coba lagi.', 'error');
+        } else {
+            alert('Gagal menyimpan limit anggaran. Silakan coba lagi.');
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     }
 }
 </script>

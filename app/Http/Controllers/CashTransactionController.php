@@ -284,8 +284,12 @@ class CashTransactionController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Transaksi berhasil disimpan.',
-                'redirect' => route('admin.cash_transactions.index')
+                'redirect' => $request->input('redirect_to', route('admin.cash_transactions.index'))
             ]);
+        }
+
+        if ($request->filled('redirect_to')) {
+            return redirect($request->input('redirect_to'))->with('success', 'Transaksi berhasil disimpan.');
         }
 
         return redirect()->route('admin.cash_transactions.index')->with('success', 'Transaksi berhasil disimpan.');

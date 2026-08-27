@@ -514,18 +514,34 @@
     </div>
 
     <!-- Universal Receipt Preview Modal -->
-    <div x-show="showReceiptModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
-            <div x-show="showReceiptModal" @click="showReceiptModal = false" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"></div>
-            <div x-show="showReceiptModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="relative bg-zinc-900 rounded-2xl max-w-3xl w-full p-2 overflow-hidden shadow-2xl z-10">
+    <template x-teleport="body">
+        <div x-show="showReceiptModal" style="display: none;"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="showReceiptModal = false"
+             class="fixed inset-0 z-[100] overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+             aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div @click.away="showReceiptModal = false"
+                 x-show="showReceiptModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="relative bg-zinc-900 rounded-2xl max-w-3xl w-full p-2 overflow-hidden shadow-2xl border border-zinc-800 my-auto">
                 <div class="flex items-center justify-between p-3 border-b border-zinc-800 text-white">
                     <span class="text-xs font-semibold" x-text="receiptTitle || 'Bukti Struk Transaksi'"></span>
                     <div class="flex items-center gap-2">
-                        <a :href="receiptUrl" target="_blank" download class="px-2.5 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition inline-flex items-center gap-1">
+                        <a :href="receiptUrl" target="_blank" download class="px-2.5 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition inline-flex items-center gap-1 cursor-pointer">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                             Unduh
                         </a>
-                        <button type="button" @click="showReceiptModal = false" class="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+                        <button type="button" @click="showReceiptModal = false" class="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
@@ -538,7 +554,7 @@
                         <div class="p-8 text-center text-white">
                             <svg class="w-16 h-16 text-rose-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                             <p class="text-sm font-bold mb-3">Dokumen PDF Terlampir</p>
-                            <a :href="receiptUrl" target="_blank" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition">
+                            <a :href="receiptUrl" target="_blank" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition cursor-pointer">
                                 Buka Dokumen PDF
                             </a>
                         </div>
@@ -546,7 +562,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 </div>
 
 <!-- Delete Confirmation Modal -->
