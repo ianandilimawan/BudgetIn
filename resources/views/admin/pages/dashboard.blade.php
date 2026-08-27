@@ -47,7 +47,30 @@
     budgetModal: {{ request('budget') ? 'true' : 'false' }}, 
     quickType: 'expense', 
     quickProofName: '', 
-    quickProofPreview: '' 
+    quickProofPreview: '',
+    quickIsPdf: false,
+    handleProofChange(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        this.quickProofName = file.name;
+        this.quickIsPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+        if (!this.quickIsPdf && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                this.quickProofPreview = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            this.quickProofPreview = '';
+        }
+    },
+    removeProof() {
+        this.quickProofPreview = '';
+        this.quickProofName = '';
+        this.quickIsPdf = false;
+        const fileInput = document.getElementById('quick_proof_input');
+        if (fileInput) fileInput.value = '';
+    }
 }" class="space-y-4 sm:space-y-5 pb-16 md:pb-0">
 
     @if($isSuperAdmin)
@@ -1145,6 +1168,42 @@
                         <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">Catatan (Opsional)</label>
                         <input type="text" name="note" placeholder="Keterangan transaksi..."
                                class="w-full text-xs px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                    </div>
+
+                    <!-- Bukti / Struk / Nota (Upload) -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1 flex items-center justify-between">
+                            <span>Bukti / Struk Transaksi</span>
+                            <span class="text-[10px] text-zinc-400 font-normal normal-case">(Opsional - JPG, PNG, WEBP, PDF maks 10MB)</span>
+                        </label>
+                        <div class="flex items-start gap-3">
+                            <label class="flex-1 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 bg-zinc-50/50 dark:bg-zinc-800/40 cursor-pointer transition group">
+                                <input type="file" name="proof" id="quick_proof_input" accept="image/*,application/pdf" class="hidden" @change="handleProofChange($event)">
+                                <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate" x-text="quickProofName || 'Upload foto struk / nota'"></p>
+                                    <p class="text-[10px] text-zinc-400">Klik untuk memilih file struk</p>
+                                </div>
+                            </label>
+
+                            <!-- Preview Box -->
+                            <div x-show="quickProofPreview || quickIsPdf" style="display: none;" class="w-14 h-12 relative rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 overflow-hidden flex-shrink-0 flex items-center justify-center shadow-xs">
+                                <template x-if="quickProofPreview && !quickIsPdf">
+                                    <img :src="quickProofPreview" alt="Struk" class="w-full h-full object-cover">
+                                </template>
+                                <template x-if="quickIsPdf">
+                                    <div class="flex flex-col items-center justify-center text-rose-500">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                        <span class="text-[8px] font-bold">PDF</span>
+                                    </div>
+                                </template>
+                                <button type="button" @click="removeProof()" class="absolute top-0.5 right-0.5 p-0.5 bg-black/70 hover:bg-rose-600 text-white rounded cursor-pointer transition-colors" title="Hapus Bukti">
+                                    <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Actions -->
