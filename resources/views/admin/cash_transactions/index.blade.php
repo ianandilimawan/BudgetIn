@@ -3,7 +3,7 @@
 @section('title', 'Pencatatan Keuangan')
 
 @section('content')
-<div class="space-y-3.5 sm:space-y-5" x-data="receiptPreviewManager()">
+<div class="space-y-3.5 sm:space-y-5 pb-6 sm:pb-0" x-data="receiptPreviewManager()">
     <!-- Header (Compact) -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div>
