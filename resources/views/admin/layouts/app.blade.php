@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($settings) ? $settings->app_name : config('app.name', 'Laravel') }} - Admin</title>
 
@@ -63,6 +63,12 @@
         })();
     </script>
     <style>
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
         /* Desktop sidebar collapsed state */
         @media (min-width: 1024px) {
             html.sidebar-closed #sidebar {
@@ -76,8 +82,8 @@
     </style>
 </head>
 
-<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100" id="body">
-    <div class="flex h-screen overflow-hidden">
+<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh]" id="body">
+    <div class="flex h-[100dvh] h-screen overflow-hidden">
         <!-- Sidebar & Desktop Spacer -->
         @include('admin.layouts.partials.sidebar')
 
@@ -88,7 +94,7 @@
 
             <!-- Page Content -->
             <div class="flex-1 overflow-y-auto flex flex-col relative z-0">
-                <main class="flex-1 p-6 animate-fade-in-up">
+                <main class="flex-1 p-4 sm:p-6 animate-fade-in-up pb-8 sm:pb-6">
                     @yield('content')
                 </main>
                 @include('admin.layouts.partials.footer')

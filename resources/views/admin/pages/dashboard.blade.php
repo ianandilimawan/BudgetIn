@@ -70,7 +70,7 @@
         const fileInput = document.getElementById('quick_proof_input');
         if (fileInput) fileInput.value = '';
     }
-}" class="space-y-4 sm:space-y-5 pb-16 md:pb-0">
+}" class="space-y-4 sm:space-y-5 pb-24 sm:pb-16 md:pb-6">
 
     @if($isSuperAdmin)
     <!-- Top Role Tab Switcher for Super Admin -->
@@ -1022,10 +1022,11 @@
 
     <!-- Mobile Floating Action Button (FAB) -->
     @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
-    <div class="fixed bottom-5 right-5 z-40 md:hidden">
+    <div class="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.25rem))] right-4 z-40 md:hidden">
         <button type="button" @click="quickModal = true"
-           class="flex items-center gap-1.5 px-3.5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 active:scale-95 text-white rounded-full font-semibold shadow-lg shadow-emerald-600/30 text-xs tracking-tight transition-all border border-emerald-400/30 cursor-pointer">
-            <span>+ Catat</span>
+           class="flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 text-white rounded-full font-bold shadow-xl shadow-emerald-600/40 text-xs tracking-tight transition-all border border-emerald-400/40 cursor-pointer">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            <span>Catat Cepat</span>
         </button>
     </div>
     @endif
