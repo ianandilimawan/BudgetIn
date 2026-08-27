@@ -21,7 +21,20 @@ class CashAccountTypeController extends Controller
 
     public function index()
     {
-        $types = CashAccountType::withCount('accounts')->orderBy('name')->get();
+        $userId = auth()->id();
+        $types = CashAccountType::forUser($userId)
+            ->withCount(['accounts' => function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            }])
+            ->orderBy('is_system', 'desc')
+            ->orderBy('name')
+            ->get()
+            ->map(function ($type) {
+                $type->can_delete = $type->isDeletableBy(auth()->user());
+                $type->can_edit = ($type->user_id === auth()->id()) || auth()->user()->hasRole('super_admin');
+                return $type;
+            });
+
         return response()->json([
             'success' => true,
             'data' => $types
@@ -30,7 +43,13 @@ class CashAccountTypeController extends Controller
 
     public function list()
     {
-        $types = CashAccountType::where('is_active', true)->orderBy('name')->get(['id', 'name', 'code', 'icon', 'color']);
+        $userId = auth()->id();
+        $types = CashAccountType::forUser($userId)
+            ->where('is_active', true)
+            ->orderBy('is_system', 'desc')
+            ->orderBy('name')
+            ->get(['id', 'name', 'code', 'icon', 'color', 'is_system', 'user_id']);
+
         return response()->json([
             'success' => true,
             'data' => $types
@@ -41,23 +60,27 @@ class CashAccountTypeController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'code' => 'nullable|string|max:50|unique:cash_account_types,code',
+            'code' => 'nullable|string|max:50',
             'icon' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:30',
             'description' => 'nullable|string|max:255',
             'is_active' => 'nullable|boolean',
         ]);
 
+        $userId = auth()->id();
+
         if (empty($validated['code'])) {
             $baseSlug = Str::slug($validated['name'], '_');
             $code = $baseSlug;
             $counter = 1;
-            while (CashAccountType::where('code', $code)->exists()) {
+            while (CashAccountType::where('code', $code)->where(fn($q) => $q->whereNull('user_id')->orWhere('user_id', $userId))->exists()) {
                 $code = $baseSlug . '_' . $counter++;
             }
             $validated['code'] = $code;
         }
 
+        $validated['user_id'] = $userId;
+        $validated['is_system'] = false;
         $validated['is_active'] = $request->has('is_active') ? $request->boolean('is_active') : true;
         $validated['icon'] = $validated['icon'] ?? 'wallet';
         $validated['color'] = $validated['color'] ?? 'zinc';
@@ -79,9 +102,27 @@ class CashAccountTypeController extends Controller
 
     public function update(Request $request, CashAccountType $cashAccountType)
     {
+        // Protect system types from being edited by regular users
+        if (($cashAccountType->is_system || $cashAccountType->user_id === null) && !auth()->user()->hasRole('super_admin')) {
+            $msg = 'Tipe akun bawaan sistem tidak dapat diubah.';
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 403);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
+
+        // Protect other users' custom types
+        if ($cashAccountType->user_id !== null && $cashAccountType->user_id !== auth()->id() && !auth()->user()->hasRole('super_admin')) {
+            $msg = 'Anda tidak memiliki izin untuk mengubah tipe akun ini.';
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 403);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'code' => 'nullable|string|max:50|unique:cash_account_types,code,' . $cashAccountType->id,
+            'code' => 'nullable|string|max:50',
             'icon' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:30',
             'description' => 'nullable|string|max:255',
@@ -97,9 +138,11 @@ class CashAccountTypeController extends Controller
         $oldValues = $cashAccountType->getOriginal();
         $cashAccountType->update($validated);
 
-        // If code changed, update existing accounts with old code
+        // If code changed, update existing accounts for this user
         if (!empty($validated['code']) && $validated['code'] !== $oldCode) {
-            CashAccount::where('type', $oldCode)->update(['type' => $validated['code']]);
+            CashAccount::where('user_id', auth()->id())
+                ->where('type', $oldCode)
+                ->update(['type' => $validated['code']]);
         }
 
         ActivityLogService::logUpdate($cashAccountType, $oldValues);
@@ -117,11 +160,31 @@ class CashAccountTypeController extends Controller
 
     public function destroy(CashAccountType $cashAccountType)
     {
-        $accountsCount = CashAccount::where('type', $cashAccountType->code)->count();
+        // 1. Strict protection: System types CANNOT be deleted
+        if ($cashAccountType->is_system || $cashAccountType->user_id === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tipe akun bawaan sistem/admin tidak dapat dihapus.'
+            ], 403);
+        }
+
+        // 2. Ownership check: Only owner or super_admin can delete
+        if ($cashAccountType->user_id !== auth()->id() && !auth()->user()->hasRole('super_admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki izin untuk menghapus tipe akun ini.'
+            ], 403);
+        }
+
+        // 3. Usage check: Ensure no active cash accounts rely on this custom type
+        $accountsCount = CashAccount::where('type', $cashAccountType->code)
+            ->where('user_id', auth()->id())
+            ->count();
+
         if ($accountsCount > 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak dapat menghapus tipe akun ini karena masih digunakan oleh ' . $accountsCount . ' akun kas.'
+                'message' => 'Tidak dapat menghapus tipe akun ini karena masih digunakan oleh ' . $accountsCount . ' akun kas Anda.'
             ], 422);
         }
 
@@ -130,7 +193,7 @@ class CashAccountTypeController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Tipe akun berhasil dihapus.'
+            'message' => 'Tipe akun "' . $cashAccountType->name . '" berhasil dihapus.'
         ]);
     }
 }

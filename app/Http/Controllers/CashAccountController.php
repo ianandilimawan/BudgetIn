@@ -23,7 +23,7 @@ class CashAccountController extends Controller
     public function index()
     {
         $userId = auth()->id();
-        $accountTypes = CashAccountType::withCount(['accounts' => function ($q) use ($userId) {
+        $accountTypes = CashAccountType::forUser($userId)->withCount(['accounts' => function ($q) use ($userId) {
             $q->where('user_id', $userId);
         }])->orderBy('name')->get();
         return view('admin.cash_accounts.index', compact('accountTypes'));
@@ -36,7 +36,7 @@ class CashAccountController extends Controller
             'color' => 'emerald',
             'is_active' => true,
         ]);
-        $accountTypes = CashAccountType::where('is_active', true)->orderBy('name')->pluck('name', 'code')->toArray();
+        $accountTypes = CashAccountType::forUser(auth()->id())->where('is_active', true)->orderBy('name')->pluck('name', 'code')->toArray();
         return view('admin.cash_accounts.create', compact('cashAccount', 'accountTypes'));
     }
 
@@ -76,7 +76,7 @@ class CashAccountController extends Controller
             abort(403, 'Akses ditolak.');
         }
 
-        $accountTypes = CashAccountType::where('is_active', true)->orderBy('name')->pluck('name', 'code')->toArray();
+        $accountTypes = CashAccountType::forUser(auth()->id())->where('is_active', true)->orderBy('name')->pluck('name', 'code')->toArray();
         return view('admin.cash_accounts.edit', compact('cashAccount', 'accountTypes'));
     }
 

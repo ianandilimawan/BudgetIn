@@ -123,6 +123,48 @@ class CashAccountTest extends TestCase
         $this->assertSoftDeleted('cash_account_types', ['id' => $type->id]);
     }
 
+    public function test_system_account_types_cannot_be_deleted(): void
+    {
+        $systemType = \App\Models\CashAccountType::where('code', 'cash')->first();
+        $this->assertNotNull($systemType);
+        $this->assertTrue($systemType->is_system);
+
+        $response = $this->actingAs($this->user)->deleteJson(route('admin.cash_account_types.destroy', $systemType->id));
+        $response->assertStatus(403);
+        $response->assertJson(['success' => false]);
+        $this->assertNotSoftDeleted('cash_account_types', ['id' => $systemType->id]);
+    }
+
+    public function test_user_cannot_delete_or_edit_other_users_custom_account_type(): void
+    {
+        $otherUser = User::factory()->create();
+        $financeRole = \App\Models\Role::where('name', 'finance')->first();
+        $otherUser->syncRoles([$financeRole]);
+
+        $otherCustomType = \App\Models\CashAccountType::create([
+            'user_id' => $otherUser->id,
+            'name' => 'Paylater Pribadi User Lain',
+            'code' => 'paylater_other',
+            'is_system' => false,
+        ]);
+
+        // Attempt to update
+        $updateRes = $this->actingAs($this->user)->putJson(route('admin.cash_account_types.update', $otherCustomType->id), [
+            'name' => 'Hacked Name',
+        ]);
+        $updateRes->assertStatus(403);
+
+        // Attempt to delete
+        $deleteRes = $this->actingAs($this->user)->deleteJson(route('admin.cash_account_types.destroy', $otherCustomType->id));
+        $deleteRes->assertStatus(403);
+        $this->assertNotSoftDeleted('cash_account_types', ['id' => $otherCustomType->id]);
+
+        // Attempt to list - User A should NOT see User B's custom type
+        $listRes = $this->actingAs($this->user)->getJson(route('admin.cash_account_types.list'));
+        $listRes->assertStatus(200);
+        $this->assertStringNotContainsString('Paylater Pribadi User Lain', $listRes->getContent());
+    }
+
     /**
      * Test store method validates required fields.
      */
