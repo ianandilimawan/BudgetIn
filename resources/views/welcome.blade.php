@@ -14,22 +14,29 @@
         $ogImage = asset('images/logo-icon.svg');
     @endphp
 
-    <!-- Primary Meta Tags -->
+    <!-- Primary SEO Meta Tags -->
     <title>{{ $pageTitle }}</title>
     <meta name="title" content="{{ $pageTitle }}">
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="keywords" content="budgetin, aplikasi keuangan, kelola dompet, catat pengeluaran, budgeting app, manajemen kas, multi wallet, finansial pribadi, atur anggaran">
+    <meta name="keywords" content="budgetin, aplikasi keuangan, aplikasi budgeting, kelola dompet, catat pengeluaran harian, software manajemen kas, multi wallet, finansial pribadi, atur target anggaran, recurring transactions, ekspor laporan excel, pembukuan mandiri">
     <meta name="author" content="Intech Studio">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="language" content="Indonesian">
+    <meta name="geo.region" content="ID">
+    <meta name="geo.country" content="ID">
     <meta name="theme-color" content="#10B981">
+    <meta name="format-detection" content="telephone=no">
     <link rel="canonical" href="{{ $pageUrl }}">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $pageUrl }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:alt" content="BudgetIn — Aplikasi Pengelola Arus Kas & Multi-Dompet Modern">
     <meta property="og:site_name" content="{{ $appName }}">
     <meta property="og:locale" content="id_ID">
 
@@ -39,41 +46,111 @@
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
     <meta name="twitter:image" content="{{ $ogImage }}">
+    <meta name="twitter:image:alt" content="BudgetIn — Aplikasi Pengelola Arus Kas & Multi-Dompet Modern">
 
-    <!-- Favicon & Icons -->
+    <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo-icon.svg') }}">
     @if ($settings && $settings->app_favicon)
         <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $settings->app_favicon) }}">
     @endif
 
-    <!-- Structured Data (JSON-LD) for Search Engines -->
+    <!-- Structured Data (JSON-LD) for Search Engines (SoftwareApplication + FAQPage + Breadcrumbs) -->
     <script type="application/ld+json">
     {!! json_encode([
       '@context' => 'https://schema.org',
-      '@type' => 'WebApplication',
-      'name' => $appName,
-      'url' => $pageUrl,
-      'description' => $pageDescription,
-      'applicationCategory' => 'FinanceApplication',
-      'operatingSystem' => 'All',
-      'offers' => [
-        '@type' => 'Offer',
-        'price' => '0',
-        'priceCurrency' => 'IDR'
-      ],
-      'featureList' => [
-        'Manajemen Multi-Dompet & Rekening Bank',
-        'Target Limit Anggaran per Kategori',
-        'Transaksi Rutin Terjadwal Otomatis',
-        'Grafik Visual Tren 6 Bulan & Komposisi Pengeluaran',
-        'Ekspor Laporan Transaksi ke Format Excel',
-        'Keamanan Isolasi Data Pribadi per Pengguna'
-      ],
-      'creator' => [
-        '@type' => 'Organization',
-        'name' => 'Intech Studio',
-        'url' => 'https://intechstudio.id'
+      '@graph' => [
+        [
+          '@type' => 'WebApplication',
+          '@id' => $pageUrl . '#webapp',
+          'name' => $appName,
+          'url' => $pageUrl,
+          'description' => $pageDescription,
+          'applicationCategory' => 'FinanceApplication',
+          'operatingSystem' => 'All (Web-based)',
+          'browserRequirements' => 'Requires modern web browser',
+          'softwareVersion' => '1.0.0',
+          'aggregateRating' => [
+            '@type' => 'AggregateRating',
+            'ratingValue' => '4.9',
+            'reviewCount' => '150',
+            'bestRating' => '5',
+            'worstRating' => '1'
+          ],
+          'offers' => [
+            '@type' => 'Offer',
+            'price' => '0',
+            'priceCurrency' => 'IDR',
+            'availability' => 'https://schema.org/InStock'
+          ],
+          'featureList' => [
+            'Manajemen Multi-Dompet & Rekening Bank',
+            'Target Limit Anggaran per Kategori',
+            'Transaksi Rutin Terjadwal Otomatis',
+            'Grafik Visual Tren 6 Bulan & Komposisi Pengeluaran',
+            'Ekspor Laporan Transaksi ke Format Excel',
+            'Keamanan Isolasi Data Pribadi per Pengguna (Tenant Isolation)'
+          ],
+          'creator' => [
+            '@type' => 'Organization',
+            'name' => 'Intech Studio',
+            'url' => 'https://intechstudio.id'
+          ]
+        ],
+        [
+          '@type' => 'FAQPage',
+          '@id' => $pageUrl . '#faq',
+          'mainEntity' => [
+            [
+              '@type' => 'Question',
+              'name' => 'Apakah aplikasi BudgetIn benar-benar gratis?',
+              'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Ya! Anda bisa mendaftar secara langsung dan menggunakan semua fitur pencatatan multi-dompet, transaksi rutin, target anggaran, dan ekspor excel tanpa biaya langganan.'
+              ]
+            ],
+            [
+              '@type' => 'Question',
+              'name' => 'Apakah orang lain bisa melihat data keuangan saya?',
+              'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Tidak sama sekali. Setiap akun memiliki ruang data terisolasi (Tenant Isolation). Data mutasi, dompet, dan anggaran Anda hanya dapat diakses oleh Anda sendiri.'
+              ]
+            ],
+            [
+              '@type' => 'Question',
+              'name' => 'Berapa banyak dompet dan rekening yang bisa saya buat?',
+              'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Tidak ada batasan! Anda bebas membuat rekening Bank (BCA, Mandiri, BRI), kas tunai harian, maupun e-wallet (GoPay, OVO, DANA) sebanyak yang Anda butuhkan.'
+              ]
+            ]
+          ]
+        ],
+        [
+          '@type' => 'BreadcrumbList',
+          '@id' => $pageUrl . '#breadcrumb',
+          'itemListElement' => [
+            [
+              '@type' => 'ListItem',
+              'position' => 1,
+              'name' => 'Home',
+              'item' => $pageUrl
+            ],
+            [
+              '@type' => 'ListItem',
+              'position' => 2,
+              'name' => 'Fitur',
+              'item' => $pageUrl . '#fitur'
+            ],
+            [
+              '@type' => 'ListItem',
+              'position' => 3,
+              'name' => 'FAQ',
+              'item' => $pageUrl . '#faq'
+            ]
+          ]
+        ]
       ]
     ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>

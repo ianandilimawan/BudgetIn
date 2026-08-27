@@ -15,6 +15,36 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Dynamic Sitemap.xml for Search Engines (Google, Bing, etc.)
+Route::get('/sitemap.xml', function () {
+    $baseUrl = url('/');
+    $now = now()->toAtomString();
+    
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    $xml .= '  <url>' . "\n";
+    $xml .= '    <loc>' . htmlspecialchars($baseUrl) . '</loc>' . "\n";
+    $xml .= '    <lastmod>' . $now . '</lastmod>' . "\n";
+    $xml .= '    <changefreq>weekly</changefreq>' . "\n";
+    $xml .= '    <priority>1.0</priority>' . "\n";
+    $xml .= '  </url>' . "\n";
+    $xml .= '  <url>' . "\n";
+    $xml .= '    <loc>' . htmlspecialchars(route('admin.login')) . '</loc>' . "\n";
+    $xml .= '    <lastmod>' . $now . '</lastmod>' . "\n";
+    $xml .= '    <changefreq>monthly</changefreq>' . "\n";
+    $xml .= '    <priority>0.6</priority>' . "\n";
+    $xml .= '  </url>' . "\n";
+    $xml .= '  <url>' . "\n";
+    $xml .= '    <loc>' . htmlspecialchars(route('admin.register')) . '</loc>' . "\n";
+    $xml .= '    <lastmod>' . $now . '</lastmod>' . "\n";
+    $xml .= '    <changefreq>monthly</changefreq>' . "\n";
+    $xml .= '    <priority>0.8</priority>' . "\n";
+    $xml .= '  </url>' . "\n";
+    $xml .= '</urlset>';
+
+    return response($xml, 200, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
 // Application routes with 'admin.' name prefix
 Route::name('admin.')->group(function () {
     // Public Guest routes (login & register)

@@ -1,2 +1,19 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /images/
+Allow: /favicon.svg
+Disallow: /dashboard
+Disallow: /users
+Disallow: /finance_users
+Disallow: /roles
+Disallow: /permissions
+Disallow: /activity-logs
+Disallow: /laravel-logs
+Disallow: /settings
+Disallow: /profile
+Disallow: /cash_accounts
+Disallow: /cash_transactions
+Disallow: /recurring_transactions
+Disallow: /transaction_categories
+
+Sitemap: /sitemap.xml
