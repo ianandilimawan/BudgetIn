@@ -63,10 +63,15 @@
         })();
     </script>
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
         html, body {
-            height: 100%;
+            min-height: 100%;
             min-height: 100vh;
             min-height: 100dvh;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Desktop sidebar collapsed state */
@@ -82,19 +87,21 @@
     </style>
 </head>
 
-<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh]" id="body">
-    <div class="flex h-[100dvh] h-screen overflow-hidden">
+<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh] flex flex-col" id="body">
+    <div class="flex flex-1 w-full min-h-screen min-h-[100dvh] lg:h-screen lg:overflow-hidden">
         <!-- Sidebar & Desktop Spacer -->
         @include('admin.layouts.partials.sidebar')
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden lg:ml-0">
-            <!-- Top Navbar -->
-            @include('admin.layouts.partials.navbar')
+        <div class="flex-1 flex flex-col min-w-0 w-full min-h-screen lg:min-h-0 lg:h-full lg:overflow-hidden lg:ml-0">
+            <!-- Top Navbar (Sticky on mobile, static on desktop) -->
+            <div class="sticky top-0 z-30 w-full">
+                @include('admin.layouts.partials.navbar')
+            </div>
 
-            <!-- Page Content -->
-            <div class="flex-1 overflow-y-auto flex flex-col relative z-0">
-                <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-18 lg:pb-6">
+            <!-- Page Content (Native body/window scroll on mobile, overflow-y-auto on desktop) -->
+            <div class="flex-1 flex flex-col relative z-0 lg:overflow-y-auto overscroll-y-contain w-full" style="-webkit-overflow-scrolling: touch;">
+                <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-24 lg:pb-6">
                     @yield('content')
                 </main>
                 @include('admin.layouts.partials.footer')
