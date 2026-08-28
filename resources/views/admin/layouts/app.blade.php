@@ -69,6 +69,29 @@
             min-height: 100dvh;
         }
 
+        /* Mobile footer bottom safe clearance for iOS Chrome & Safari */
+        .app-footer {
+            padding-top: 0.75rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+        }
+        @media (min-width: 640px) {
+            .app-footer {
+                padding-bottom: 0.75rem !important;
+            }
+        }
+
+        /* Mobile FAB bottom safe clearance */
+        .mobile-fab {
+            bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+        }
+        @media (min-width: 768px) {
+            .mobile-fab {
+                bottom: 1.5rem !important;
+            }
+        }
+
         /* Desktop sidebar collapsed state */
         @media (min-width: 1024px) {
             html.sidebar-closed #sidebar {

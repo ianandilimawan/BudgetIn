@@ -1022,7 +1022,7 @@
 
     <!-- Mobile Floating Action Button (FAB) -->
     @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
-    <div class="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.25rem))] right-4 z-40 md:hidden">
+    <div class="mobile-fab fixed right-4 z-40 md:hidden">
         <button type="button" @click="quickModal = true"
            class="flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 text-white rounded-full font-bold shadow-xl shadow-emerald-600/40 text-xs tracking-tight transition-all border border-emerald-400/40 cursor-pointer">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
