@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\CashSummaryService;
+use App\Services\FinancialHealthService;
+use App\Services\GeminiAiService;
 use App\Models\CashTransaction;
 use App\Models\TransactionCategory;
 use App\Models\CashAccount;
@@ -10,8 +12,12 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard(Request $request, CashSummaryService $summaryService)
-    {
+    public function dashboard(
+        Request $request,
+        CashSummaryService $summaryService,
+        FinancialHealthService $healthService,
+        GeminiAiService $aiService
+    ) {
         $period = $request->get('period', 'this_month');
         $startDate = $request->get('start_date');
         $endDate = $request->get('end_date');
@@ -27,6 +33,12 @@ class AdminController extends Controller
         $expenseBreakdown = $summaryService->getFilteredCategoryBreakdown('expense', $dateRange, $userId);
         $incomeBreakdown = $summaryService->getFilteredCategoryBreakdown('income', $dateRange, $userId);
         $accountBalances = $summaryService->getAccountBalances($userId);
+
+        // Financial Health Score & AI Insights
+        $healthMonth = $dateRange['month'] ?? (int) now()->format('n');
+        $healthYear = $dateRange['year'] ?? (int) now()->format('Y');
+        $financialHealth = $healthService->calculateFinancialHealth($userId, $healthMonth, $healthYear);
+        $aiInsights = $aiService->getFinancialInsights($userId, $financialHealth, $request->has('refresh_ai'));
 
         // Query transactions for recent list based on active filter
         $recentQuery = CashTransaction::forUser($userId)->with(['category', 'account', 'toAccount', 'user']);
@@ -135,7 +147,32 @@ class AdminController extends Controller
             'expenseCategories',
             'incomeCategories',
             'cashAccounts',
-            'existingBudgets'
+            'existingBudgets',
+            'financialHealth',
+            'aiInsights'
         ));
+    }
+
+    /**
+     * AJAX Endpoint to refresh AI financial insights on demand.
+     */
+    public function refreshFinancialAiInsights(
+        Request $request,
+        FinancialHealthService $healthService,
+        GeminiAiService $aiService
+    ) {
+        $userId = auth()->id();
+        $month = $request->filled('month') ? (int) $request->get('month') : (int) now()->format('n');
+        $year = $request->filled('year') ? (int) $request->get('year') : (int) now()->format('Y');
+
+        $financialHealth = $healthService->calculateFinancialHealth($userId, $month, $year);
+        $aiInsights = $aiService->getFinancialInsights($userId, $financialHealth, true);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Analisis keuangan AI berhasil diperbarui.',
+            'financial_health' => $financialHealth,
+            'ai_insights' => $aiInsights,
+        ]);
     }
 }

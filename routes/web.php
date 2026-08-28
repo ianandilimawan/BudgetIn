@@ -65,6 +65,7 @@ Route::name('admin.')->group(function () {
     // Protected routes
     Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::post('/financial_health/refresh', [AdminController::class, 'refreshFinancialAiInsights'])->name('financial_health.refresh');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
         // Resource routes

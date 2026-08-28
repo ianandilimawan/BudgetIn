@@ -82,4 +82,9 @@ class RecurringTransaction extends Model
 
         return false;
     }
+
+    public function scopeForUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 }
