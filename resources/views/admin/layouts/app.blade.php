@@ -74,7 +74,7 @@
             padding-top: 0.875rem;
             padding-left: 1rem;
             padding-right: 1rem;
-            padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(8.25rem + env(safe-area-inset-bottom, 0px)) !important;
         }
         @media (min-width: 640px) {
             .app-footer {
@@ -85,7 +85,7 @@
 
         /* Mobile FAB bottom safe clearance */
         .mobile-fab {
-            bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+            bottom: calc(7rem + env(safe-area-inset-bottom, 0px)) !important;
         }
         @media (min-width: 768px) {
             .mobile-fab {
