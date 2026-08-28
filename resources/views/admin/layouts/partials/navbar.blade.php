@@ -23,8 +23,8 @@
                 <x-heroicon-s-moon id="moonIcon" class="w-4 h-4 sm:w-5 sm:h-5" style="display: none;" />
             </button>
 
-            <!-- User Profile Link (Mobile & Desktop) -->
-            <a href="{{ route('admin.profile.index') }}" class="flex items-center p-1 rounded-full hover:ring-2 hover:ring-emerald-500/40 transition">
+            <!-- Mobile Only: User Profile Link (On Desktop it's already in the sidebar) -->
+            <a href="{{ route('admin.profile.index') }}" class="flex lg:hidden items-center p-1 rounded-full hover:ring-2 hover:ring-emerald-500/40 transition" title="Profil Saya">
                 @if(Auth::user() && Auth::user()->avatar)
                     <img class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-zinc-200 dark:ring-zinc-700"
                         src="{{ Storage::url(Auth::user()->avatar) }}"
