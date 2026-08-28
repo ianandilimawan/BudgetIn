@@ -16,8 +16,12 @@ class GeminiAiService
     public function __construct()
     {
         $this->apiKey = (string) (config('services.gemini.api_key') ?: env('GEMINI_API_KEY', ''));
-        $this->model = (string) (config('services.gemini.model') ?: env('GEMINI_MODEL', 'gemini-1.5-flash'));
-        $this->timeout = (int) (config('services.gemini.timeout') ?: env('GEMINI_TIMEOUT', 15));
+        $rawModel = (string) (config('services.gemini.model') ?: env('GEMINI_MODEL', 'gemini-3.5-flash'));
+        if (in_array($rawModel, ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash', 'gemini-2.5-flash', ''])) {
+            $rawModel = 'gemini-3.5-flash';
+        }
+        $this->model = $rawModel;
+        $this->timeout = (int) (config('services.gemini.timeout') ?: env('GEMINI_TIMEOUT', 30));
     }
 
     /**
@@ -41,32 +45,38 @@ class GeminiAiService
             Cache::forget($cacheKey);
         }
 
-        return Cache::remember($cacheKey, now()->addHours(12), function () use ($healthData) {
-            if ($this->isConfigured()) {
-                try {
-                    $geminiResponse = $this->callGeminiApi($healthData);
-                    if ($geminiResponse) {
-                        return array_merge($geminiResponse, [
-                            'engine' => 'gemini',
-                            'model' => $this->model,
-                            'generated_at' => now()->translatedFormat('d M Y, H:i'),
-                        ]);
-                    }
-                } catch (\Throwable $e) {
-                    Log::warning('Gemini AI insight generation failed, falling back to algorithmic rules.', [
-                        'error' => $e->getMessage(),
-                    ]);
-                }
-            }
+        if (!$forceRefresh && Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
 
-            // Fallback to Smart Algorithmic Rule Engine
-            $algorithmicResponse = $this->generateRuleBasedInsights($healthData);
-            return array_merge($algorithmicResponse, [
-                'engine' => 'algorithmic',
-                'model' => 'BudgetIn Smart Engine',
-                'generated_at' => now()->translatedFormat('d M Y, H:i'),
-            ]);
-        });
+        if ($this->isConfigured()) {
+            try {
+                $geminiResponse = $this->callGeminiApi($healthData);
+                if ($geminiResponse) {
+                    $result = array_merge($geminiResponse, [
+                        'engine' => 'gemini',
+                        'model' => $this->model,
+                        'generated_at' => now()->translatedFormat('d M Y, H:i'),
+                    ]);
+                    Cache::put($cacheKey, $result, now()->addHours(12));
+                    return $result;
+                }
+            } catch (\Throwable $e) {
+                Log::warning('Gemini AI insight generation failed, falling back to algorithmic rules.', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        // Fallback to Smart Algorithmic Rule Engine
+        $algorithmicResponse = $this->generateRuleBasedInsights($healthData);
+        $result = array_merge($algorithmicResponse, [
+            'engine' => 'algorithmic',
+            'model' => 'BudgetIn Smart Engine',
+            'generated_at' => now()->translatedFormat('d M Y, H:i'),
+        ]);
+        Cache::put($cacheKey, $result, now()->addMinutes(5));
+        return $result;
     }
 
     /**
@@ -114,8 +124,12 @@ Berikan evaluasi keuangan yang ringkas, personal, santun, memotivasi, dan bernas
                 ]
             ],
             'generationConfig' => [
-                'temperature' => 0.4,
-                'maxOutputTokens' => 600,
+                'responseMimeType' => 'application/json',
+                'temperature' => 0.3,
+                'maxOutputTokens' => 800,
+                'thinkingConfig' => [
+                    'thinkingBudget' => 0,
+                ],
             ]
         ]);
 
@@ -128,7 +142,13 @@ Berikan evaluasi keuangan yang ringkas, personal, santun, memotivasi, dan bernas
         }
 
         $resultJson = $response->json();
-        $rawText = $resultJson['candidates'][0]['content']['parts'][0]['text'] ?? null;
+        $parts = $resultJson['candidates'][0]['content']['parts'] ?? [];
+        $rawText = null;
+        foreach ($parts as $part) {
+            if (isset($part['text']) && !empty($part['text'])) {
+                $rawText = $part['text'];
+            }
+        }
 
         if (!$rawText) {
             return null;

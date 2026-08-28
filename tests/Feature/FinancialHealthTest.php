@@ -29,6 +29,7 @@ class FinancialHealthTest extends TestCase
         if ($financeRole) {
             $this->user->assignRole($financeRole);
         }
+        config(['services.gemini.api_key' => '']);
     }
 
     public function test_financial_health_score_calculation_with_healthy_data()
@@ -106,6 +107,42 @@ class FinancialHealthTest extends TestCase
         $this->assertArrayHasKey('budget_warning', $insights);
         $this->assertArrayHasKey('actionable_tip', $insights);
         $this->assertEquals('algorithmic', $insights['engine']);
+    }
+
+    public function test_gemini_ai_service_with_mocked_gemini_api_response()
+    {
+        config(['services.gemini.api_key' => 'AIzaSyTestValidKey']);
+
+        \Illuminate\Support\Facades\Http::fake([
+            'https://generativelanguage.googleapis.com/*' => \Illuminate\Support\Facades\Http::response([
+                'candidates' => [
+                    [
+                        'content' => [
+                            'parts' => [
+                                [
+                                    'text' => json_encode([
+                                        'summary' => 'Kondisi finansial sangat memuaskan.',
+                                        'cashflow_insight' => 'Rasio tabungan 60% sangat prima.',
+                                        'budget_warning' => 'Pengeluaran berada jauh di bawah limit.',
+                                        'actionable_tip' => 'Investasikan surplus kas.',
+                                    ])
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ], 200),
+        ]);
+
+        $healthService = app(FinancialHealthService::class);
+        $healthData = $healthService->calculateFinancialHealth($this->user->id);
+
+        $aiService = new GeminiAiService();
+        $insights = $aiService->getFinancialInsights($this->user->id, $healthData, true);
+
+        $this->assertIsArray($insights);
+        $this->assertEquals('gemini', $insights['engine']);
+        $this->assertEquals('Kondisi finansial sangat memuaskan.', $insights['summary']);
     }
 
     public function test_dashboard_renders_financial_health_and_ai_insights()
