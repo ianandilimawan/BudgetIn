@@ -98,7 +98,7 @@ return [
             'permission' => 'view-cash_transactions',
         ],
         [
-            'name' => 'Anggaran Proyek / Acara',
+            'name' => 'Anggaran Proyek',
             'route' => 'admin.budget_projects.index',
             'icon' => 'sparkles',
             'permission' => 'view-cash_transactions',

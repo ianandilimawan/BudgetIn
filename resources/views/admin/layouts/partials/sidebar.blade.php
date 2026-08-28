@@ -1,34 +1,33 @@
         <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200/80 dark:border-zinc-800/80 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0">
-            <div class="flex flex-col h-full">
-                <!-- Logo -->
-                <div class="flex items-center justify-between h-16 px-6 border-b border-zinc-200/80 dark:border-zinc-800/80">
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200/80 dark:border-zinc-800/80 transform -translate-x-full transition-all duration-300 ease-in-out lg:top-3.5 lg:bottom-3.5 lg:left-3.5 lg:h-[calc(100vh-1.75rem)] lg:rounded-2xl lg:shadow-xs lg:border lg:border-zinc-200/80 lg:dark:border-zinc-800 lg:translate-x-0 overflow-hidden flex flex-col">
+            <div class="flex flex-col h-full min-h-0">
+                <!-- Logo Header -->
+                <div class="flex items-center justify-between h-16 px-4 sm:px-5 border-b border-zinc-100 dark:border-zinc-800/80 flex-shrink-0">
                     @if (isset($settings) && $settings->logo_type === 'image' && $settings->app_logo)
                         <img src="{{ \App\Services\FileUploadService::getFileUrl($settings->app_logo) }}"
-                            alt="{{ $settings->app_name }}" class="h-10 max-w-full object-contain">
+                            alt="{{ $settings->app_name }}" class="h-9 max-w-full object-contain">
                     @else
-                        <div class="flex items-center">
-                            <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-8 h-8 rounded-xl shadow-xs mr-1">
-                            <h1 class="text-base font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5">
+                            <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-7 h-7 rounded-xl shadow-xs">
+                            <span class="text-base font-extrabold text-zinc-900 dark:text-white tracking-tight">
                                 Budget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
-                            </h1>
-                        </div>
+                            </span>
+                        </a>
                     @endif
                     <button id="closeSidebar"
-                        class="lg:hidden text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors">
-                        <x-heroicon-o-x-mark class="w-6 h-6" />
+                        class="lg:hidden p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                        <x-heroicon-o-x-mark class="w-5 h-5" />
                     </button>
                 </div>
 
                 <!-- Navigation -->
-                <nav id="sidebarNav" class="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+                <nav id="sidebarNav" class="flex-1 px-3 py-3.5 space-y-4 overflow-y-auto min-h-0">
                     @if (isset($groupedMenus))
                         @foreach ($groupedMenus as $sectionTitle => $menus)
                             <div class="space-y-1">
                                 @if ($sectionTitle)
-                                    <div class="px-4 py-2 mb-2">
-                                        <h3
-                                            class="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                                    <div class="px-2.5 py-1 mb-1">
+                                        <h3 class="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
                                             {{ $sectionTitle }}
                                         </h3>
                                     </div>
@@ -41,28 +40,35 @@
                             </div>
                         @endforeach
                     @elseif (isset($menus))
-                        @foreach ($menus as $menu)
-                            <x-admin.menu-item :menu="$menu" />
-                        @endforeach
+                        <div class="space-y-1">
+                            @foreach ($menus as $menu)
+                                <x-admin.menu-item :menu="$menu" />
+                            @endforeach
+                        </div>
                     @endif
                 </nav>
 
                 <!-- User Section -->
-                <div id="tour-profile-sidebar" class="p-4 border-t border-zinc-200/80 dark:border-zinc-800/80">
-                    <a href="{{ route('admin.profile.index') }}" class="flex items-center p-2 -mx-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                <div id="tour-profile-sidebar" class="p-3 border-t border-zinc-100 dark:border-zinc-800/80 flex-shrink-0">
+                    <a href="{{ route('admin.profile.index') }}" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors group">
                         @if(Auth::user()->avatar)
-                            <img class="w-10 h-10 rounded-full object-cover"
+                            <img class="w-9 h-9 rounded-xl object-cover ring-2 ring-emerald-500/20 flex-shrink-0"
                                 src="{{ Storage::url(Auth::user()->avatar) }}"
                                 alt="User">
                         @else
-                            <img class="w-10 h-10 rounded-full"
-                                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=3b82f6&color=fff"
-                                alt="User">
+                            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
                         @endif
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-zinc-900 dark:text-white">{{ Auth::user()->name }}</p>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate w-32">{{ Auth::user()->email }}</p>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                {{ Auth::user()->name }}
+                            </p>
+                            <p class="text-[10px] text-zinc-400 truncate">
+                                {{ Auth::user()->email }}
+                            </p>
                         </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-transform group-hover:translate-x-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
             </div>

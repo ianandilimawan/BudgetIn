@@ -1,4 +1,4 @@
-<footer class="app-footer mt-auto border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md hidden lg:block py-3 px-6">
+<footer class="app-footer mt-auto border-t border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-md hidden lg:block py-3 px-6 flex-shrink-0">
     <div class="flex items-center justify-between gap-4">
         <!-- Left: Brand & Copyright -->
         <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
