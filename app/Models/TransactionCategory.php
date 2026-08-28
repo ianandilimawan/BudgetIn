@@ -51,4 +51,9 @@ class TransactionCategory extends Model
     {
         return $this->hasMany(\App\Models\CashTransaction::class, 'category_id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(\App\Models\CashTransaction::class, 'category_id');
+    }
 }

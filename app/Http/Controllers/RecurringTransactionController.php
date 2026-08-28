@@ -30,7 +30,13 @@ class RecurringTransactionController extends Controller
             ->where('frequency', 'monthly')
             ->sum('amount');
 
-        return view('admin.recurring_transactions.index', compact('totalRecurring', 'activeRecurring', 'monthlyExpenseEstimate'));
+        $mobileRecurring = RecurringTransaction::where('user_id', $userId)
+            ->with(['account', 'toAccount', 'category'])
+            ->orderBy('is_active', 'desc')
+            ->orderBy('day_of_month', 'asc')
+            ->get();
+
+        return view('admin.recurring_transactions.index', compact('totalRecurring', 'activeRecurring', 'monthlyExpenseEstimate', 'mobileRecurring'));
     }
 
     public function create()

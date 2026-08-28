@@ -22,10 +22,13 @@ class FinanceUserController extends Controller
         $activeFinanceUsers = User::finance()->where('is_active', true)->count();
         $inactiveFinanceUsers = User::finance()->where('is_active', false)->count();
 
+        $mobileUsers = User::finance()->orderBy('created_at', 'desc')->get();
+
         return view('admin.pages.finance_users.index', compact(
             'totalFinanceUsers',
             'activeFinanceUsers',
-            'inactiveFinanceUsers'
+            'inactiveFinanceUsers',
+            'mobileUsers'
         ));
     }
 

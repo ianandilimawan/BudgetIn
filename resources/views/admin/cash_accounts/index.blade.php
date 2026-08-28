@@ -32,9 +32,93 @@
             </div>
         </div>
 
-        <!-- DataTable -->
-        <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-zinc-100/80 dark:border-zinc-800/80 overflow-hidden p-2">
+        <!-- Desktop View (PowerGrid Table) -->
+        <div class="hidden md:block bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border border-zinc-200/80 dark:border-zinc-800 p-2 sm:p-3 shadow-xs overflow-hidden">
             <livewire:tables.cash-account-table />
+        </div>
+
+        <!-- Mobile View (Financial Wallet Cards) -->
+        <div class="block md:hidden space-y-2.5">
+            <!-- Mobile Total Summary Card -->
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] uppercase font-bold tracking-wider text-emerald-100">Total Akumulasi Saldo</p>
+                    <h3 class="text-lg font-black mt-0.5">Rp {{ number_format($totalWealth, 0, ',', '.') }}</h3>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-xs flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+            </div>
+
+            @forelse($mobileAccounts as $acc)
+                <div class="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-2xs space-y-2.5">
+                    <!-- Card Header -->
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 {{ $acc->type === 'bank' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400' : ($acc->type === 'cash' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400' : ($acc->type === 'ewallet' ? 'bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400' : ($acc->type === 'investment' ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'))) }}">
+                                @if ($acc->type === 'bank')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                @elseif ($acc->type === 'cash')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                @elseif ($acc->type === 'ewallet')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                @elseif ($acc->type === 'investment')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path></svg>
+                                @else
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                @endif
+                            </div>
+                            <div class="min-w-0">
+                                <h3 class="text-xs font-bold text-zinc-900 dark:text-white truncate">{{ $acc->name }}</h3>
+                                <div class="flex items-center gap-1.5 text-[10px] text-zinc-400 mt-0.5">
+                                    <span class="px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 font-medium">{{ $acc->type_name }}</span>
+                                    @if($acc->account_number)
+                                        <span>•</span>
+                                        <span class="font-mono">{{ $acc->account_number }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded {{ $acc->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/60' : 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-900/60' }}">
+                            {{ $acc->is_active ? 'Aktif' : 'Nonaktif' }}
+                        </span>
+                    </div>
+
+                    <!-- Balance Row -->
+                    <div class="p-2.5 rounded-lg bg-zinc-50/80 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+                        <span class="text-[11px] text-zinc-500 dark:text-zinc-400">Saldo Saat Ini</span>
+                        <span class="text-sm font-extrabold {{ $acc->calculated_balance >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
+                            Rp {{ number_format($acc->calculated_balance, 0, ',', '.') }}
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end gap-1.5 pt-1 border-t border-zinc-100 dark:border-zinc-800 text-xs">
+                        @if(auth()->user() && auth()->user()->hasPermission('view-cash_accounts'))
+                            <a href="{{ route('admin.cash_accounts.show', $acc->id) }}" class="px-2.5 py-1 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg transition-colors">
+                                Detail
+                            </a>
+                        @endif
+                        @if(auth()->user() && auth()->user()->hasPermission('edit-cash_accounts'))
+                            <a href="{{ route('admin.cash_accounts.edit', $acc->id) }}" class="px-2.5 py-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 rounded-lg transition-colors">
+                                Edit
+                            </a>
+                        @endif
+                        @if(auth()->user() && auth()->user()->hasPermission('delete-cash_accounts'))
+                            <button type="button" 
+                                    onclick="window.dispatchEvent(new CustomEvent('open-delete-modal', { detail: { action: '{{ route('admin.cash_accounts.destroy', $acc->id) }}' } }))"
+                                    class="px-2.5 py-1 text-[11px] font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 rounded-lg transition-colors cursor-pointer">
+                                Hapus
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="p-5 text-center bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 text-zinc-400 text-xs">
+                    Belum ada akun atau dompet kas.
+                </div>
+            @endforelse
         </div>
 
         <!-- Master Account Types Modal (Standard Fixed Teleport Modal) -->

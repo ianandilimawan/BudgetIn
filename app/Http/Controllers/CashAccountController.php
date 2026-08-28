@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ActivityLogService;
 use App\Models\CashAccount;
 use App\Models\CashAccountType;
+use App\Services\CashSummaryService;
 use App\Http\Requests\CreateCashAccountRequest;
 use App\Http\Requests\UpdateCashAccountRequest;
 use Illuminate\Http\Request;
@@ -20,13 +21,26 @@ class CashAccountController extends Controller
         $this->middleware('permission:delete-cash_accounts')->only('destroy');
     }
 
-    public function index()
+    public function index(CashSummaryService $summaryService)
     {
         $userId = auth()->id();
         $accountTypes = CashAccountType::forUser($userId)->withCount(['accounts' => function ($q) use ($userId) {
             $q->where('user_id', $userId);
         }])->orderBy('name')->get();
-        return view('admin.cash_accounts.index', compact('accountTypes'));
+
+        $accountBalances = $summaryService->getAccountBalances($userId);
+        $mobileAccounts = CashAccount::where('user_id', $userId)
+            ->with('accountType')
+            ->orderBy('name')
+            ->get()
+            ->map(function ($acc) use ($accountBalances) {
+                $matched = collect($accountBalances['accounts'])->firstWhere('id', $acc->id);
+                $acc->calculated_balance = $matched ? $matched['current_balance'] : (float) $acc->initial_balance;
+                return $acc;
+            });
+        $totalWealth = $accountBalances['total_wealth'] ?? 0;
+
+        return view('admin.cash_accounts.index', compact('accountTypes', 'mobileAccounts', 'totalWealth'));
     }
 
     public function create()

@@ -21,7 +21,19 @@ class TransactionCategoryController extends Controller
 
     public function index()
     {
-        return view('admin.transaction_categories.index');
+        $userId = auth()->id();
+        $categories = TransactionCategory::forUser($userId)
+            ->withCount(['transactions' => function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            }])
+            ->orderBy('type')
+            ->orderBy('name')
+            ->get();
+
+        $expenseCount = $categories->where('type', 'expense')->count();
+        $incomeCount = $categories->where('type', 'income')->count();
+
+        return view('admin.transaction_categories.index', compact('categories', 'expenseCount', 'incomeCount'));
     }
 
     public function create()
