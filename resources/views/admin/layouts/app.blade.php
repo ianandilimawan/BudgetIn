@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="admin-panel lg:overflow-hidden" id="adminHtml">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="admin-panel" id="adminHtml">
 
 <head>
     <meta charset="utf-8">
@@ -103,20 +103,20 @@
     </style>
 </head>
 
-<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh] overflow-x-hidden flex flex-col" id="body">
-    <div class="flex flex-1 w-full min-h-screen min-h-[100dvh] lg:h-screen lg:overflow-hidden">
+<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen overflow-x-hidden flex flex-col" id="body">
+    <div class="flex flex-1 w-full min-h-screen">
         <!-- Sidebar & Desktop Spacer -->
         @include('admin.layouts.partials.sidebar')
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 w-full min-h-screen lg:min-h-0 lg:h-full lg:overflow-hidden lg:ml-0">
-            <!-- Top Navbar (Sticky on mobile, static on desktop) -->
+        <div class="flex-1 flex flex-col min-w-0 w-full min-h-screen">
+            <!-- Top Navbar (Sticky on mobile & desktop) -->
             <div class="sticky top-0 z-30 w-full">
                 @include('admin.layouts.partials.navbar')
             </div>
 
-            <!-- Page Content (Window/body scrolls naturally on mobile, inner overflow-y-auto on desktop) -->
-            <div class="flex-1 flex flex-col relative z-0 w-full lg:overflow-y-auto overscroll-y-contain" style="-webkit-overflow-scrolling: touch;">
+            <!-- Page Content -->
+            <div class="flex-1 flex flex-col relative z-0 w-full">
                 <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-28 lg:pb-6">
                     @yield('content')
                 </main>
