@@ -1133,21 +1133,22 @@
                     <input type="hidden" name="redirect_to" value="{{ route('admin.dashboard', ['view' => 'personal']) }}">
 
                     <!-- Switcher Type -->
-                    <div class="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full">
+                    <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full">
                         <button type="button" @click="quickType = 'expense'"
                                 :class="quickType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
+                                class="py-2 px-1 rounded-lg transition-all text-center cursor-pointer font-bold text-[11px] sm:text-xs">
                             Pengeluaran
                         </button>
                         <button type="button" @click="quickType = 'income'"
                                 :class="quickType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
+                                class="py-2 px-1 rounded-lg transition-all text-center cursor-pointer font-bold text-[11px] sm:text-xs">
                             Pemasukan
                         </button>
                         <button type="button" @click="quickType = 'transfer'"
                                 :class="quickType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                                class="flex-1 py-1.5 rounded-lg transition-all text-center cursor-pointer">
-                            Transfer / Pindah Kas
+                                class="py-2 px-1 rounded-lg transition-all text-center cursor-pointer font-bold text-[11px] sm:text-xs">
+                            <span class="inline sm:hidden">Transfer</span>
+                            <span class="hidden sm:inline">Transfer / Pindah</span>
                         </button>
                     </div>
                     <input type="hidden" name="type" :value="quickType">

@@ -105,27 +105,28 @@
             </div>
 
             <!-- Mode Selector Tabs -->
-            <div class="inline-flex p-0.5 sm:p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-xs font-semibold self-start sm:self-auto flex-wrap">
+            <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-xs font-semibold w-full sm:w-auto">
                 <button type="button" 
                         @click="setType('expense')"
                         :class="trxType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                        class="px-2 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 text-[11px] sm:text-xs font-bold whitespace-nowrap cursor-pointer">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     <span>Pengeluaran</span>
                 </button>
                 <button type="button" 
                         @click="setType('income')"
                         :class="trxType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                        class="px-2 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 text-[11px] sm:text-xs font-bold whitespace-nowrap cursor-pointer">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                     <span>Pemasukan</span>
                 </button>
                 <button type="button" 
                         @click="setType('transfer')"
                         :class="trxType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] sm:text-xs whitespace-nowrap">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                    <span>Transfer / Pindah Kas</span>
+                        class="px-2 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 text-[11px] sm:text-xs font-bold whitespace-nowrap cursor-pointer">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                    <span class="inline sm:hidden">Transfer</span>
+                    <span class="hidden sm:inline">Transfer / Pindah</span>
                 </button>
             </div>
         </div>

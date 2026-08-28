@@ -13,69 +13,69 @@
     $initBalanceVal = old('initial_balance', $cashAccount->initial_balance ?? 0);
 @endphp
 
-<div x-data="cashAccountForm()" class="space-y-6">
+<div x-data="cashAccountForm()" class="space-y-4 sm:space-y-6">
 
     <!-- 1. Live Preview Card -->
-    <div class="p-4 sm:p-5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Pratinjau Kartu Dompet</span>
-            <span class="text-[11px] text-zinc-400 font-medium" x-text="isActive ? 'Status: Aktif' : 'Status: Non-Aktif'"></span>
+    <div class="p-3 sm:p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50">
+        <div class="flex items-center justify-between mb-2 sm:mb-3">
+            <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Pratinjau Kartu Dompet</span>
+            <span class="text-[10px] sm:text-[11px] text-zinc-400 font-medium" x-text="isActive ? 'Status: Aktif' : 'Status: Non-Aktif'"></span>
         </div>
 
-        <div class="relative overflow-hidden rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-sm border"
+        <div class="relative overflow-hidden rounded-xl sm:rounded-2xl p-3.5 sm:p-5 transition-all duration-300 shadow-xs border"
              :class="getColorCardClasses(selectedColor)">
-            <div class="flex items-start justify-between gap-3">
-                <div>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-black/10 dark:bg-white/10"
+            <div class="flex items-start justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold tracking-wide uppercase bg-black/10 dark:bg-white/10"
                           x-text="getTypeLabel(selectedType)"></span>
-                    <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mt-1.5 truncate"
+                    <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white mt-1 truncate"
                         x-text="accountName || 'Nama Dompet / Rekening'"></h3>
-                    <p class="text-xs text-zinc-600 dark:text-zinc-300 font-mono mt-0.5"
+                    <p class="text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-300 font-mono mt-0.5 truncate"
                        x-text="accountNumber ? ('No: ' + accountNumber) : 'Tanpa nomor rekening'"></p>
                 </div>
-                <div class="w-10 h-10 rounded-xl bg-white/40 dark:bg-black/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-xs">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/40 dark:bg-black/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-xs">
                     <template x-if="selectedType === 'bank'">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
                     </template>
                     <template x-if="selectedType === 'ewallet'">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </template>
                     <template x-if="selectedType === 'cash'">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     </template>
                     <template x-if="selectedType !== 'bank' && selectedType !== 'ewallet' && selectedType !== 'cash'">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
                     </template>
                 </div>
             </div>
 
-            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
-                <span class="text-xs text-zinc-600 dark:text-zinc-400 font-medium">Saldo Awal</span>
-                <span class="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-white"
+            <div class="mt-3 pt-2.5 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
+                <span class="text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400 font-medium">Saldo Awal</span>
+                <span class="text-xs sm:text-sm font-extrabold text-zinc-900 dark:text-white"
                       x-text="formatBalance(balanceDisplay)"></span>
             </div>
         </div>
     </div>
 
     <!-- 2. Form Section: Informasi Utama -->
-    <div class="space-y-4">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white border-b border-zinc-100 dark:border-zinc-800 pb-2 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+    <div class="space-y-3 sm:space-y-4">
+        <h4 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white border-b border-zinc-100 dark:border-zinc-800 pb-1.5 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-indigo-600"></span>
             Informasi Dompet & Rekening
         </h4>
 
         <!-- Nama Dompet -->
         <div>
-            <label for="name_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label for="name_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Nama Akun / Dompet <span class="text-rose-500">*</span>
             </label>
             <input type="text"
                    name="name"
                    id="name_input"
                    x-model="accountName"
-                   placeholder="Contoh: BCA Tabungan Utama, Dompet Tunai Harian, GoPay"
+                   placeholder="Contoh: BCA Tabungan Utama, Dompet Harian, GoPay"
                    required
-                   class="w-full h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
+                   class="w-full h-[40px] sm:h-[44px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
         </div>
 
         <!-- Tipe Akun Selector (Visual Pill Badges + Dropdown) -->
@@ -90,13 +90,13 @@
             </div>
 
             <!-- Dynamic Quick Select Options -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                 <template x-for="opt in typeList" :key="opt.code">
                     <button type="button"
                             @click="selectedType = opt.code"
-                            class="p-2.5 rounded-xl border text-left transition flex items-center gap-2 cursor-pointer"
+                            class="p-2 sm:p-2.5 rounded-xl border text-left transition flex items-center gap-1.5 sm:gap-2 cursor-pointer"
                             :class="selectedType === opt.code ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-200 dark:border-indigo-500 shadow-xs' : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300'">
-                        <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold"
+                        <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center text-[10px] sm:text-xs font-bold flex-shrink-0"
                              :class="selectedType === opt.code ? 'bg-indigo-600 text-white' : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'">
                             <template x-if="opt.code === 'cash'"><span>💵</span></template>
                             <template x-if="opt.code === 'bank'"><span>🏦</span></template>
@@ -105,7 +105,7 @@
                             <template x-if="opt.code === 'loan'"><span>💳</span></template>
                             <template x-if="opt.code !== 'cash' && opt.code !== 'bank' && opt.code !== 'ewallet' && opt.code !== 'investment' && opt.code !== 'loan'"><span>🏷️</span></template>
                         </div>
-                        <span class="text-xs font-semibold truncate" x-text="opt.name"></span>
+                        <span class="text-[11px] sm:text-xs font-semibold truncate" x-text="opt.name"></span>
                     </button>
                 </template>
             </div>
@@ -114,7 +114,7 @@
 
         <!-- Nomor Rekening / Keterangan -->
         <div>
-            <label for="account_number_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label for="account_number_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Nomor Rekening / No. HP E-Wallet <span class="text-zinc-400 font-normal">(Opsional)</span>
             </label>
             <input type="text"
@@ -122,21 +122,21 @@
                    id="account_number_input"
                    x-model="accountNumber"
                    placeholder="Contoh: 123-456-7890 atau 08123456789"
-                   class="w-full h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
+                   class="w-full h-[40px] sm:h-[44px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
         </div>
     </div>
 
     <!-- 3. Form Section: Saldo & Tampilan -->
-    <div class="space-y-4 pt-2">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white border-b border-zinc-100 dark:border-zinc-800 pb-2 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+    <div class="space-y-3 sm:space-y-4 pt-1 sm:pt-2">
+        <h4 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white border-b border-zinc-100 dark:border-zinc-800 pb-1.5 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-600"></span>
             Saldo Awal & Warna Tema
         </h4>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <!-- Saldo Awal -->
             <div>
-                <label for="initial_balance_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                <label for="initial_balance_input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                     Saldo Awal (Rp) <span class="text-rose-500">*</span>
                 </label>
                 <input type="text"
@@ -146,23 +146,23 @@
                        value="{{ $initBalanceVal }}"
                        @input="onBalanceChange($event)"
                        required
-                       class="w-full h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
-                <p class="text-[11px] text-zinc-400 mt-1">Saldo pembukaan awal saat pertama kali mendaftarkan akun.</p>
+                       class="w-full h-[40px] sm:h-[44px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-bold placeholder:text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition" />
+                <p class="text-[10px] sm:text-[11px] text-zinc-400 mt-1">Saldo pembukaan saat pertama mendaftarkan akun.</p>
             </div>
 
             <!-- Warna Tema Visual Swatches -->
             <div>
-                <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                     Warna Tema Kartu
                 </label>
-                <div class="flex flex-wrap items-center gap-2 pt-0.5">
+                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5">
                     <template x-for="c in colorOptions" :key="c.name">
                         <button type="button"
                                 @click="selectedColor = c.name"
                                 :title="c.label"
-                                class="w-9 h-9 rounded-xl transition-transform flex items-center justify-center shadow-xs border-2"
+                                class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl transition-transform flex items-center justify-center shadow-2xs border-2 cursor-pointer"
                                 :class="[c.bgClass, selectedColor === c.name ? 'scale-110 border-zinc-900 dark:border-white ring-2 ring-indigo-500/30' : 'border-transparent hover:scale-105']">
-                            <svg x-show="selectedColor === c.name" class="w-4 h-4 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            <svg x-show="selectedColor === c.name" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                         </button>
                     </template>
                 </div>
@@ -171,9 +171,9 @@
         </div>
 
         <!-- Status Aktif Toggle -->
-        <div class="pt-2">
+        <div class="pt-1">
             <x-toggle name="is_active" label="Status Aktif" :checked="$cashAccount->is_active ?? true" />
-            <p class="text-[11px] text-zinc-400 mt-0.5">Akun yang aktif akan muncul di pilihan transaksi kas harian.</p>
+            <p class="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5">Akun aktif akan muncul di pilihan transaksi kas harian.</p>
         </div>
     </div>
 
