@@ -1,5 +1,5 @@
 <footer
-    class="app-footer mt-auto border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md">
+    class="app-footer mt-auto border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md hidden lg:block">
     <div class="flex flex-row justify-between items-center gap-2">
         <div class="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 text-left">
             &copy; {{ date('Y') }}
