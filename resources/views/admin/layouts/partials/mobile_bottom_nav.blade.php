@@ -31,9 +31,9 @@
             </a>
 
             <!-- 3. Raised Quick Action (⚡ Catat) -->
-            <div id="tour-mobile-catat" class="flex flex-col items-center justify-end w-full pb-0.5">
+            <div class="flex flex-col items-center justify-end w-full pb-0.5">
                 @if(request()->routeIs('admin.dashboard*'))
-                    <button type="button"
+                    <button id="tour-mobile-catat" type="button"
                             onclick="window.dispatchEvent(new CustomEvent('open-quick-modal'))"
                             class="w-12 h-12 -translate-y-3 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-600/40 ring-4 ring-zinc-50 dark:ring-zinc-950 active:scale-90 transition-transform cursor-pointer"
                             title="Catat Transaksi Cepat">
@@ -42,7 +42,7 @@
                         </svg>
                     </button>
                 @else
-                    <a href="{{ route('admin.cash_transactions.create') }}"
+                    <a id="tour-mobile-catat" href="{{ route('admin.cash_transactions.create') }}"
                        class="w-12 h-12 -translate-y-3 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-600/40 ring-4 ring-zinc-50 dark:ring-zinc-950 active:scale-90 transition-transform cursor-pointer"
                        title="Tambah Transaksi Baru">
                         <svg class="w-6 h-6 text-white stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
