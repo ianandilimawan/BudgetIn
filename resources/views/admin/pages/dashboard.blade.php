@@ -505,17 +505,22 @@
     </div>
 
     <!-- 2. Saldo Dompet & Rekening (Full Width Multi-Account Cards) -->
-    <div class="space-y-2">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                </svg>
-                Saldo Dompet & Rekening
-            </h2>
-            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 dark:text-white bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-lg border border-indigo-100 dark:border-indigo-900/50">
-                <span class="text-zinc-500 dark:text-zinc-400 font-normal text-[11px]">Total Kas:</span>
-                <span class="text-indigo-600 dark:text-indigo-400 font-bold text-xs">Rp {{ number_format($accountBalances['total_wealth'], 0, ',', '.') }}</span>
+    <div class="space-y-2 sm:space-y-2.5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
+            <div class="flex items-center gap-1.5">
+                <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
+                    Saldo Dompet & Rekening
+                </h2>
+            </div>
+            
+            <div class="inline-flex items-center justify-between sm:justify-start gap-1.5 text-xs font-bold text-zinc-900 dark:text-white bg-indigo-50/80 dark:bg-indigo-950/60 px-3 py-1.5 sm:py-1 rounded-xl border border-indigo-100 dark:border-indigo-900/50 w-full sm:w-auto">
+                <span class="text-zinc-500 dark:text-zinc-400 font-medium text-[11px]">Total Seluruh Kas:</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-extrabold text-xs">Rp {{ number_format($accountBalances['total_wealth'], 0, ',', '.') }}</span>
             </div>
         </div>
 
