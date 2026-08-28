@@ -71,13 +71,14 @@
 
         /* Mobile footer bottom safe clearance for iOS Chrome & Safari */
         .app-footer {
-            padding-top: 0.75rem;
+            padding-top: 0.875rem;
             padding-left: 1rem;
             padding-right: 1rem;
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)) !important;
         }
         @media (min-width: 640px) {
             .app-footer {
+                padding-top: 0.75rem;
                 padding-bottom: 0.75rem !important;
             }
         }

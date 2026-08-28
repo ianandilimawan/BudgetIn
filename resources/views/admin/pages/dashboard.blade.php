@@ -934,16 +934,20 @@
         </div>
     </div>
 
-    <!-- 8. Rekap Tabungan 12 Bulan (Full Width Table) -->
-    <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-xs border border-zinc-200/80 dark:border-zinc-800 overflow-hidden">
-        <div class="p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
+    <!-- 8. Rekap Tabungan 12 Bulan (Responsive Desktop Table + Mobile Cards) -->
+    <div class="bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl shadow-xs border border-zinc-200/80 dark:border-zinc-800 overflow-hidden">
+        <div class="p-3.5 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/30">
             <div>
-                <h2 class="text-sm font-bold text-zinc-900 dark:text-white">Rekap Tabungan Bulanan</h2>
-                <p class="text-xs text-zinc-500">Evaluasi surplus / defisit dan tingkat tabungan (savings rate) 12 bulan terakhir</p>
+                <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Rekap Tabungan Bulanan</span>
+                </h2>
+                <p class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">Surplus / defisit dan rasio tabungan 12 bulan terakhir</p>
             </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Desktop View (Full Table) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-xs text-left">
                 <thead class="uppercase bg-zinc-50/80 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800 text-[11px]">
                     <tr>
@@ -1017,6 +1021,64 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile View (Compact Month Cards) -->
+        <div class="block md:hidden divide-y divide-zinc-100 dark:divide-zinc-800">
+            @foreach($monthlyRecap as $row)
+                @php
+                    $hasActivity = $row['total_income'] > 0 || $row['total_expense'] > 0;
+                @endphp
+                <div class="p-3 {{ $row['is_current_month'] ? 'bg-emerald-50/30 dark:bg-emerald-950/20' : '' }} space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs font-bold text-zinc-900 dark:text-white">{{ $row['month_name'] }}</span>
+                            @if($row['is_current_month'])
+                                <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">Bulan Ini</span>
+                            @endif
+                        </div>
+
+                        <div>
+                            @if(!$hasActivity)
+                                <span class="px-1.5 py-0.5 text-[9px] font-semibold rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-400">Nihil</span>
+                            @elseif($row['is_surplus'])
+                                <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">Surplus</span>
+                            @else
+                                <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300">Defisit</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="text-[11px] text-zinc-400 space-x-1.5">
+                            <span>Masuk: <strong class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $row['total_income'] > 0 ? 'Rp ' . number_format($row['total_income'], 0, ',', '.') : '-' }}</strong></span>
+                            <span>•</span>
+                            <span>Keluar: <strong class="text-rose-600 dark:text-rose-400 font-semibold">{{ $row['total_expense'] > 0 ? 'Rp ' . number_format($row['total_expense'], 0, ',', '.') : '-' }}</strong></span>
+                        </div>
+
+                        <div class="text-right font-bold {{ $row['net_savings'] > 0 ? 'text-emerald-600 dark:text-emerald-400' : ($row['net_savings'] < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-400') }}">
+                            {{ $hasActivity ? ($row['net_savings'] > 0 ? '+' : '') . 'Rp ' . number_format($row['net_savings'], 0, ',', '.') : 'Rp 0' }}
+                        </div>
+                    </div>
+
+                    @if($hasActivity && $row['total_income'] > 0)
+                        <div class="flex items-center justify-between gap-2 pt-1">
+                            <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                                <span class="text-[10px] text-zinc-400 flex-shrink-0">Savings:</span>
+                                <div class="flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+                                    <div class="{{ $row['savings_rate'] >= 0 ? 'bg-emerald-500' : 'bg-rose-500' }} h-1.5 rounded-full" style="width: {{ max(0, min(100, $row['savings_rate'])) }}%"></div>
+                                </div>
+                                <span class="text-[10px] font-bold {{ $row['savings_rate'] >= 20 ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-600 dark:text-zinc-300' }}">{{ $row['savings_rate'] }}%</span>
+                            </div>
+
+                            <a href="{{ route('admin.cash_transactions.index', ['month' => $row['month'], 'year' => $row['year']]) }}"
+                               class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex-shrink-0">
+                                Lihat Transaksi →
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
         </div>
     </div>
 
