@@ -68,10 +68,10 @@
     <div x-show="trxType !== 'transfer'">
         <!-- Mode Pengeluaran -->
         <div x-show="trxType === 'expense'">
-            <label class="block text-xs uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400 mb-1">
                 Kategori Pengeluaran <span class="text-rose-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'">
                 <option value="">Pilih Kategori Pengeluaran...</option>
                 @foreach($expenseCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $cashTransaction->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -83,10 +83,10 @@
 
         <!-- Mode Pemasukan -->
         <div x-show="trxType === 'income'" style="display: none;">
-            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                 Kategori Pemasukan <span class="text-emerald-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
                 <option value="">Pilih Kategori Pemasukan...</option>
                 @foreach($incomeCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $cashTransaction->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -99,10 +99,10 @@
 
     <!-- Akun / Dompet Asal -->
     <div>
-        <label class="block text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1.5" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
             Akun / Dompet
         </label>
-        <select name="account_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" required>
+        <select name="account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" required>
             @foreach($cashAccounts as $acc)
                 <option value="{{ $acc->id }}" {{ (old('account_id', $cashTransaction->account_id ?? '') == $acc->id) ? 'selected' : '' }}>
                     {{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})
@@ -113,10 +113,10 @@
 
     <!-- Ke Akun (Hanya tampil untuk Transfer) -->
     <div x-show="trxType === 'transfer'" style="display: none;">
-        <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
             Ke Akun Tujuan <span class="text-emerald-500">*</span>
         </label>
-        <select name="to_account_id" class="w-full h-[46px] px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
+        <select name="to_account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
             <option value="">Pilih Akun Tujuan...</option>
             @foreach($cashAccounts as $acc)
                 <option value="{{ $acc->id }}" {{ (old('to_account_id', $cashTransaction->to_account_id ?? '') == $acc->id) ? 'selected' : '' }}>
@@ -127,47 +127,67 @@
     </div>
 
     <!-- Nominal -->
-    <x-input-floating type="text" name="amount" label="Nominal (Rp)" value="{{ $cashTransaction->amount ?? '' }}" :isCurrency="true" required />
+    <div>
+        <label for="amount" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Nominal (Rp) <span class="text-rose-500">*</span>
+        </label>
+        <input type="text" name="amount" id="amount" value="{{ $cashTransaction->amount ?? '' }}" data-currency required
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-bold placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               placeholder="Rp 0" />
+    </div>
 
     <!-- Tanggal Transaksi -->
-    <x-input-floating type="date" name="transaction_date" label="Tanggal Transaksi" value="{{ isset($cashTransaction->transaction_date) && $cashTransaction->transaction_date ? (is_string($cashTransaction->transaction_date) ? $cashTransaction->transaction_date : $cashTransaction->transaction_date->format('Y-m-d')) : date('Y-m-d') }}" required />
+    <div>
+        <label for="transaction_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Tanggal Transaksi <span class="text-rose-500">*</span>
+        </label>
+        <input type="date" name="transaction_date" id="transaction_date" value="{{ isset($cashTransaction->transaction_date) && $cashTransaction->transaction_date ? (is_string($cashTransaction->transaction_date) ? $cashTransaction->transaction_date : $cashTransaction->transaction_date->format('Y-m-d')) : date('Y-m-d') }}" required
+               class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
+    </div>
 
     <!-- Catatan -->
-    <x-input-floating type="text" name="note" label="Catatan (Opsional)" value="{{ $cashTransaction->note ?? '' }}" />
+    <div>
+        <label for="note" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Catatan <span class="text-zinc-400 font-normal normal-case">(Opsional)</span>
+        </label>
+        <input type="text" name="note" id="note" value="{{ $cashTransaction->note ?? '' }}"
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               placeholder="Contoh: Belanja bulanan, bayar listrik" />
+    </div>
 
     <!-- Bukti / Struk / Nota (Optional) -->
     <div>
-        <label class="block text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-2">
-            Bukti Transaksi / Struk / Nota <span class="text-xs font-normal text-zinc-400 normal-case">(Opsional - JPG, PNG, WEBP, PDF)</span>
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+            Bukti Transaksi / Struk <span class="text-[10px] sm:text-xs font-normal text-zinc-400 normal-case">(Opsional - JPG, PNG, WEBP, PDF)</span>
         </label>
         
         <input type="hidden" name="remove_proof" id="remove_proof_input" value="0">
         
-        <div class="flex items-start gap-4">
+        <div class="flex items-start gap-3 sm:gap-4">
             <!-- Upload Box -->
-            <label class="flex-1 flex flex-col items-center justify-center p-4 border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-2xl cursor-pointer bg-zinc-50/50 dark:bg-zinc-800/50 transition-colors group">
+            <label class="flex-1 flex flex-col items-center justify-center p-3 sm:p-4 border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-xl sm:rounded-2xl cursor-pointer bg-zinc-50/50 dark:bg-zinc-800/50 transition-colors group">
                 <input type="file" name="proof" id="proof_input" accept="image/*,application/pdf" class="hidden" @change="handleFileChange($event)">
                 <div class="flex flex-col items-center justify-center text-center">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
                     <span class="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Upload Foto Struk / Dokumen</span>
-                    <span class="text-[11px] text-zinc-400 mt-0.5" x-text="proofName || 'Maksimal 10MB (Foto struk belanja, invoice, bukti transfer)'"></span>
+                    <span class="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5" x-text="proofName || 'Maksimal 10MB (Foto struk belanja, invoice, bukti transfer)'"></span>
                 </div>
             </label>
 
             <!-- Preview Card (if file chosen or existing) -->
-            <div x-show="proofPreview || isPdf" class="w-32 h-28 relative rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 overflow-hidden flex-shrink-0 flex items-center justify-center group" style="display: none;">
+            <div x-show="proofPreview || isPdf" class="w-24 h-24 sm:w-32 sm:h-28 relative rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 overflow-hidden flex-shrink-0 flex items-center justify-center group" style="display: none;">
                 <template x-if="proofPreview && !isPdf">
                     <img :src="proofPreview" alt="Bukti Transaksi" class="w-full h-full object-cover">
                 </template>
                 <template x-if="isPdf">
                     <div class="flex flex-col items-center justify-center text-rose-500 p-2 text-center">
-                        <svg class="w-8 h-8 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        <span class="text-[10px] font-bold">Dokumen PDF</span>
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <span class="text-[9px] sm:text-[10px] font-bold">Dokumen PDF</span>
                     </div>
                 </template>
-                <button type="button" @click="removeProof()" class="absolute top-1.5 right-1.5 p-1 bg-zinc-900/80 hover:bg-rose-600 text-white rounded-lg transition-colors shadow-sm" title="Hapus Bukti">
+                <button type="button" @click="removeProof()" class="absolute top-1.5 right-1.5 p-1 bg-zinc-900/80 hover:bg-rose-600 text-white rounded-lg transition-colors shadow-xs" title="Hapus Bukti">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>

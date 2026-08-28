@@ -8,7 +8,12 @@
 
     <!-- Name of schedule -->
     <div>
-        <x-input-floating type="text" name="name" label="Nama Jadwal (contoh: Langganan WiFi, Sewa Kost, Gaji)" value="{{ old('name', $recurring->name ?? '') }}" required="true" />
+        <label for="name" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Nama Jadwal <span class="text-rose-500">*</span>
+        </label>
+        <input type="text" name="name" id="name" value="{{ old('name', $recurring->name ?? '') }}" required
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               placeholder="Contoh: Langganan WiFi, Sewa Kost, Gaji" />
         @error('name')
             <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">{{ $message }}</p>
         @enderror
@@ -16,7 +21,7 @@
 
     <!-- Tipe Transaksi Switcher -->
     <div>
-        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1.5">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">
             Tipe Arus Kas <span class="text-rose-500">*</span>
         </label>
         <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full sm:max-w-md">
@@ -49,10 +54,10 @@
     <!-- Kategori (Expense / Income) -->
     <div x-show="trxType !== 'transfer'">
         <div x-show="trxType === 'expense'">
-            <label class="block text-xs uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400 mb-1">
                 Kategori Pengeluaran <span class="text-rose-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500" :disabled="trxType !== 'expense'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500" :disabled="trxType !== 'expense'">
                 <option value="">Pilih Kategori Pengeluaran...</option>
                 @foreach($expenseCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $recurring->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -63,10 +68,10 @@
         </div>
 
         <div x-show="trxType === 'income'" style="display: none;">
-            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                 Kategori Pemasukan <span class="text-emerald-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" :disabled="trxType !== 'income'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" :disabled="trxType !== 'income'">
                 <option value="">Pilih Kategori Pemasukan...</option>
                 @foreach($incomeCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $recurring->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -80,10 +85,10 @@
     <!-- Dompet / Akun Asal & Tujuan -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <div>
-            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1.5" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
                 Akun / Dompet
             </label>
-            <select name="account_id" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" required>
+            <select name="account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" required>
                 @foreach($cashAccounts as $acc)
                     <option value="{{ $acc->id }}" {{ (old('account_id', $recurring->account_id ?? '') == $acc->id) ? 'selected' : '' }}>
                         {{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})
@@ -93,10 +98,10 @@
         </div>
 
         <div x-show="trxType === 'transfer'" style="display: none;">
-            <label class="block text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                 Ke Akun Tujuan <span class="text-emerald-500">*</span>
             </label>
-            <select name="to_account_id" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" :disabled="trxType !== 'transfer'">
+            <select name="to_account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" :disabled="trxType !== 'transfer'">
                 <option value="">Pilih Akun Tujuan...</option>
                 @foreach($cashAccounts as $acc)
                     <option value="{{ $acc->id }}" {{ (old('to_account_id', $recurring->to_account_id ?? '') == $acc->id) ? 'selected' : '' }}>
@@ -109,19 +114,24 @@
 
     <!-- Nominal -->
     <div>
-        <x-input-floating type="text" name="amount" label="Nominal (Rp)" value="{{ old('amount', $recurring->amount ?? '') }}" :isCurrency="true" required="true" />
+        <label for="amount" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Nominal (Rp) <span class="text-rose-500">*</span>
+        </label>
+        <input type="text" name="amount" id="amount" value="{{ old('amount', $recurring->amount ?? '') }}" data-currency required
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-bold placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               placeholder="Rp 0" />
         @error('amount')
             <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">{{ $message }}</p>
         @enderror
     </div>
 
     <!-- Frekuensi & Tanggal Eksekusi -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 border border-zinc-200/80 dark:border-zinc-800 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 bg-zinc-50/50 dark:bg-zinc-800/30">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 border border-zinc-200/80 dark:border-zinc-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-zinc-50/50 dark:bg-zinc-800/30">
         <div>
-            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">
                 Frekuensi Berulang <span class="text-rose-500">*</span>
             </label>
-            <select name="frequency" x-model="freq" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer">
+            <select name="frequency" x-model="freq" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer">
                 <option value="monthly">Bulanan (Setiap Bulan)</option>
                 <option value="daily">Harian (Setiap Hari)</option>
                 <option value="weekly">Mingguan</option>
@@ -130,10 +140,10 @@
         </div>
 
         <div x-show="freq === 'monthly'">
-            <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1">
                 Tanggal Eksekusi (Tiap Tgl) <span class="text-rose-500">*</span>
             </label>
-            <select name="day_of_month" class="w-full h-[42px] px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer">
+            <select name="day_of_month" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer">
                 @for ($d = 1; $d <= 31; $d++)
                     <option value="{{ $d }}" {{ old('day_of_month', $recurring->day_of_month ?? 1) == $d ? 'selected' : '' }}>
                         Tanggal {{ $d }} setiap bulan
@@ -146,20 +156,33 @@
     <!-- Periode Aktif -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <div>
-            <x-input-floating type="date" name="start_date" label="Mulai Berlaku" value="{{ old('start_date', isset($recurring->start_date) && $recurring->start_date ? $recurring->start_date->format('Y-m-d') : date('Y-m-d')) }}" required="true" />
+            <label for="start_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+                Mulai Berlaku <span class="text-rose-500">*</span>
+            </label>
+            <input type="date" name="start_date" id="start_date" value="{{ old('start_date', isset($recurring->start_date) && $recurring->start_date ? $recurring->start_date->format('Y-m-d') : date('Y-m-d')) }}" required
+                   class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
         </div>
         <div>
-            <x-input-floating type="date" name="end_date" label="Berakhir Pada (Opsional)" value="{{ old('end_date', isset($recurring->end_date) && $recurring->end_date ? $recurring->end_date->format('Y-m-d') : '') }}" />
+            <label for="end_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+                Berakhir Pada <span class="text-zinc-400 font-normal normal-case">(Opsional)</span>
+            </label>
+            <input type="date" name="end_date" id="end_date" value="{{ old('end_date', isset($recurring->end_date) && $recurring->end_date ? $recurring->end_date->format('Y-m-d') : '') }}"
+                   class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
         </div>
     </div>
 
     <!-- Catatan -->
     <div>
-        <x-input-floating type="text" name="note" label="Catatan Tambahan (Opsional)" value="{{ old('note', $recurring->note ?? '') }}" />
+        <label for="recurring_note" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+            Catatan Tambahan <span class="text-zinc-400 font-normal normal-case">(Opsional)</span>
+        </label>
+        <input type="text" name="note" id="recurring_note" value="{{ old('note', $recurring->note ?? '') }}"
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               placeholder="Catatan tambahan (opsional)" />
     </div>
 
     <!-- Is Active -->
-    <div>
+    <div class="pt-1">
         <x-toggle name="is_active" label="Status Jadwal Aktif" :checked="$recurring->is_active ?? true" />
     </div>
 </div>
