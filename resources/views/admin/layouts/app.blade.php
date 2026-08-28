@@ -82,6 +82,16 @@
             }
         }
 
+        /* Compact, neat placeholder styling across all inputs */
+        ::placeholder,
+        input::placeholder,
+        textarea::placeholder,
+        select::placeholder {
+            font-size: 0.75rem !important; /* 12px / text-xs */
+            font-weight: 400 !important;
+            opacity: 0.75 !important;
+        }
+
         /* Desktop sidebar collapsed state */
         @media (min-width: 1024px) {
             html.sidebar-closed #sidebar {
