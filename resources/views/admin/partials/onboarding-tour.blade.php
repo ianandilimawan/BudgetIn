@@ -132,33 +132,33 @@
             <div class="fixed inset-0 z-[102] pointer-events-none flex"
                  :class="!hasTarget ? 'items-center justify-center p-4' : (mobilePillPosition === 'top' ? 'items-start justify-center p-3 pt-3' : 'items-end justify-center p-3 pb-3')">
                 
-                <!-- If Welcome or Finish on Mobile: Clean Mini Card -->
+                <!-- If Welcome or Finish on Mobile: Clean Card supporting Light/Dark -->
                 <div x-show="!hasTarget"
                      x-transition:enter="transition ease-out duration-200 transform"
                      x-transition:enter-start="opacity-0 scale-95"
                      x-transition:enter-end="opacity-100 scale-100"
-                     class="pointer-events-auto w-full max-w-xs bg-zinc-900 text-white rounded-3xl border border-zinc-700 shadow-2xl p-4 text-center relative overflow-hidden">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-xl mx-auto mb-2 shadow-md shadow-emerald-500/30">
+                     class="pointer-events-auto w-full max-w-xs bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white rounded-3xl border border-zinc-200/80 dark:border-zinc-700 shadow-2xl p-5 text-center relative overflow-hidden">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-xl mx-auto mb-2.5 shadow-md shadow-emerald-500/30">
                         <template x-if="currentStepData.icon === 'welcome'"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></template>
                         <template x-if="currentStepData.icon === 'finish'"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></template>
                     </div>
-                    <h3 class="text-sm font-extrabold text-white" x-text="currentStepData.title"></h3>
-                    <p class="text-xs text-zinc-300 mt-1 mb-3.5 leading-relaxed" x-text="currentStepData.content"></p>
+                    <h3 class="text-sm font-extrabold text-zinc-900 dark:text-white" x-text="currentStepData.title"></h3>
+                    <p class="text-xs text-zinc-600 dark:text-zinc-300 mt-1 mb-4 leading-relaxed" x-text="currentStepData.content"></p>
                     
                     <div class="flex items-center justify-center gap-2">
-                        <button type="button" x-show="currentStep === 0" @click="closeTour(true)" class="px-3 py-1.5 rounded-xl text-xs text-zinc-400 hover:text-white transition cursor-pointer">Lewati</button>
-                        <button type="button" @click="nextStep()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 transition shadow-md shadow-emerald-500/30 cursor-pointer">
+                        <button type="button" x-show="currentStep === 0" @click="closeTour(true)" class="px-3 py-1.5 rounded-xl text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition cursor-pointer">Lewati</button>
+                        <button type="button" @click="nextStep()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 transition shadow-md shadow-emerald-500/30 cursor-pointer active:scale-95">
                             <span x-text="currentStep === 0 ? 'Yuk Intip' : 'Mulai Eksplorasi'"></span>
                         </button>
                     </div>
                 </div>
 
-                <!-- If Highlighting Component on Mobile: Ultra-Sleek Expandable Floating Pill Bar -->
+                <!-- If Highlighting Component on Mobile: Ultra-Sleek Expandable Floating Pill Bar (Light & Dark Compatible) -->
                 <div x-show="hasTarget"
                      x-transition:enter="transition ease-out duration-200 transform"
                      x-transition:enter-start="opacity-0 translate-y-3 scale-95"
                      x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                     class="pointer-events-auto w-full max-w-sm bg-zinc-950/95 dark:bg-zinc-950/95 text-white backdrop-blur-md rounded-2xl border border-zinc-700/80 shadow-2xl p-2.5 px-3 transition-all duration-200">
+                     class="pointer-events-auto w-full max-w-sm bg-white/95 dark:bg-zinc-900/95 text-zinc-900 dark:text-white backdrop-blur-md rounded-2xl border border-zinc-200/90 dark:border-zinc-700/80 shadow-2xl p-2.5 px-3 transition-all duration-200">
                     
                     <!-- Top Compact Row -->
                     <div class="flex items-center justify-between gap-2">
@@ -175,25 +175,25 @@
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black text-emerald-400 uppercase tracking-wider" x-text="`${currentStep}/${totalSteps-1}`"></span>
-                                    <h4 class="text-xs font-bold text-white truncate" x-text="currentStepData.mobileShortTitle"></h4>
+                                    <span class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider" x-text="`${currentStep}/${totalSteps-1}`"></span>
+                                    <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate" x-text="currentStepData.mobileShortTitle"></h4>
                                 </div>
                                 <div class="flex items-center gap-1">
-                                    <p class="text-[10px] text-zinc-300 font-medium truncate" x-text="currentStepData.mobileShortDesc"></p>
-                                    <span class="text-[9px] font-bold text-emerald-400 flex items-center flex-shrink-0" x-text="isExpanded ? '▴ Tutup' : '▾ Detail'"></span>
+                                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium truncate" x-text="currentStepData.mobileShortDesc"></p>
+                                    <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center flex-shrink-0" x-text="isExpanded ? '▴ Tutup' : '▾ Detail'"></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Right: Compact Control Buttons -->
                         <div class="flex items-center gap-1 flex-shrink-0">
-                            <button type="button" x-show="currentStep > 0" @click="prevStep()" class="w-7 h-7 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center text-xs font-bold transition cursor-pointer" title="Sebelumnya">
+                            <button type="button" x-show="currentStep > 0" @click="prevStep()" class="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 flex items-center justify-center text-xs font-bold transition cursor-pointer" title="Sebelumnya">
                                 ‹
                             </button>
-                            <button type="button" @click="nextStep()" class="h-7 px-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white flex items-center justify-center text-xs font-bold transition shadow-xs cursor-pointer" title="Lanjut">
+                            <button type="button" @click="nextStep()" class="h-7 px-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white flex items-center justify-center text-xs font-bold transition shadow-xs cursor-pointer active:scale-95" title="Lanjut">
                                 <span x-text="currentStep === totalSteps ? 'Selesai' : 'Lanjut ›'"></span>
                             </button>
-                            <button type="button" @click="closeTour(true)" class="w-6 h-6 rounded-lg text-zinc-400 hover:text-zinc-200 flex items-center justify-center text-xs transition cursor-pointer" title="Tutup">
+                            <button type="button" @click="closeTour(true)" class="w-6 h-6 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 flex items-center justify-center text-xs transition cursor-pointer" title="Tutup">
                                 ✕
                             </button>
                         </div>
@@ -204,9 +204,9 @@
                          x-transition:enter="transition ease-out duration-150"
                          x-transition:enter-start="opacity-0 -translate-y-1"
                          x-transition:enter-end="opacity-100 translate-y-0"
-                         class="mt-2 pt-2 border-t border-zinc-800 text-left space-y-1">
-                        <p class="text-[11px] font-bold text-emerald-400" x-text="currentStepData.subtitle"></p>
-                        <p class="text-xs text-zinc-300 leading-relaxed" x-text="currentStepData.content"></p>
+                         class="mt-2 pt-2 border-t border-zinc-100 dark:border-zinc-800 text-left space-y-1">
+                        <p class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400" x-text="currentStepData.subtitle"></p>
+                        <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed" x-text="currentStepData.content"></p>
                     </div>
                 </div>
 
@@ -360,6 +360,47 @@ document.addEventListener('alpine:init', () => {
                 }, 1200);
             }
         },
+        lockScroll() {
+            if (this._isScrollLocked) return;
+            this._isScrollLocked = true;
+
+            this._wheelHandler = (e) => {
+                if (this.isOpen) {
+                    e.preventDefault();
+                }
+            };
+            this._touchHandler = (e) => {
+                if (this.isOpen) {
+                    e.preventDefault();
+                }
+            };
+            this._scrollKeyHandler = (e) => {
+                const scrollKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space', 'Home', 'End'];
+                if (this.isOpen && scrollKeys.includes(e.code)) {
+                    e.preventDefault();
+                }
+            };
+            window.addEventListener('wheel', this._wheelHandler, { passive: false });
+            window.addEventListener('touchmove', this._touchHandler, { passive: false });
+            window.addEventListener('keydown', this._scrollKeyHandler, { passive: false });
+        },
+        unlockScroll() {
+            if (!this._isScrollLocked) return;
+            this._isScrollLocked = false;
+
+            if (this._wheelHandler) {
+                window.removeEventListener('wheel', this._wheelHandler);
+                this._wheelHandler = null;
+            }
+            if (this._touchHandler) {
+                window.removeEventListener('touchmove', this._touchHandler);
+                this._touchHandler = null;
+            }
+            if (this._scrollKeyHandler) {
+                window.removeEventListener('keydown', this._scrollKeyHandler);
+                this._scrollKeyHandler = null;
+            }
+        },
         startTour() {
             const isDashboard = {{ request()->routeIs('admin.dashboard*') ? 'true' : 'false' }};
             
@@ -373,6 +414,7 @@ document.addEventListener('alpine:init', () => {
             this.isExpanded = false;
             this.currentStep = 0;
             this.isOpen = true;
+            this.lockScroll();
             this.goToStep(0);
         },
         nextStep() {
@@ -390,6 +432,7 @@ document.addEventListener('alpine:init', () => {
             }
         },
         closeTour(markCompleted = true) {
+            this.unlockScroll();
             this.isOpen = false;
             this.hasTarget = false;
             this.isExpanded = false;
