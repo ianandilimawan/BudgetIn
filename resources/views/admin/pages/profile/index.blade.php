@@ -29,12 +29,7 @@
                 <img :src="avatarPreview" alt="{{ $user->name }}" class="w-full h-full object-cover">
             </div>
             <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2 flex-wrap">
-                    <h1 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white truncate">{{ $user->name }}</h1>
-                    <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80">
-                        {{ $user->roles->first()->name ?? 'Pengguna' }}
-                    </span>
-                </div>
+                <h1 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white truncate">{{ $user->name }}</h1>
                 <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">{{ $user->email }}</p>
             </div>
         </div>
