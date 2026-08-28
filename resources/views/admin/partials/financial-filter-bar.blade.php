@@ -11,7 +11,7 @@
     'selectedAccount' => null,
 ])
 
-<div class="p-3 sm:p-4 rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-sm"
+<div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-xs"
      x-data="{
         showCustom: {{ $dateRange['period'] === 'custom' ? 'true' : 'false' }},
         showMonthYear: {{ $dateRange['period'] === 'specific_month' ? 'true' : 'false' }},
@@ -92,10 +92,11 @@
         }
      }">
     
-    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-3">
-        <!-- Top row on mobile: Active Period & Action Buttons -->
+    <!-- 1. MOBILE VIEW LAYOUT (100% visible grid, no hidden horizontal swipe) -->
+    <div class="block lg:hidden space-y-2.5">
+        <!-- Row 1: Active Period Badge & Action Buttons -->
         <div class="flex items-center justify-between gap-2">
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-[11px] sm:text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">
                 <svg class="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
@@ -103,9 +104,8 @@
             </div>
 
             <div class="flex items-center gap-1.5">
-                @if($dateRange['period'] !== 'this_month' || request()->has('start_date') || request()->has('month'))
-                    <!-- Reset Button -->
-                    <a href="{{ $route }}" class="px-2 py-1 sm:px-2.5 sm:py-1.5 text-[11px] sm:text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition inline-flex items-center gap-1">
+                @if($dateRange['period'] !== 'this_month' || request()->has('start_date') || request()->has('month') || request()->filled('type') || request()->filled('category_id') || request()->filled('account_id'))
+                    <a href="{{ $route }}" class="px-2 py-1 text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition inline-flex items-center gap-1">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         <span>Reset</span>
                     </a>
@@ -113,7 +113,7 @@
 
                 @if($showExport)
                 <a :href="getExportUrl()" 
-                   class="lg:hidden inline-flex items-center px-2.5 py-1 text-[11px] font-bold rounded-xl text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition shadow-xs gap-1">
+                   class="inline-flex items-center px-2.5 py-1 text-[11px] font-bold rounded-xl text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition shadow-2xs gap-1">
                     <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
@@ -123,33 +123,113 @@
             </div>
         </div>
 
-        <!-- Filter Controls (Horizontally Scrollable on Mobile) -->
-        <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-            <!-- Quick Presets Buttons -->
-            <div class="inline-flex p-0.5 sm:p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-[11px] sm:text-xs flex-shrink-0">
+        <!-- Row 2: Quick Presets Grid (All options clearly visible at a glance) -->
+        <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-[11px]">
+            <button type="button" @click="applyPreset('this_month')"
+                    :class="selectedPeriod === 'this_month' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                    class="py-1.5 rounded-lg transition-all text-center">
+                Bulan Ini
+            </button>
+            <button type="button" @click="applyPreset('last_month')"
+                    :class="selectedPeriod === 'last_month' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                    class="py-1.5 rounded-lg transition-all text-center">
+                Bulan Lalu
+            </button>
+            <button type="button" @click="applyPreset('1_week')"
+                    :class="selectedPeriod === '1_week' || selectedPeriod === '7_days' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                    class="py-1.5 rounded-lg transition-all text-center">
+                7 Hari
+            </button>
+            <button type="button" @click="applyPreset('30_days')"
+                    :class="selectedPeriod === '30_days' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                    class="py-1.5 rounded-lg transition-all text-center">
+                30 Hari
+            </button>
+            <button type="button" @click="applyPreset('this_year')"
+                    :class="selectedPeriod === 'this_year' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
+                    class="py-1.5 rounded-lg transition-all text-center col-span-2">
+                Tahun Ini
+            </button>
+        </div>
+
+        <!-- Row 3: Action Buttons (Pilih Bulan, Rentang Tanggal, Filter Detail) -->
+        <div class="grid grid-cols-2 {{ $showDimensions ? 'grid-cols-2' : 'grid-cols-2' }} gap-1.5">
+            <button type="button" 
+                    @click="showMonthYear = !showMonthYear; showCustom = false; showMoreFilters = false;"
+                    :class="showMonthYear || selectedPeriod === 'specific_month' ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300 font-bold' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
+                    class="px-2.5 py-1.5 text-[11px] font-semibold rounded-xl border transition-all flex items-center justify-center gap-1.5 shadow-2xs">
+                <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span>Pilih Bulan</span>
+            </button>
+
+            <button type="button" 
+                    @click="showCustom = !showCustom; showMonthYear = false; showMoreFilters = false;"
+                    :class="showCustom || selectedPeriod === 'custom' ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300 font-bold' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
+                    class="px-2.5 py-1.5 text-[11px] font-semibold rounded-xl border transition-all flex items-center justify-center gap-1.5 shadow-2xs">
+                <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Rentang Hari</span>
+            </button>
+
+            @if($showDimensions)
+            <button type="button" 
+                    @click="showMoreFilters = !showMoreFilters; showCustom = false; showMonthYear = false;"
+                    :class="showMoreFilters || filterType || filterCategory || filterAccount ? 'bg-indigo-600 text-white border-indigo-600 font-bold' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
+                    class="col-span-2 px-2.5 py-1.5 text-[11px] font-semibold rounded-xl border transition-all flex items-center justify-center gap-1.5 shadow-2xs">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                <span>Filter Kategori & Akun</span>
+                @if(request()->filled('type') || request()->filled('category_id') || request()->filled('account_id'))
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                @endif
+            </button>
+            @endif
+        </div>
+    </div>
+
+    <!-- 2. DESKTOP VIEW LAYOUT (Inline seamless bar) -->
+    <div class="hidden lg:flex items-center justify-between gap-3">
+        <!-- Left: Active Period Label -->
+        <div class="flex items-center gap-2 flex-shrink-0">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                <svg class="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="truncate">Periode: <strong class="text-indigo-600 dark:text-indigo-400">{{ $dateRange['label'] }}</strong></span>
+            </div>
+
+            @if($dateRange['period'] !== 'this_month' || request()->has('start_date') || request()->has('month') || request()->filled('type') || request()->filled('category_id') || request()->filled('account_id'))
+                <a href="{{ $route }}" class="px-2.5 py-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition inline-flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span>Reset</span>
+                </a>
+            @endif
+        </div>
+
+        <!-- Center: Quick Presets Buttons & Picker Toggles -->
+        <div class="flex items-center gap-2">
+            <div class="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl text-xs">
                 <button type="button" @click="applyPreset('this_month')"
                         :class="selectedPeriod === 'this_month' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all whitespace-nowrap">
+                        class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap">
                     Bulan Ini
                 </button>
                 <button type="button" @click="applyPreset('last_month')"
                         :class="selectedPeriod === 'last_month' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all whitespace-nowrap">
+                        class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap">
                     Bulan Lalu
                 </button>
                 <button type="button" @click="applyPreset('1_week')"
                         :class="selectedPeriod === '1_week' || selectedPeriod === '7_days' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all whitespace-nowrap">
+                        class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap">
                     7 Hari
                 </button>
                 <button type="button" @click="applyPreset('30_days')"
                         :class="selectedPeriod === '30_days' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all whitespace-nowrap">
+                        class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap">
                     30 Hari
                 </button>
                 <button type="button" @click="applyPreset('this_year')"
                         :class="selectedPeriod === 'this_year' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all whitespace-nowrap">
+                        class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap">
                     Tahun Ini
                 </button>
             </div>
@@ -158,7 +238,7 @@
             <button type="button" 
                     @click="showMonthYear = !showMonthYear; showCustom = false;"
                     :class="showMonthYear || selectedPeriod === 'specific_month' ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
-                    class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap flex-shrink-0">
+                    class="px-3 py-1.5 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 Pilih Bulan
             </button>
@@ -167,7 +247,7 @@
             <button type="button" 
                     @click="showCustom = !showCustom; showMonthYear = false; showMoreFilters = false;"
                     :class="showCustom || selectedPeriod === 'custom' ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
-                    class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap flex-shrink-0">
+                    class="px-3 py-1.5 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 Rentang
             </button>
@@ -177,7 +257,7 @@
             <button type="button" 
                     @click="showMoreFilters = !showMoreFilters; showCustom = false; showMonthYear = false;"
                     :class="showMoreFilters || filterType || filterCategory || filterAccount ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'"
-                    class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap flex-shrink-0">
+                    class="px-3 py-1.5 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 <span>Filter Detail</span>
                 @if(request()->filled('type') || request()->filled('category_id') || request()->filled('account_id'))
@@ -187,9 +267,9 @@
             @endif
         </div>
 
-        <!-- Desktop Export Excel Button -->
+        <!-- Right: Desktop Export Excel Button -->
         @if($showExport)
-        <div class="hidden lg:flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <a :href="getExportUrl()" 
                class="inline-flex items-center px-3.5 py-2 text-xs font-bold rounded-xl text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition shadow-xs gap-1.5 whitespace-nowrap">
                 <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
