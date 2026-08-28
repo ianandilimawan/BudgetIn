@@ -3,9 +3,9 @@
 @section('title', 'Profil Saya')
 
 @section('content')
-<div class="max-w-4xl mx-auto space-y-4 sm:space-y-6 pb-6"
+<div class="space-y-4 sm:space-y-6 pb-6"
      x-data="{
-        activeTab: 'profile',
+        activeTab: 'health',
         showCurrentPw: false,
         showNewPw: false,
         showConfirmPw: false,
@@ -34,21 +34,202 @@
             </div>
         </div>
 
-        <!-- Mobile & Tablet Segmented Tab Switcher -->
-        <div class="mt-4 pt-3.5 border-t border-zinc-100 dark:border-zinc-800/80 grid grid-cols-2 gap-1.5 p-1 bg-zinc-100/80 dark:bg-zinc-800/60 rounded-xl">
+        <!-- Mobile & Desktop Segmented 3-Tab Switcher -->
+        <div class="mt-4 pt-3.5 border-t border-zinc-100 dark:border-zinc-800/80 grid grid-cols-3 gap-1 sm:gap-1.5 p-1 bg-zinc-100/80 dark:bg-zinc-800/60 rounded-xl">
+            <button type="button" @click="activeTab = 'health'"
+                    :class="activeTab === 'health' ? 'bg-white dark:bg-zinc-700 text-emerald-700 dark:text-emerald-300 font-bold shadow-xs' : 'text-zinc-500 dark:text-zinc-400 font-medium hover:text-zinc-800 dark:hover:text-zinc-200'"
+                    class="py-2 px-1 sm:px-3 rounded-lg text-xs transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 cursor-pointer">
+                <span class="text-sm">✨</span>
+                <span class="text-[11px] sm:text-xs font-semibold sm:font-bold whitespace-nowrap">
+                    <span class="sm:hidden">Kesehatan</span>
+                    <span class="hidden sm:inline">Kesehatan & AI</span>
+                </span>
+            </button>
             <button type="button" @click="activeTab = 'profile'"
                     :class="activeTab === 'profile' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-500 dark:text-zinc-400 font-medium hover:text-zinc-800 dark:hover:text-zinc-200'"
-                    class="py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span>Data Profil</span>
+                    class="py-2 px-1 sm:px-3 rounded-lg text-xs transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <span class="text-[11px] sm:text-xs font-semibold sm:font-bold whitespace-nowrap">
+                    <span class="sm:hidden">Profil</span>
+                    <span class="hidden sm:inline">Data Diri</span>
+                </span>
             </button>
             <button type="button" @click="activeTab = 'security'"
                     :class="activeTab === 'security' ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold shadow-xs' : 'text-zinc-500 dark:text-zinc-400 font-medium hover:text-zinc-800 dark:hover:text-zinc-200'"
-                    class="py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                <span>Ganti Password</span>
+                    class="py-2 px-1 sm:px-3 rounded-lg text-xs transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span class="text-[11px] sm:text-xs font-semibold sm:font-bold whitespace-nowrap">Password</span>
             </button>
         </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 1. TAB: Skor Kesehatan Keuangan & Gemini AI Advisor -->
+    <!-- ============================================================== -->
+    <div x-show="activeTab === 'health'" x-cloak x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+        @if(isset($financialHealth) && isset($aiInsights))
+        <div x-data="financialAiAdvisor({
+                score: {{ $financialHealth['overall_score'] }},
+                status: '{{ $financialHealth['status_label'] }}',
+                statusColor: '{{ $financialHealth['status_color'] }}',
+                month: {{ $financialHealth['month'] }},
+                year: {{ $financialHealth['year'] }},
+                summary: {{ json_encode($aiInsights['summary']) }},
+                cashflowInsight: {{ json_encode($aiInsights['cashflow_insight']) }},
+                budgetWarning: {{ json_encode($aiInsights['budget_warning']) }},
+                actionableTip: {{ json_encode($aiInsights['actionable_tip']) }},
+                engine: '{{ $aiInsights['engine'] }}',
+                generatedAt: '{{ $aiInsights['generated_at'] }}'
+             })"
+             class="space-y-4 sm:space-y-6">
+
+            <!-- Health Score Gauge Card -->
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 p-3.5 sm:p-5 shadow-xs relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="flex items-center justify-between gap-2 mb-3 relative z-10">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">Skor Kesehatan Keuangan</h2>
+                            <p class="text-[10px] text-zinc-400 truncate">Periode {{ $financialHealth['month_name'] }}</p>
+                        </div>
+                    </div>
+                    <span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full flex-shrink-0"
+                          :class="{
+                              'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300': statusColor === 'emerald',
+                              'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300': statusColor === 'teal',
+                              'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300': statusColor === 'amber',
+                              'bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-300': statusColor === 'rose',
+                          }" x-text="status">
+                        {{ $financialHealth['status_label'] }}
+                    </span>
+                </div>
+
+                <!-- Big Score Presentation (Horizontal Compact on Mobile) -->
+                <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-zinc-50/80 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 relative z-10">
+                    <div class="relative w-15 h-15 sm:w-18 sm:h-18 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
+                            <path class="text-zinc-200 dark:text-zinc-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <path stroke-dasharray="100, 100" :stroke-dasharray="`${score}, 100`" 
+                                  :class="{
+                                      'text-emerald-500': statusColor === 'emerald',
+                                      'text-teal-500': statusColor === 'teal',
+                                      'text-amber-500': statusColor === 'amber',
+                                      'text-rose-500': statusColor === 'rose',
+                                  }"
+                                  class="transition-all duration-1000 ease-out" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-white" x-text="score">{{ $financialHealth['overall_score'] }}</span>
+                            <span class="text-[8px] sm:text-[9px] text-zinc-400 -mt-1">/100</span>
+                        </div>
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
+                            {{ $financialHealth['status_description'] }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4 Pillars Grid -->
+                <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 relative z-10">
+                    @foreach($financialHealth['pillars'] as $key => $pillar)
+                    <div class="p-2 sm:p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
+                        <div class="flex items-center justify-between text-[10px] text-zinc-400 mb-0.5">
+                            <span class="truncate">{{ $pillar['name'] }}</span>
+                            <span class="font-bold text-[9px] {{ $pillar['is_healthy'] ? 'text-emerald-500' : 'text-amber-500' }}">{{ $pillar['score'] }}/100</span>
+                        </div>
+                        <p class="text-xs sm:text-sm font-extrabold text-zinc-800 dark:text-zinc-200 truncate">{{ $pillar['value_formatted'] }}</p>
+                        <p class="text-[9px] text-zinc-400 mt-0.5 truncate">Target: {{ $pillar['target'] }}</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Gemini AI Advisor Card -->
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 p-3.5 sm:p-5 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <h2 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">AI Financial Insights</h2>
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-bold"
+                                      :class="engine === 'gemini' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300'">
+                                    <span class="w-1 h-1 rounded-full" :class="engine === 'gemini' ? 'bg-indigo-500 animate-pulse' : 'bg-emerald-500'"></span>
+                                    <span x-text="engine === 'gemini' ? 'Gemini' : 'Smart AI'"></span>
+                                </span>
+                            </div>
+                            <p class="text-[10px] text-zinc-400 truncate">Rekomendasi strategi kas</p>
+                        </div>
+                    </div>
+
+                    <button type="button" @click="refreshAi()" :disabled="loading"
+                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[10px] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer disabled:opacity-50 flex-shrink-0 shadow-2xs">
+                        <svg class="w-3 h-3" :class="{ 'animate-spin': loading }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        <span x-text="loading ? 'Analisis...' : 'Analisis Ulang'">Analisis Ulang</span>
+                    </button>
+                </div>
+
+                <!-- AI Summary Quote -->
+                <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/20 mb-3">
+                    <p class="text-xs font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed italic" x-text="summary">
+                        "{{ $aiInsights['summary'] }}"
+                    </p>
+                </div>
+
+                <!-- Structured 3 Cards -->
+                <div class="space-y-2">
+                    <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40">
+                        <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
+                            💰
+                        </span>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-zinc-900 dark:text-white">Arus Kas & Tabungan</p>
+                            <p class="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed mt-0.5" x-text="cashflowInsight">
+                                {{ $aiInsights['cashflow_insight'] }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40">
+                        <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
+                            ⚠️
+                        </span>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-zinc-900 dark:text-white">Catatan Pos Anggaran</p>
+                            <p class="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed mt-0.5" x-text="budgetWarning">
+                                {{ $aiInsights['budget_warning'] }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
+                            💡
+                        </span>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-zinc-900 dark:text-white">Rekomendasi Aksi Cerdas</p>
+                            <p class="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed mt-0.5" x-text="actionableTip">
+                                {{ $aiInsights['actionable_tip'] }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[10px] text-zinc-400">
+                    <span>Dihitung: <span x-text="generatedAt">{{ $aiInsights['generated_at'] }}</span></span>
+                    <span class="hidden sm:inline">Diperbarui otomatis oleh AI Advisor</span>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- 1. TAB: Data Profil -->
@@ -238,14 +419,98 @@
             </form>
         </div>
     </div>
+
+    <!-- ============================================================== -->
+    <!-- Logout Action Card -->
+    <!-- ============================================================== -->
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-rose-200/60 dark:border-rose-900/40 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div class="flex items-center gap-3 text-left">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </div>
+            <div class="min-w-0 flex-1">
+                <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Keluar dari Akun</h3>
+                <p class="text-[11px] text-zinc-400">Akhiri sesi login Anda di perangkat ini secara aman</p>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ route('admin.logout') }}" class="w-full sm:w-auto flex-shrink-0">
+            @csrf
+            <button type="submit"
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-300 font-bold text-xs border border-rose-200/80 dark:border-rose-800/80 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span>Keluar Akun</span>
+            </button>
+        </form>
+    </div>
 </div>
 
 <script>
+    // Financial AI Advisor Alpine Component
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('financialAiAdvisor', (initialData) => ({
+            score: initialData.score,
+            status: initialData.status,
+            statusColor: initialData.statusColor,
+            month: initialData.month,
+            year: initialData.year,
+            summary: initialData.summary,
+            cashflowInsight: initialData.cashflowInsight,
+            budgetWarning: initialData.budgetWarning,
+            actionableTip: initialData.actionableTip,
+            engine: initialData.engine,
+            generatedAt: initialData.generatedAt,
+            loading: false,
+            async refreshAi() {
+                this.loading = true;
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    const response = await fetch('{{ route('admin.financial_health.refresh') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            month: this.month,
+                            year: this.year,
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        this.score = data.financial_health.overall_score;
+                        this.status = data.financial_health.status_label;
+                        this.statusColor = data.financial_health.status_color;
+                        this.summary = data.ai_insights.summary;
+                        this.cashflowInsight = data.ai_insights.cashflow_insight;
+                        this.budgetWarning = data.ai_insights.budget_warning;
+                        this.actionableTip = data.ai_insights.actionable_tip;
+                        this.engine = data.ai_insights.engine;
+                        this.generatedAt = data.ai_insights.generated_at;
+                        if (typeof showToast === 'function') {
+                            showToast('Analisis AI berhasil diperbarui!', 'success');
+                        }
+                    } else {
+                        throw new Error(data.message || 'Gagal memperbarui analisis');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    if (typeof showToast === 'function') {
+                        showToast('Gagal memperbarui analisis AI.', 'error');
+                    }
+                } finally {
+                    this.loading = false;
+                }
+            }
+        }));
+    });
     // Current Password AJAX Check
     let currentPasswordTimeout;
     const currentPasswordInput = document.getElementById('current_password');
     const currentPasswordHint = document.getElementById('current_password_hint');
-    
+
     if (currentPasswordInput) {
         currentPasswordInput.addEventListener('input', function() {
             clearTimeout(currentPasswordTimeout);
@@ -254,7 +519,7 @@
                 currentPasswordHint.classList.add('hidden');
                 return;
             }
-            
+
             currentPasswordTimeout = setTimeout(() => {
                 fetch('{{ route('admin.profile.check-password') }}', {
                     method: 'POST',
@@ -312,7 +577,7 @@
             let width = '0%';
             let color = 'bg-rose-500';
             let text = 'Lemah';
-            
+
             if (strength <= 2) {
                 width = '33%';
                 color = 'bg-rose-500';
@@ -326,11 +591,11 @@
                 color = 'bg-emerald-500';
                 text = 'Kuat';
             }
-            
+
             strengthBar.style.width = width;
             strengthBar.className = `h-full ${color} transition-all duration-300`;
             strengthText.textContent = 'Kekuatan: ' + text;
-            
+
             checkMatch();
         });
     }
@@ -343,12 +608,12 @@
         if (!passwordInput || !confirmInput || !matchHint) return;
         const val1 = passwordInput.value;
         const val2 = confirmInput.value;
-        
+
         if (!val2) {
             matchHint.classList.add('hidden');
             return;
         }
-        
+
         matchHint.classList.remove('hidden');
         if (val1 === val2) {
             matchHint.textContent = 'Kata sandi konfirmasi cocok.';

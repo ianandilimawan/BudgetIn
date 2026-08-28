@@ -20,6 +20,8 @@ class CashTransaction extends Model
         'account_id',
         'to_account_id',
         'category_id',
+        'budget_project_id',
+        'budget_project_item_id',
         'type',
         'amount',
         'transaction_date',
@@ -74,5 +76,15 @@ class CashTransaction extends Model
     public function toAccount()
     {
         return $this->belongsTo(\App\Models\CashAccount::class, 'to_account_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(\App\Models\BudgetProject::class, 'budget_project_id');
+    }
+
+    public function projectItem()
+    {
+        return $this->belongsTo(\App\Models\BudgetProjectItem::class, 'budget_project_item_id');
     }
 }

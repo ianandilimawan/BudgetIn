@@ -7,15 +7,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use App\Models\ActivityLog;
-use App\Models\User;
 use App\Services\ActivityLogService;
+use App\Services\FinancialHealthService;
+use App\Services\GeminiAiService;
 
 class ProfileController extends Controller
 {
-    public function index()
-    {
+    public function index(
+        Request $request,
+        FinancialHealthService $healthService,
+        GeminiAiService $aiService
+    ) {
         $user = auth()->user();
-        return view('admin.pages.profile.index', compact('user'));
+        $healthMonth = (int) $request->get('health_month', now()->format('n'));
+        $healthYear = (int) $request->get('health_year', now()->format('Y'));
+
+        $financialHealth = $healthService->calculateFinancialHealth($user->id, $healthMonth, $healthYear);
+        $aiInsights = $aiService->getFinancialInsights($user->id, $financialHealth, $request->has('refresh_ai'));
+
+        return view('admin.pages.profile.index', compact('user', 'financialHealth', 'aiInsights'));
     }
 
     public function updateProfile(Request $request)

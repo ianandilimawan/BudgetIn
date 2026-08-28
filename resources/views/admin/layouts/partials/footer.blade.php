@@ -1,21 +1,26 @@
-<footer
-    class="app-footer mt-auto border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md hidden lg:block">
-    <div class="flex flex-row justify-between items-center gap-2">
-        <div class="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 text-left">
-            &copy; {{ date('Y') }}
-            <a href="/"
-                class="font-bold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                {{ isset($settings) ? $settings->app_name : config('app.name', 'BudgetIn') }}
+<footer class="app-footer mt-auto border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md hidden lg:block py-3 px-6">
+    <div class="flex items-center justify-between gap-4">
+        <!-- Left: Brand & Copyright -->
+        <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <div class="flex items-center gap-1">
+                <span class="font-bold text-zinc-800 dark:text-zinc-200">
+                    Budget<span class="text-emerald-500">In</span>.
+                </span>
+                <span class="text-zinc-400 dark:text-zinc-600">&copy; {{ date('Y') }}</span>
+            </div>
+            <span class="text-zinc-300 dark:text-zinc-700">•</span>
+            <span class="text-zinc-400 dark:text-zinc-500">Aplikasi Manajemen Arus Kas & Anggaran Personal</span>
+            <span class="text-zinc-300 dark:text-zinc-700">•</span>
+            <a href="https://intechstudio.id" target="_blank" rel="noopener noreferrer"
+               class="font-medium text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                Intech Studio
             </a>
-            <span class="text-zinc-300 dark:text-zinc-700 mx-1">•</span>
-            <a href="https://intechstudio.id"
-                class="font-medium text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Intech Studio</a>
         </div>
 
-        <div class="flex items-center text-[10px] font-medium text-zinc-500 dark:text-zinc-400 flex-shrink-0">
-            <div
-                class="flex items-center justify-center px-1.5 py-0.5 rounded border border-zinc-200/80 dark:border-zinc-700/80 shadow-2xs ring-1 ring-black/5 dark:ring-white/5 font-mono text-[9px]">
-                v2.1.0
+        <!-- Right: Version Badge -->
+        <div class="flex items-center text-xs">
+            <div class="inline-flex items-center px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-zinc-500 dark:text-zinc-400 font-mono text-[10px] font-medium">
+                v2.2.0
             </div>
         </div>
     </div>

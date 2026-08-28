@@ -10,15 +10,15 @@
         <div class="flex lg:hidden items-center gap-2">
             <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" class="w-7 h-7 rounded-lg shadow-2xs">
             <span class="text-sm font-extrabold text-zinc-900 dark:text-white tracking-tight">
-                udget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
+                Budget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
             </span>
         </div>
 
         <div class="flex items-center space-x-2 sm:space-x-3">
-            <!-- Panduan Fitur Button -->
+            <!-- Panduan Fitur Button (Desktop Only, on mobile available inside drawer menu) -->
             <button type="button"
                 onclick="window.dispatchEvent(new CustomEvent('start-onboarding-tour'))"
-                class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 rounded-xl transition cursor-pointer shadow-2xs"
+                class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 rounded-xl transition cursor-pointer shadow-2xs"
                 title="Buka Panduan & Tur Fitur Aplikasi">
                 <span class="text-xs">✨</span>
                 <span class="hidden sm:inline">Panduan</span>
@@ -33,7 +33,7 @@
             </button>
 
             <!-- Mobile Only: User Profile Link (On Desktop it's already in the sidebar) -->
-            <a href="{{ route('admin.profile.index') }}" class="flex lg:hidden items-center p-1 rounded-full hover:ring-2 hover:ring-emerald-500/40 transition" title="Profil Saya">
+            <a id="tour-profile-nav" href="{{ route('admin.profile.index') }}" class="flex lg:hidden items-center p-1 rounded-full hover:ring-2 hover:ring-emerald-500/40 transition" title="Profil Saya">
                 @if(Auth::user() && Auth::user()->avatar)
                     <img class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-zinc-200 dark:ring-zinc-700"
                         src="{{ Storage::url(Auth::user()->avatar) }}"

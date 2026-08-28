@@ -10,7 +10,7 @@
                         <div class="flex items-center">
                             <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-8 h-8 rounded-xl shadow-xs mr-1">
                             <h1 class="text-base font-extrabold text-zinc-900 dark:text-white tracking-tight">
-                                udget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
+                                Budget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
                             </h1>
                         </div>
                     @endif
@@ -48,7 +48,7 @@
                 </nav>
 
                 <!-- User Section -->
-                <div class="p-4 border-t border-zinc-200/80 dark:border-zinc-800/80">
+                <div id="tour-profile-sidebar" class="p-4 border-t border-zinc-200/80 dark:border-zinc-800/80">
                     <a href="{{ route('admin.profile.index') }}" class="flex items-center p-2 -mx-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                         @if(Auth::user()->avatar)
                             <img class="w-10 h-10 rounded-full object-cover"

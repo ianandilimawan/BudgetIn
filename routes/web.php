@@ -102,6 +102,15 @@ Route::name('admin.')->group(function () {
         Route::post('category_budgets/batch_update', [\App\Http\Controllers\CategoryBudgetController::class, 'batchUpdate'])->name('category_budgets.batch_update');
         Route::post('category_budgets/copy_previous', [\App\Http\Controllers\CategoryBudgetController::class, 'copyFromPreviousMonth'])->name('category_budgets.copy_previous');
 
+        // Project & Event Budgeting routes
+        Route::post('budget_projects/{budgetProject}/items', [\App\Http\Controllers\BudgetProjectController::class, 'addItem'])->name('budget_projects.items.store');
+        Route::put('budget_projects/{budgetProject}/items/{budgetProjectItem}', [\App\Http\Controllers\BudgetProjectController::class, 'updateItem'])->name('budget_projects.items.update');
+        Route::post('budget_projects/{budgetProject}/items/{budgetProjectItem}/toggle-status', [\App\Http\Controllers\BudgetProjectController::class, 'toggleItemStatus'])->name('budget_projects.items.toggle_status');
+        Route::delete('budget_projects/{budgetProject}/items/{budgetProjectItem}', [\App\Http\Controllers\BudgetProjectController::class, 'deleteItem'])->name('budget_projects.items.destroy');
+        Route::post('budget_projects/{budgetProject}/transactions', [\App\Http\Controllers\BudgetProjectController::class, 'storeTransaction'])->name('budget_projects.transactions.store');
+        Route::post('budget_projects/{budgetProject}/refresh-ai', [\App\Http\Controllers\BudgetProjectController::class, 'refreshAi'])->name('budget_projects.refresh_ai');
+        Route::resource('budget_projects', \App\Http\Controllers\BudgetProjectController::class);
+
         // Recurring Transactions
         Route::post('recurring_transactions/{recurring_transaction}/toggle-status', [\App\Http\Controllers\RecurringTransactionController::class, 'toggleStatus'])->name('recurring_transactions.toggle_status');
         Route::post('recurring_transactions/{recurring_transaction}/execute-now', [\App\Http\Controllers\RecurringTransactionController::class, 'executeNow'])->name('recurring_transactions.execute_now');

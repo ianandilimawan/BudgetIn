@@ -505,178 +505,6 @@
         </div>
     </div>
 
-    <!-- Financial Health Score & Smart AI Insights (Gemini Advisor) -->
-    @if(isset($financialHealth) && isset($aiInsights))
-    <div id="tour-ai-insights" x-data="financialAiAdvisor({
-            score: {{ $financialHealth['overall_score'] }},
-            status: '{{ $financialHealth['status_label'] }}',
-            statusColor: '{{ $financialHealth['status_color'] }}',
-            month: {{ $financialHealth['month'] }},
-            year: {{ $financialHealth['year'] }},
-            summary: {{ json_encode($aiInsights['summary']) }},
-            cashflowInsight: {{ json_encode($aiInsights['cashflow_insight']) }},
-            budgetWarning: {{ json_encode($aiInsights['budget_warning']) }},
-            actionableTip: {{ json_encode($aiInsights['actionable_tip']) }},
-            engine: '{{ $aiInsights['engine'] }}',
-            generatedAt: '{{ $aiInsights['generated_at'] }}'
-         })" 
-         class="rounded-2xl bg-gradient-to-br from-white via-zinc-50/50 to-emerald-50/30 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-emerald-950/20 border border-zinc-200/80 dark:border-zinc-800 p-3 sm:p-5 shadow-xs relative overflow-hidden">
-        
-        <!-- Subtle Glow Effect -->
-        <div class="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="flex flex-col lg:flex-row gap-3 sm:gap-6 items-stretch relative z-10">
-            <!-- Left: Financial Health Score Gauge & 4 Pillars -->
-            <div class="w-full lg:w-5/12 flex flex-col justify-between p-3 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2.5 sm:mb-3">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="w-6 h-6 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                            </div>
-                            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">Skor Kesehatan Keuangan</h3>
-                        </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
-                              :class="{
-                                  'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300': statusColor === 'emerald',
-                                  'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300': statusColor === 'teal',
-                                  'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300': statusColor === 'amber',
-                                  'bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-300': statusColor === 'rose',
-                              }" x-text="status">
-                            {{ $financialHealth['status_label'] }}
-                        </span>
-                    </div>
-
-                    <!-- Big Score Ring Presentation -->
-                    <div class="flex items-center gap-3 sm:gap-4 my-1.5 sm:my-2">
-                        <div class="relative w-15 h-15 sm:w-18 sm:h-18 flex items-center justify-center flex-shrink-0">
-                            <!-- SVG Gauge Ring -->
-                            <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
-                                <path class="text-zinc-200 dark:text-zinc-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <path stroke-dasharray="100, 100" :stroke-dasharray="`${score}, 100`" 
-                                      :class="{
-                                          'text-emerald-500': statusColor === 'emerald',
-                                          'text-teal-500': statusColor === 'teal',
-                                          'text-amber-500': statusColor === 'amber',
-                                          'text-rose-500': statusColor === 'rose',
-                                      }"
-                                      class="transition-all duration-1000 ease-out" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-white" x-text="score">{{ $financialHealth['overall_score'] }}</span>
-                                <span class="text-[8px] sm:text-[9px] text-zinc-400 -mt-1">/100</span>
-                            </div>
-                        </div>
-
-                        <div class="min-w-0 flex-1">
-                            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed line-clamp-2">
-                                {{ $financialHealth['status_description'] }}
-                            </p>
-                            <p class="text-[10px] text-zinc-400 mt-1">Periode: {{ $financialHealth['month_name'] }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4 Pillars Mini Grid -->
-                <div class="mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-zinc-100 dark:border-zinc-700/60 grid grid-cols-2 gap-1.5 sm:gap-2 text-left">
-                    @foreach($financialHealth['pillars'] as $key => $pillar)
-                    <div class="p-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800">
-                        <div class="flex items-center justify-between text-[10px] text-zinc-400">
-                            <span class="truncate">{{ $pillar['name'] }}</span>
-                            <span class="font-bold text-[9px] {{ $pillar['is_healthy'] ? 'text-emerald-500' : 'text-amber-500' }}">{{ $pillar['score'] }}/100</span>
-                        </div>
-                        <p class="text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate mt-0.5">{{ $pillar['value_formatted'] }}</p>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Right: AI Financial Insights & Actionable Recommendations -->
-            <div class="w-full lg:w-7/12 flex flex-col justify-between p-3 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
-                <div>
-                    <!-- AI Header & Refresh Button (Clean Responsive Layout) -->
-                    <div class="flex items-center justify-between gap-2 mb-2.5">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                    <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">AI Financial Insights</h3>
-                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold"
-                                          :class="engine === 'gemini' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300'">
-                                        <span class="w-1.5 h-1.5 rounded-full" :class="engine === 'gemini' ? 'bg-indigo-500 animate-pulse' : 'bg-emerald-500'"></span>
-                                        <span x-text="engine === 'gemini' ? 'Google Gemini AI' : 'Smart Advisor Engine'"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Live Refresh Button -->
-                        <button type="button" @click="refreshAi()" :disabled="loading"
-                                class="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer disabled:opacity-50 flex-shrink-0">
-                            <svg class="w-3.5 h-3.5" :class="{ 'animate-spin': loading }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            <span class="hidden sm:inline" x-text="loading ? 'Menganalisis...' : 'Analisis Ulang'">Analisis Ulang</span>
-                            <span class="sm:hidden" x-text="loading ? '...' : 'Refresh'">Refresh</span>
-                        </button>
-                    </div>
-
-                    <!-- AI Summary Quote -->
-                    <div class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/20 mb-2.5 sm:mb-3">
-                        <p class="text-xs font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed italic" x-text="summary">
-                            "{{ $aiInsights['summary'] }}"
-                        </p>
-                    </div>
-
-                    <!-- Structured Insights 3 Cards -->
-                    <div class="space-y-2 text-xs">
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px]">
-                                💰
-                            </span>
-                            <div class="min-w-0">
-                                <p class="text-[11px] font-bold text-zinc-900 dark:text-white">Arus Kas & Tabungan</p>
-                                <p class="text-zinc-600 dark:text-zinc-300 text-[11px] leading-relaxed" x-text="cashflowInsight">
-                                    {{ $aiInsights['cashflow_insight'] }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px]">
-                                ⚠️
-                            </span>
-                            <div class="min-w-0">
-                                <p class="text-[11px] font-bold text-zinc-900 dark:text-white">Catatan Pos Anggaran</p>
-                                <p class="text-zinc-600 dark:text-zinc-300 text-[11px] leading-relaxed" x-text="budgetWarning">
-                                    {{ $aiInsights['budget_warning'] }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px]">
-                                💡
-                            </span>
-                            <div class="min-w-0">
-                                <p class="text-[11px] font-bold text-zinc-900 dark:text-white">Rekomendasi Aksi Cerdas</p>
-                                <p class="text-zinc-600 dark:text-zinc-300 text-[11px] leading-relaxed" x-text="actionableTip">
-                                    {{ $aiInsights['actionable_tip'] }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-700/60 flex items-center justify-between text-[10px] text-zinc-400">
-                    <span>Terakhir dihitung: <span x-text="generatedAt">{{ $aiInsights['generated_at'] }}</span></span>
-                    <span class="hidden sm:inline">Dioptimalkan secara otomatis</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
     <!-- 2. Saldo Dompet & Rekening (Full Width Multi-Account Cards) -->
     <div id="tour-accounts" class="space-y-2 sm:space-y-2.5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
@@ -988,6 +816,84 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 6.5. Anggaran Proyek & Rencana Acara Khusus (Project Goals) -->
+    <div id="tour-budget-projects" class="bg-white dark:bg-zinc-900 rounded-2xl shadow-xs border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-zinc-100 dark:border-zinc-800">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center flex-shrink-0 text-xs shadow-2xs">
+                    ✨
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h2 class="text-sm font-bold text-zinc-900 dark:text-white">Anggaran Proyek & Rencana Acara</h2>
+                        <span class="px-1.5 py-0.2 text-[9px] font-extrabold uppercase rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">Fitur Baru</span>
+                    </div>
+                    <p class="text-xs text-zinc-500">Pagu anggaran terpisah untuk pernikahan, liburan, renovasi, atau target besar</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+                <a href="{{ route('admin.budget_projects.index') }}" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                    <span>Semua Proyek</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+        </div>
+
+        @if(isset($activeBudgetProjects) && $activeBudgetProjects->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                @foreach($activeBudgetProjects as $proj)
+                    <a href="{{ route('admin.budget_projects.show', $proj->id) }}" 
+                       class="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 hover:border-emerald-200 dark:hover:border-emerald-800/60 transition group flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="text-lg">{{ $proj->icon }}</span>
+                                    <h4 class="text-xs font-bold text-zinc-900 dark:text-white truncate group-hover:text-emerald-600 transition-colors">
+                                        {{ $proj->name }}
+                                    </h4>
+                                </div>
+                                <span class="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full {{ $proj->is_over_budget ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' }}">
+                                    {{ $proj->actual_spent_percentage }}%
+                                </span>
+                            </div>
+
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-1.5 rounded-full overflow-hidden mb-2">
+                                <div class="h-full rounded-full transition-all duration-500 {{ $proj->is_over_budget ? 'bg-rose-500' : ($proj->actual_spent_percentage >= 80 ? 'bg-amber-500' : 'bg-emerald-500') }}"
+                                     style="width: {{ $proj->spent_percentage }}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[10px] text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+                            <span>Sisa: <strong class="text-emerald-600 dark:text-emerald-400">{{ $proj->remaining_budget_formatted }}</strong></span>
+                            @if($proj->days_remaining !== null)
+                                <span>⏳ {{ $proj->days_remaining > 0 ? "{$proj->days_remaining}h lagi" : 'Hari H' }}</span>
+                            @else
+                                <span>{{ $proj->items->count() }} Pos</span>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        @else
+            <div class="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-emerald-500/5 via-teal-500/5 to-transparent border border-dashed border-emerald-200/80 dark:border-emerald-800/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl flex-shrink-0">
+                        💍
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Punya Rencana Nikahan, Liburan, atau Renovasi?</h4>
+                        <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Buat pagu anggaran khusus dengan rincian sub-pos dan tracking real-time terpisah dari pengeluaran harian.</p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.budget_projects.index') }}" 
+                   class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex-shrink-0">
+                    + Buat Anggaran Acara
+                </a>
+            </div>
+        @endif
     </div>
 
     <!-- 7. Transaksi Kas Terbaru (Full Width Table) -->
@@ -1359,6 +1265,22 @@
                         </div>
                     </div>
 
+                    <!-- Kaitkan ke Proyek / Acara (Opsional) -->
+                    <div x-show="quickType === 'expense'" style="display: none;">
+                        <label class="block text-xs uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 mb-1 flex items-center justify-between">
+                            <span>Kaitkan ke Proyek / Acara</span>
+                            <span class="text-[10px] text-zinc-400 font-normal normal-case">(Opsional - Nikahan, Liburan, dll)</span>
+                        </label>
+                        <select name="budget_project_id" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                            <option value="">-- Tanpa Proyek Khusus --</option>
+                            @if(isset($activeBudgetProjects))
+                                @foreach($activeBudgetProjects as $proj)
+                                    <option value="{{ $proj->id }}">{{ $proj->icon }} {{ $proj->name }} (Sisa: {{ $proj->remaining_budget_formatted }})</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
                     <!-- Dompet / Akun Asal & Tujuan -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
@@ -1706,66 +1628,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateChartsTheme(dark);
     });
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-});
-
-document.addEventListener('alpine:init', () => {
-    Alpine.data('financialAiAdvisor', (initialData) => ({
-        score: initialData.score,
-        status: initialData.status,
-        statusColor: initialData.statusColor,
-        month: initialData.month,
-        year: initialData.year,
-        summary: initialData.summary,
-        cashflowInsight: initialData.cashflowInsight,
-        budgetWarning: initialData.budgetWarning,
-        actionableTip: initialData.actionableTip,
-        engine: initialData.engine,
-        generatedAt: initialData.generatedAt,
-        loading: false,
-        async refreshAi() {
-            this.loading = true;
-            try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                const response = await fetch('{{ route('admin.financial_health.refresh') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        month: this.month,
-                        year: this.year,
-                    })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    this.score = data.financial_health.overall_score;
-                    this.status = data.financial_health.status_label;
-                    this.statusColor = data.financial_health.status_color;
-                    this.summary = data.ai_insights.summary;
-                    this.cashflowInsight = data.ai_insights.cashflow_insight;
-                    this.budgetWarning = data.ai_insights.budget_warning;
-                    this.actionableTip = data.ai_insights.actionable_tip;
-                    this.engine = data.ai_insights.engine;
-                    this.generatedAt = data.ai_insights.generated_at;
-                    if (typeof showToast === 'function') {
-                        showToast('Analisis AI berhasil diperbarui!', 'success');
-                    }
-                } else {
-                    throw new Error(data.message || 'Gagal memperbarui analisis');
-                }
-            } catch (err) {
-                console.error(err);
-                if (typeof showToast === 'function') {
-                    showToast('Gagal memperbarui analisis AI.', 'error');
-                }
-            } finally {
-                this.loading = false;
-            }
-        }
-    }));
 });
 </script>
 @endpush

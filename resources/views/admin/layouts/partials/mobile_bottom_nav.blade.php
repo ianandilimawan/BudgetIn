@@ -148,49 +148,61 @@
             <!-- Modul Keuangan & Anggaran -->
             <div class="space-y-1.5">
                 <h5 class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Keuangan & Anggaran</h5>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-1.5">
                     <a href="{{ route('admin.category_budgets.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/30 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Target Anggaran</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Batas limit belanja bulanan</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Target Anggaran</p>
-                            <p class="text-[9px] text-zinc-400">Batas pos belanja</p>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+
+                    <a href="{{ route('admin.budget_projects.index') }}" @click="mobileNavOpen = false"
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-teal-50/60 dark:hover:bg-teal-950/30 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-900/60 text-teal-600 dark:text-teal-300 flex items-center justify-center flex-shrink-0 text-base">
+                                💍
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Anggaran Acara & Proyek</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Pernikahan, liburan, renovasi, dll</p>
+                            </div>
                         </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
 
                     <a href="{{ route('admin.recurring_transactions.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-blue-50/60 dark:hover:bg-blue-950/30 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Transaksi Rutin</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Tagihan & pembayaran berulang</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Transaksi Rutin</p>
-                            <p class="text-[9px] text-zinc-400">Tagihan berulang</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
 
                     <a href="{{ route('admin.transaction_categories.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-purple-50 dark:hover:bg-purple-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-purple-50/60 dark:hover:bg-purple-950/30 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Kategori Transaksi</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Master pos kas masuk & keluar</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Kategori Transaksi</p>
-                            <p class="text-[9px] text-zinc-400">Master pos kas</p>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.cash_accounts.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Dompet & Kas</p>
-                            <p class="text-[9px] text-zinc-400">Kelola rekening</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-purple-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
             </div>
@@ -199,78 +211,81 @@
             @if(auth()->user() && (auth()->user()->hasRole('Super Admin') || auth()->user()->hasPermission('view-users') || auth()->user()->hasPermission('view-activity-logs')))
             <div class="space-y-1.5">
                 <h5 class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Sistem & Akses</h5>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-1.5">
                     @if(auth()->user()->hasPermission('view-users'))
                     <a href="{{ route('admin.finance_users.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-900/60 text-sky-600 dark:text-sky-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-900/60 text-sky-600 dark:text-sky-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Pengguna Finance</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Kontrol akun pengguna</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Pengguna Finance</p>
-                            <p class="text-[9px] text-zinc-400">Kontrol akun</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-sky-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                     @endif
 
                     @if(auth()->user()->hasRole('Super Admin'))
                     <a href="{{ route('admin.roles.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Role & Hak Akses</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Hak permission akses</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Role & Hak Akses</p>
-                            <p class="text-[9px] text-zinc-400">Hak permission</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                     @endif
 
                     @if(auth()->user()->hasPermission('view-activity-logs'))
                     <a href="{{ route('admin.activity-logs.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-slate-50 dark:hover:bg-slate-900/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-slate-50 dark:hover:bg-slate-900/40 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Log Aktivitas</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Audit trail aktivitas sistem</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Log Aktivitas</p>
-                            <p class="text-[9px] text-zinc-400">Audit trail</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-slate-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                     @endif
 
                     @if(auth()->user()->hasRole('Super Admin'))
                     <a href="{{ route('admin.settings.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
-                        <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                       class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Pengaturan</p>
+                                <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Konfigurasi sistem aplikasi</p>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Pengaturan</p>
-                            <p class="text-[9px] text-zinc-400">Sistem aplikasi</p>
-                        </div>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-zinc-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                     @endif
                 </div>
             </div>
             @endif
 
-            <!-- Akun & Logout -->
-            <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
+            <!-- Akun Profil -->
+            <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800">
                 <a href="{{ route('admin.profile.index') }}" @click="mobileNavOpen = false"
-                   class="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-semibold transition">
+                   class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-semibold transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     <span>Profil Saya</span>
                 </a>
-
-                <form method="POST" action="{{ route('admin.logout') }}" class="flex-1">
-                    @csrf
-                    <button type="submit"
-                            class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-xs font-semibold transition cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        <span>Keluar Akun</span>
-                    </button>
-                </form>
             </div>
         </div>
     </div>

@@ -155,9 +155,9 @@ class FinancialHealthTest extends TestCase
         $this->assertEquals('Kondisi finansial sangat memuaskan.', $insights['summary']);
     }
 
-    public function test_dashboard_renders_financial_health_and_ai_insights()
+    public function test_profile_renders_financial_health_and_ai_insights()
     {
-        $response = $this->actingAs($this->user)->get(route('admin.dashboard'));
+        $response = $this->actingAs($this->user)->get(route('admin.profile.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Skor Kesehatan Keuangan');

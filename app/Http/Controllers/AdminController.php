@@ -129,6 +129,13 @@ class AdminController extends Controller
             ];
         }
 
+        $activeBudgetProjects = \App\Models\BudgetProject::forUser($userId)
+            ->where('status', 'active')
+            ->with(['items', 'transactions'])
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
         return view('admin.pages.dashboard', compact(
             'isSuperAdmin',
             'systemStats',
@@ -144,6 +151,7 @@ class AdminController extends Controller
             'totalCategories',
             'totalTransactions',
             'budgetProgress',
+            'activeBudgetProjects',
             'expenseCategories',
             'incomeCategories',
             'cashAccounts',

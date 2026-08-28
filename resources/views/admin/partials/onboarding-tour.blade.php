@@ -136,7 +136,7 @@
                         <span x-text="currentStepData.iconEmoji">✨</span>
                     </div>
                     <h3 class="text-sm font-extrabold text-white" x-text="currentStepData.title"></h3>
-                    <p class="text-xs text-zinc-300 mt-1 mb-3.5 leading-relaxed" x-text="currentStep === 0 ? 'Yuk intip 1 menit biar ga boncos & pusing ngatur duit!' : 'Mantap, sekarang waktunya wujudkan target keuanganmu!'"></p>
+                    <p class="text-xs text-zinc-300 mt-1 mb-3.5 leading-relaxed" x-text="currentStepData.content"></p>
                     
                     <div class="flex items-center justify-center gap-2">
                         <button type="button" x-show="currentStep === 0" @click="closeTour(true)" class="px-3 py-1.5 rounded-xl text-xs text-zinc-400 hover:text-white transition cursor-pointer">Lewati</button>
@@ -224,18 +224,8 @@ document.addEventListener('alpine:init', () => {
                 content: 'Biar ga pusing ngatur duit dan boncos pas akhir bulan, yuk intip fitur-fitur keren di BudgetIn. Cepat & gampang banget kok! 😉',
             },
             {
-                id: 'ai-insights',
-                title: '1. Cek Kesehatan Duitmu 🧠',
-                subtitle: 'Gemini AI siap kasih saran biar ga boncos!',
-                iconEmoji: '🤖',
-                mobileShortTitle: 'Kesehatan Duitmu 🧠',
-                mobileShortDesc: 'Gemini AI kasih saran biar ga boncos',
-                target: '#tour-ai-insights',
-                content: 'Di sini kamu bisa pantau skor keuanganmu (0-100) dan dapet evaluasi jujur langsung dari Google Gemini AI. Biar tahu kapan kudu ngerem jajan!',
-            },
-            {
                 id: 'accounts',
-                title: '2. Pantau Semua Dompet & Kas 💳',
+                title: '1. Pantau Semua Dompet & Kas 💳',
                 subtitle: 'Bank, e-wallet, sampe kas jadi satu',
                 iconEmoji: '🏦',
                 mobileShortTitle: 'Pantau Semua Dompet 💳',
@@ -245,13 +235,23 @@ document.addEventListener('alpine:init', () => {
             },
             {
                 id: 'budget-planner',
-                title: '3. Pasang Rem Belanja 🎯',
+                title: '2. Pasang Rem Belanja 🎯',
                 subtitle: 'Jatah pos jajan biar saldo ga jebol',
                 iconEmoji: '📊',
                 mobileShortTitle: 'Pasang Rem Belanja 🎯',
                 mobileShortDesc: 'Batasin pos jajan biar saldo ga jebol',
                 target: '#tour-budget-planner',
                 content: 'Tentukan batas jajan makan, nongkrong, atau belanja bulanan. Begitu mendekati batas, sistem bakal langsung kasih lampu kuning biar kamu ngerem!',
+            },
+            {
+                id: 'budget-projects',
+                title: '3. Anggaran Acara & Proyek Impian 💍',
+                subtitle: 'Pernikahan, liburan, & renovasi terpantau rapi',
+                iconEmoji: '💍',
+                mobileShortTitle: 'Proyek & Acara Impian 💍',
+                mobileShortDesc: 'Pagu nikahan & liburan terpisah rapi',
+                target: '#tour-budget-projects',
+                content: 'Mau nikahan 50jt, liburan ke Jepang, atau renovasi rumah? Bikin pos rincian belanja (dekorasi, katering, tiket) biar budget khusus ga kecampur sama uang bulanan!',
             },
             {
                 id: 'quick-catat',
@@ -279,9 +279,9 @@ document.addEventListener('alpine:init', () => {
                 subtitle: 'Waktunya kelola duit lebih bijak',
                 iconEmoji: '🎉',
                 mobileShortTitle: 'Siap Tempur! 🚀',
-                mobileShortDesc: 'Pasang di homescreen HP biar sat-set',
+                mobileShortDesc: 'Skor & AI ada di menu Profil, selamat mencoba!',
                 target: null,
-                content: 'Tips santai: Pasang BudgetIn di layar utama HP kamu lewat menu browser "Tambahkan ke Layar Utama" biar aksesnya sat-set layaknya aplikasi native!',
+                content: 'Tips keren: Skor Kesehatan Keuangan & analisis pintar dari Gemini AI tersimpan aman di menu Profil Saya. Pasang juga BudgetIn di layar utama HP biar aksesnya makin sat-set!',
             }
         ],
         get totalSteps() {
@@ -326,9 +326,21 @@ document.addEventListener('alpine:init', () => {
                 if (e.key === 'ArrowLeft') this.prevStep();
             });
 
+            // Check if user requested tour from another page
+            const requestedTour = sessionStorage.getItem('budgetin_auto_start_tour');
+            if (requestedTour === 'true') {
+                sessionStorage.removeItem('budgetin_auto_start_tour');
+                if ({{ request()->routeIs('admin.dashboard*') ? 'true' : 'false' }}) {
+                    setTimeout(() => {
+                        this.startTour();
+                    }, 400);
+                }
+                return;
+            }
+
             // Auto start on first visit to dashboard
             const hasSeen = localStorage.getItem('budgetin_onboarding_completed_v1');
-            const isDashboard = window.location.pathname.includes('/admin/dashboard') || window.location.pathname === '/admin';
+            const isDashboard = {{ request()->routeIs('admin.dashboard*') ? 'true' : 'false' }};
             if (!hasSeen && isDashboard) {
                 setTimeout(() => {
                     this.startTour();
@@ -336,6 +348,14 @@ document.addEventListener('alpine:init', () => {
             }
         },
         startTour() {
+            const isDashboard = {{ request()->routeIs('admin.dashboard*') ? 'true' : 'false' }};
+            
+            if (!isDashboard) {
+                sessionStorage.setItem('budgetin_auto_start_tour', 'true');
+                window.location.href = "{{ route('admin.dashboard') }}";
+                return;
+            }
+
             this.isMobile = window.innerWidth < 768;
             this.isExpanded = false;
             this.currentStep = 0;
@@ -376,6 +396,17 @@ document.addEventListener('alpine:init', () => {
                     return desktopBtn;
                 }
                 return mobileBtn || desktopBtn;
+            }
+            if (step.id === 'ai-insights') {
+                const mobileProfile = document.querySelector('#tour-profile-nav');
+                const desktopProfile = document.querySelector('#tour-profile-sidebar');
+                if (window.innerWidth < 1024 && mobileProfile && mobileProfile.offsetParent !== null) {
+                    return mobileProfile;
+                }
+                if (desktopProfile && desktopProfile.offsetParent !== null) {
+                    return desktopProfile;
+                }
+                return mobileProfile || desktopProfile;
             }
             return document.querySelector(step.target);
         },
