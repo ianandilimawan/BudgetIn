@@ -15,13 +15,15 @@ class GeminiAiService
 
     public function __construct()
     {
-        $this->apiKey = (string) (config('services.gemini.api_key') ?: env('GEMINI_API_KEY', ''));
-        $rawModel = (string) (config('services.gemini.model') ?: env('GEMINI_MODEL', 'gemini-3.5-flash'));
-        if (in_array($rawModel, ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash', 'gemini-2.5-flash', ''])) {
+        $this->apiKey = (string) (config('services.gemini.api_key') ?? env('GEMINI_API_KEY', ''));
+        $rawModel = (string) (config('services.gemini.model') ?? env('GEMINI_MODEL', 'gemini-3.5-flash-lite'));
+        if (in_array($rawModel, ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', ''])) {
+            $rawModel = 'gemini-3.5-flash-lite';
+        } elseif (in_array($rawModel, ['gemini-2.0-flash', 'gemini-2.5-flash'])) {
             $rawModel = 'gemini-3.5-flash';
         }
         $this->model = $rawModel;
-        $this->timeout = (int) (config('services.gemini.timeout') ?: env('GEMINI_TIMEOUT', 30));
+        $this->timeout = (int) (config('services.gemini.timeout') ?? env('GEMINI_TIMEOUT', 30));
     }
 
     /**
@@ -115,6 +117,15 @@ Berikan evaluasi keuangan yang ringkas, personal, santun, memotivasi, dan bernas
 
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
 
+        $generationConfig = [
+            'responseMimeType' => 'application/json',
+            'temperature' => 0.3,
+            'maxOutputTokens' => 800,
+        ];
+        if ($this->model === 'gemini-3.5-flash') {
+            $generationConfig['thinkingConfig'] = ['thinkingBudget' => 0];
+        }
+
         $response = Http::timeout($this->timeout)
             ->retry(2, 500, throw: false)
             ->post($url, [
@@ -125,14 +136,7 @@ Berikan evaluasi keuangan yang ringkas, personal, santun, memotivasi, dan bernas
                         ]
                     ]
                 ],
-                'generationConfig' => [
-                    'responseMimeType' => 'application/json',
-                    'temperature' => 0.3,
-                    'maxOutputTokens' => 800,
-                    'thinkingConfig' => [
-                        'thinkingBudget' => 0,
-                    ],
-                ]
+                'generationConfig' => $generationConfig,
             ]);
 
         if (!$response->successful()) {

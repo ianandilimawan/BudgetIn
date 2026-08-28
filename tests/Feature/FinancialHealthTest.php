@@ -95,11 +95,21 @@ class FinancialHealthTest extends TestCase
 
     public function test_gemini_ai_service_returns_rule_based_fallback_when_no_api_key()
     {
+        config(['services.gemini.api_key' => '']);
+        $prevEnv = getenv('GEMINI_API_KEY');
+        putenv('GEMINI_API_KEY=');
+        $_ENV['GEMINI_API_KEY'] = '';
+
         $healthService = app(FinancialHealthService::class);
         $healthData = $healthService->calculateFinancialHealth($this->user->id);
 
-        $aiService = app(GeminiAiService::class);
+        $aiService = new GeminiAiService();
         $insights = $aiService->getFinancialInsights($this->user->id, $healthData, true);
+
+        if ($prevEnv !== false) {
+            putenv("GEMINI_API_KEY={$prevEnv}");
+            $_ENV['GEMINI_API_KEY'] = $prevEnv;
+        }
 
         $this->assertIsArray($insights);
         $this->assertArrayHasKey('summary', $insights);
