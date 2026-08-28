@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="admin-panel overflow-hidden" id="adminHtml">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="admin-panel lg:overflow-hidden" id="adminHtml">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($settings) ? $settings->app_name : config('app.name', 'Laravel') }} - Admin</title>
 
@@ -71,7 +71,15 @@
             min-height: 100%;
             min-height: 100vh;
             min-height: 100dvh;
+            touch-action: manipulation;
             -webkit-overflow-scrolling: touch;
+        }
+
+        /* Prevent auto-zoom on iOS when tapping/focusing inputs */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
         }
 
         /* Desktop sidebar collapsed state */
@@ -87,7 +95,7 @@
     </style>
 </head>
 
-<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh] flex flex-col" id="body">
+<body class="bg-zinc-50 dark:bg-zinc-950 font-sans text-sm antialiased text-zinc-900 dark:text-zinc-100 min-h-screen min-h-[100dvh] overflow-x-hidden flex flex-col" id="body">
     <div class="flex flex-1 w-full min-h-screen min-h-[100dvh] lg:h-screen lg:overflow-hidden">
         <!-- Sidebar & Desktop Spacer -->
         @include('admin.layouts.partials.sidebar')
@@ -99,9 +107,9 @@
                 @include('admin.layouts.partials.navbar')
             </div>
 
-            <!-- Page Content (Native body/window scroll on mobile, overflow-y-auto on desktop) -->
-            <div class="flex-1 flex flex-col relative z-0 lg:overflow-y-auto overscroll-y-contain w-full" style="-webkit-overflow-scrolling: touch;">
-                <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-24 lg:pb-6">
+            <!-- Page Content (Window/body scrolls naturally on mobile, inner overflow-y-auto on desktop) -->
+            <div class="flex-1 flex flex-col relative z-0 w-full lg:overflow-y-auto overscroll-y-contain" style="-webkit-overflow-scrolling: touch;">
+                <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-28 lg:pb-6">
                     @yield('content')
                 </main>
                 @include('admin.layouts.partials.footer')
