@@ -69,21 +69,27 @@
             min-height: 100dvh;
         }
 
-        /* Compact sleek footer */
+        /* Mobile footer bottom safe clearance for iOS Chrome & Safari */
         .app-footer {
-            padding-top: 0.625rem;
-            padding-bottom: 0.625rem;
+            padding-top: 0.875rem;
             padding-left: 1rem;
             padding-right: 1rem;
+            padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)) !important;
+        }
+        @media (min-width: 640px) {
+            .app-footer {
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem !important;
+            }
         }
 
-        /* Mobile FAB bottom placement */
+        /* Mobile FAB bottom safe clearance */
         .mobile-fab {
-            bottom: 4.25rem;
+            bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
         }
         @media (min-width: 768px) {
             .mobile-fab {
-                bottom: 1.5rem;
+                bottom: 1.5rem !important;
             }
         }
 
@@ -112,7 +118,7 @@
 
             <!-- Page Content -->
             <div class="flex-1 overflow-y-auto flex flex-col relative z-0">
-                <main class="flex-1 p-3.5 sm:p-6 animate-fade-in-up pb-16 sm:pb-6">
+                <main class="flex-1 p-4 sm:p-6 animate-fade-in-up pb-8 sm:pb-6">
                     @yield('content')
                 </main>
                 @include('admin.layouts.partials.footer')
