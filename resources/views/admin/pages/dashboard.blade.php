@@ -471,7 +471,8 @@
             <h1 class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-zinc-900 dark:text-white">Dashboard Keuangan</h1>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">Ringkasan kondisi finansial, saldo dompet, tren arus kas, dan kontrol anggaran.</p>
         </div>
-        <div class="flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
+        <!-- Desktop Quick Actions (hidden on mobile since bottom navigation bar handles it) -->
+        <div class="hidden sm:flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
             @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
             <button type="button" @click="quickModal = true"
                 class="inline-flex items-center px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-500/20 whitespace-nowrap flex-shrink-0 cursor-pointer">
@@ -519,23 +520,23 @@
             engine: '{{ $aiInsights['engine'] }}',
             generatedAt: '{{ $aiInsights['generated_at'] }}'
          })" 
-         class="rounded-2xl bg-gradient-to-br from-white via-zinc-50/50 to-emerald-50/30 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-emerald-950/20 border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 shadow-xs relative overflow-hidden">
+         class="rounded-2xl bg-gradient-to-br from-white via-zinc-50/50 to-emerald-50/30 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-emerald-950/20 border border-zinc-200/80 dark:border-zinc-800 p-3 sm:p-5 shadow-xs relative overflow-hidden">
         
         <!-- Subtle Glow Effect -->
         <div class="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="flex flex-col lg:flex-row gap-4 sm:gap-6 items-stretch relative z-10">
+        <div class="flex flex-col lg:flex-row gap-3 sm:gap-6 items-stretch relative z-10">
             <!-- Left: Financial Health Score Gauge & 4 Pillars -->
-            <div class="w-full lg:w-5/12 flex flex-col justify-between p-3.5 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
+            <div class="w-full lg:w-5/12 flex flex-col justify-between p-3 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
                 <div>
-                    <div class="flex items-center justify-between gap-2 mb-3">
-                        <div class="flex items-center gap-1.5">
+                    <div class="flex items-center justify-between gap-2 mb-2.5 sm:mb-3">
+                        <div class="flex items-center gap-1.5 min-w-0">
                             <div class="w-6 h-6 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </div>
-                            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Skor Kesehatan Keuangan</h3>
+                            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">Skor Kesehatan Keuangan</h3>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
                               :class="{
                                   'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300': statusColor === 'emerald',
                                   'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300': statusColor === 'teal',
@@ -547,8 +548,8 @@
                     </div>
 
                     <!-- Big Score Ring Presentation -->
-                    <div class="flex items-center gap-4 my-2">
-                        <div class="relative w-16 h-16 sm:w-18 sm:h-18 flex items-center justify-center flex-shrink-0">
+                    <div class="flex items-center gap-3 sm:gap-4 my-1.5 sm:my-2">
+                        <div class="relative w-15 h-15 sm:w-18 sm:h-18 flex items-center justify-center flex-shrink-0">
                             <!-- SVG Gauge Ring -->
                             <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
                                 <path class="text-zinc-200 dark:text-zinc-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
@@ -562,8 +563,8 @@
                                       class="transition-all duration-1000 ease-out" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-lg sm:text-xl font-extrabold text-zinc-900 dark:text-white" x-text="score">{{ $financialHealth['overall_score'] }}</span>
-                                <span class="text-[9px] text-zinc-400 -mt-1">/100</span>
+                                <span class="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-white" x-text="score">{{ $financialHealth['overall_score'] }}</span>
+                                <span class="text-[8px] sm:text-[9px] text-zinc-400 -mt-1">/100</span>
                             </div>
                         </div>
 
@@ -577,7 +578,7 @@
                 </div>
 
                 <!-- 4 Pillars Mini Grid -->
-                <div class="mt-3 pt-2.5 border-t border-zinc-100 dark:border-zinc-700/60 grid grid-cols-2 gap-2 text-left">
+                <div class="mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-zinc-100 dark:border-zinc-700/60 grid grid-cols-2 gap-1.5 sm:gap-2 text-left">
                     @foreach($financialHealth['pillars'] as $key => $pillar)
                     <div class="p-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800">
                         <div class="flex items-center justify-between text-[10px] text-zinc-400">
@@ -591,17 +592,17 @@
             </div>
 
             <!-- Right: AI Financial Insights & Actionable Recommendations -->
-            <div class="w-full lg:w-7/12 flex flex-col justify-between p-3.5 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
+            <div class="w-full lg:w-7/12 flex flex-col justify-between p-3 sm:p-4 rounded-xl bg-white/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 shadow-2xs">
                 <div>
-                    <!-- AI Header & Refresh Button -->
+                    <!-- AI Header & Refresh Button (Clean Responsive Layout) -->
                     <div class="flex items-center justify-between gap-2 mb-2.5">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5 min-w-0">
                             <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                             </div>
-                            <div>
-                                <div class="flex items-center gap-1.5">
-                                    <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">AI Financial Insights</h3>
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">AI Financial Insights</h3>
                                     <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold"
                                           :class="engine === 'gemini' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300'">
                                         <span class="w-1.5 h-1.5 rounded-full" :class="engine === 'gemini' ? 'bg-indigo-500 animate-pulse' : 'bg-emerald-500'"></span>
@@ -613,14 +614,15 @@
 
                         <!-- Live Refresh Button -->
                         <button type="button" @click="refreshAi()" :disabled="loading"
-                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer disabled:opacity-50">
+                                class="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer disabled:opacity-50 flex-shrink-0">
                             <svg class="w-3.5 h-3.5" :class="{ 'animate-spin': loading }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            <span x-text="loading ? 'Menganalisis...' : 'Analisis Ulang'">Analisis Ulang</span>
+                            <span class="hidden sm:inline" x-text="loading ? 'Menganalisis...' : 'Analisis Ulang'">Analisis Ulang</span>
+                            <span class="sm:hidden" x-text="loading ? '...' : 'Refresh'">Refresh</span>
                         </button>
                     </div>
 
                     <!-- AI Summary Quote -->
-                    <div class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/20 mb-3">
+                    <div class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/20 mb-2.5 sm:mb-3">
                         <p class="text-xs font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed italic" x-text="summary">
                             "{{ $aiInsights['summary'] }}"
                         </p>
