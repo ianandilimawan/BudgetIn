@@ -154,24 +154,13 @@
                     </a>
 
                     <a href="{{ route('admin.transaction_categories.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-purple-50 dark:hover:bg-purple-950/40 transition">
+                       class="col-span-2 sm:col-span-1 flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-purple-50 dark:hover:bg-purple-950/40 transition">
                         <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 flex items-center justify-center flex-shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                         </div>
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Kategori Transaksi</p>
                             <p class="text-[9px] text-zinc-400">Master pos kas</p>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.cash_accounts.index') }}" @click="mobileNavOpen = false"
-                       class="flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition">
-                        <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-zinc-900 dark:text-white truncate">Dompet & Kas</p>
-                            <p class="text-[9px] text-zinc-400">Kelola rekening</p>
                         </div>
                     </a>
                 </div>
@@ -237,22 +226,28 @@
             </div>
             @endif
 
-            <!-- Akun & Logout -->
-            <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-                <a href="{{ route('admin.profile.index') }}" @click="mobileNavOpen = false"
-                   class="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-semibold transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span>Profil Saya</span>
-                </a>
+            <!-- PWA Install Banner (Appears when installable on mobile) -->
+            <div id="pwaInstallContainer" style="display: none;" class="p-3 rounded-2xl bg-gradient-to-r from-emerald-600/10 via-teal-600/10 to-indigo-600/10 border border-emerald-500/30 items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <img src="/icons/icon-96x96.png" alt="BudgetIn" class="w-8 h-8 rounded-xl shadow-xs flex-shrink-0">
+                    <div class="min-w-0">
+                        <h5 class="text-xs font-bold text-zinc-900 dark:text-white truncate">Install Aplikasi</h5>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Pasang di layar utama HP</p>
+                    </div>
+                </div>
+                <button type="button" id="pwaInstallBtn"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-xs transition flex-shrink-0 cursor-pointer">
+                    Install
+                </button>
+            </div>
 
-                <form method="POST" action="{{ route('admin.logout') }}" class="flex-1">
-                    @csrf
-                    <button type="submit"
-                            class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-xs font-semibold transition cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        <span>Keluar Akun</span>
-                    </button>
-                </form>
+            <!-- Akun -->
+            <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                <a href="{{ route('admin.profile.index') }}" @click="mobileNavOpen = false"
+                   class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-semibold transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    <span>Profil & Pengaturan Akun</span>
+                </a>
             </div>
         </div>
     </div>

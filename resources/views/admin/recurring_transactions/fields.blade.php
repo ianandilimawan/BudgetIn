@@ -159,15 +159,19 @@
             <label for="start_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Mulai Berlaku <span class="text-rose-500">*</span>
             </label>
-            <input type="date" name="start_date" id="start_date" value="{{ old('start_date', isset($recurring->start_date) && $recurring->start_date ? $recurring->start_date->format('Y-m-d') : date('Y-m-d')) }}" required
-                   class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
+            <div class="relative w-full">
+                <input type="text" name="start_date" id="start_date" data-datepicker value="{{ old('start_date', isset($recurring->start_date) && $recurring->start_date ? $recurring->start_date->format('Y-m-d') : date('Y-m-d')) }}" required
+                       class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer leading-normal block" />
+            </div>
         </div>
         <div>
             <label for="end_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Berakhir Pada <span class="text-zinc-400 font-normal normal-case">(Opsional)</span>
             </label>
-            <input type="date" name="end_date" id="end_date" value="{{ old('end_date', isset($recurring->end_date) && $recurring->end_date ? $recurring->end_date->format('Y-m-d') : '') }}"
-                   class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
+            <div class="relative w-full">
+                <input type="text" name="end_date" id="end_date" data-datepicker value="{{ old('end_date', isset($recurring->end_date) && $recurring->end_date ? $recurring->end_date->format('Y-m-d') : '') }}"
+                       class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer leading-normal block" />
+            </div>
         </div>
     </div>
 

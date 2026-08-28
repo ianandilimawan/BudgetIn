@@ -39,7 +39,7 @@
 
     <!-- 1. Input Cepat Transaksi & Pindah Saldo (Unified Quick Add Form with Perfect Alignment & Proof Attachment) -->
     @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
-    <div id="quickAddContainer" class="p-3.5 sm:p-5 rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-xs"
+    <div id="quickAddContainer" class="p-3.5 sm:p-5 rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-xs overflow-hidden"
          x-data="{
             trxType: 'expense',
             proofName: '',
@@ -48,7 +48,13 @@
             },
             setDate(dateStr) {
                 const dateInput = document.getElementById('quick_transaction_date');
-                if (dateInput) dateInput.value = dateStr;
+                if (dateInput) {
+                    if (dateInput._flatpickr) {
+                        dateInput._flatpickr.setDate(dateStr, true);
+                    } else {
+                        dateInput.value = dateStr;
+                    }
+                }
             },
             addAmount(addVal) {
                 const input = document.getElementById('quick_amount');
@@ -131,15 +137,15 @@
             </div>
         </div>
 
-        <form id="quickAddForm" action="{{ route('admin.cash_transactions.store') }}" method="POST" enctype="multipart/form-data" x-data="ajaxForm" @submit.prevent="submit" class="mt-3.5 space-y-3">
+        <form id="quickAddForm" action="{{ route('admin.cash_transactions.store') }}" method="POST" enctype="multipart/form-data" x-data="ajaxForm" @submit.prevent="submit" class="mt-3.5 space-y-3 w-full min-w-0">
             @csrf
             <input type="hidden" name="type" id="quick_type" :value="trxType">
 
             <!-- Unified 5-Column Grid with Consistent Header Baseline -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 items-start">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 items-start w-full min-w-0">
                 
                 <!-- 1. Kategori (Expense / Income) ATAU Dari Akun (Transfer) -->
-                <div class="min-w-0">
+                <div class="min-w-0 w-full overflow-hidden">
                     <!-- Mode Pengeluaran: Kategori Pengeluaran -->
                     <div x-show="trxType === 'expense'">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
@@ -147,7 +153,7 @@
                                 Kategori <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="category_id" id="expense_category_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'" required>
+                        <select name="category_id" id="expense_category_id" class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors block" :disabled="trxType !== 'expense'" required>
                             <option value="">Pilih Kategori...</option>
                             @foreach($expenseCategories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -162,7 +168,7 @@
                                 Kategori <span class="text-emerald-500">*</span>
                             </label>
                         </div>
-                        <select name="category_id" id="income_category_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
+                        <select name="category_id" id="income_category_id" class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors block" :disabled="trxType !== 'income'">
                             <option value="">Pilih Kategori...</option>
                             @foreach($incomeCategories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -177,7 +183,7 @@
                                 1. Dari Akun Asal <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="account_id" id="transfer_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'transfer'">
+                        <select name="account_id" id="transfer_account_id" class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors block" :disabled="trxType !== 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}" {{ $acc->type === 'bank' ? 'selected' : '' }}>{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -186,7 +192,7 @@
                 </div>
 
                 <!-- 2. Akun Sumber/Tujuan (Non-Transfer) ATAU Ke Dompet Tujuan (Transfer) -->
-                <div class="min-w-0">
+                <div class="min-w-0 w-full overflow-hidden">
                     <!-- Non-Transfer Mode -->
                     <div x-show="trxType !== 'transfer'">
                         <div class="flex items-center justify-between min-h-[22px] mb-1.5">
@@ -194,7 +200,7 @@
                                 Akun / Dompet <span class="text-rose-500">*</span>
                             </label>
                         </div>
-                        <select name="account_id" id="quick_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" :disabled="trxType === 'transfer'">
+                        <select name="account_id" id="quick_account_id" class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors block" :disabled="trxType === 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -208,7 +214,7 @@
                                 2. Ke Akun Tujuan <span class="text-emerald-500">*</span>
                             </label>
                         </div>
-                        <select name="to_account_id" id="transfer_to_account_id" class="w-full max-w-full min-w-0 h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
+                        <select name="to_account_id" id="transfer_to_account_id" class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors block" :disabled="trxType !== 'transfer'">
                             @foreach($cashAccounts as $acc)
                                 <option value="{{ $acc->id }}" {{ $acc->type === 'cash' ? 'selected' : '' }}>{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                             @endforeach
@@ -217,7 +223,7 @@
                 </div>
 
                 <!-- 3. Nominal (Single Unified Input) -->
-                <div class="min-w-0">
+                <div class="min-w-0 w-full overflow-hidden">
                     <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                         <label for="quick_amount" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-medium text-gray-600 dark:text-gray-400">
                             Nominal (Rp) <span class="text-rose-500">*</span>
@@ -229,11 +235,11 @@
                            placeholder="Rp 0" 
                            data-currency 
                            required 
-                           class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
+                           class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors block" />
                 </div>
 
                 <!-- 4. Tanggal (Single Unified Input) -->
-                <div class="min-w-0">
+                <div class="min-w-0 w-full overflow-hidden">
                     <div class="flex items-center justify-between min-h-[22px] mb-1.5 gap-1">
                         <label for="quick_transaction_date" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-medium text-gray-600 dark:text-gray-400">
                             Tanggal <span class="text-rose-500">*</span>
@@ -244,16 +250,19 @@
                             <button type="button" @click="setDate('{{ date('Y-m-d', strtotime('-1 day')) }}')" class="text-[10px] text-indigo-600 dark:text-indigo-400 hover:underline font-medium">Kemarin</button>
                         </div>
                     </div>
-                    <input type="date" 
-                           name="transaction_date" 
-                           id="quick_transaction_date" 
-                           value="{{ date('Y-m-d') }}" 
-                           required 
-                           class="w-full max-w-full min-w-0 box-border h-[40px] px-2.5 sm:px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors cursor-pointer" />
+                    <div class="relative w-full">
+                        <input type="text" 
+                               name="transaction_date" 
+                               id="quick_transaction_date" 
+                               value="{{ date('Y-m-d') }}" 
+                               data-datepicker 
+                               required 
+                               class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors cursor-pointer block leading-normal" />
+                    </div>
                 </div>
 
                 <!-- 5. Catatan & Bukti File Picker -->
-                <div class="min-w-0">
+                <div class="min-w-0 w-full overflow-hidden">
                     <div class="flex items-center justify-between min-h-[22px] mb-1.5">
                         <label for="quick_note" class="text-[10px] sm:text-[11px] uppercase tracking-wider font-medium text-gray-600 dark:text-gray-400">
                             Catatan / Bukti
@@ -269,7 +278,7 @@
                                name="note" 
                                id="quick_note" 
                                placeholder="Contoh: Belanja dapur" 
-                               class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" />
+                               class="w-full max-w-full min-w-0 box-border h-[40px] px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors block" />
                         
                         <!-- Attached File Badge -->
                         <div x-show="proofName" class="mt-1 flex items-center justify-between px-2 py-1 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-[10px] text-indigo-700 dark:text-indigo-300" style="display: none;">

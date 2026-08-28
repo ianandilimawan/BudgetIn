@@ -269,47 +269,9 @@
         color: #9ca3af !important;
     }
 
-    /* Remove border for regular inputs in light mode (keep for TinyMCE, Tagify, Select2) */
-    input[type="text"]:not([id*="keywords"]),
-    input[type="email"],
-    input[type="number"],
-    input[type="date"],
-    input[type="password"],
-    textarea:not([id*="description"]):not([id*="meta_description"]) {
-        border: none !important;
-        border-width: 0 !important;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
-    }
-
-    /* Force shadow for regular inputs in light mode - match Tagify */
-    input[type="text"]:not([id*="keywords"]),
-    input[type="email"],
-    input[type="number"],
-    input[type="date"],
-    input[type="password"] {
-        --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1)) !important;
-        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
-    }
-
-    /* Ensure shadow even when focused (but add focus ring) */
-    input[type="text"]:not([id*="keywords"]):focus,
-    input[type="email"]:focus,
-    input[type="number"]:focus,
-    input[type="date"]:focus,
-    input[type="password"]:focus {
-        --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1)) !important;
-        --tw-ring-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
-    }
-
-    .dark input[type="text"]:not([id*="keywords"]),
-    .dark input[type="email"],
-    .dark input[type="number"],
-    .dark input[type="date"],
-    .dark input[type="password"],
-    .dark textarea:not([id*="description"]):not([id*="meta_description"]) {
-        border: 2px solid var(--color-gray-700, oklch(37.3% 0.034 259.733)) !important;
-        border-color: var(--color-gray-700, oklch(37.3% 0.034 259.733)) !important;
+    /* Remove duplicate caret in TomSelect */
+    .ts-wrapper.single .ts-control::after {
+        display: none !important;
     }
 
     /* CRITICAL: Force remove global input styling from TomSelect inner input */

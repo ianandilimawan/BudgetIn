@@ -471,7 +471,7 @@
             <h1 class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-zinc-900 dark:text-white">Dashboard Keuangan</h1>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">Ringkasan kondisi finansial, saldo dompet, tren arus kas, dan kontrol anggaran.</p>
         </div>
-        <div class="flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
+        <div class="hidden sm:flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
             @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
             <button type="button" @click="quickModal = true"
                 class="inline-flex items-center px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-500/20 whitespace-nowrap flex-shrink-0 cursor-pointer">

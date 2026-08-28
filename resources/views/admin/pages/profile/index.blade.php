@@ -238,6 +238,22 @@
             </form>
         </div>
     </div>
+
+    <!-- Sesi Akun & Logout Card -->
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 shadow-xs flex items-center justify-between gap-3">
+        <div>
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Sesi Akun</h3>
+            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Keluar dari sesi akun Anda di perangkat ini</p>
+        </div>
+        <form method="POST" action="{{ route('admin.logout') }}">
+            @csrf
+            <button type="submit"
+                    class="inline-flex items-center gap-1.5 px-4 py-2 sm:py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 text-xs font-bold transition cursor-pointer shadow-2xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span>Keluar Akun</span>
+            </button>
+        </form>
+    </div>
 </div>
 
 <script>
