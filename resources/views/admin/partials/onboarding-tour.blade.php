@@ -1,76 +1,79 @@
-<!-- Interactive Spotlight Onboarding Tour Component -->
+<!-- Interactive Spotlight Onboarding Tour Component (Crisp & Locked) -->
 <div x-data="appOnboardingTour()"
      x-init="initTour()"
      @start-onboarding-tour.window="startTour()"
      x-cloak>
 
-    <!-- Overlay Backdrop with Cutout Spotlight Focus -->
+    <!-- Overlay Container -->
     <div x-show="isOpen"
-         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter="transition ease-out duration-250"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
+         @touchmove.prevent="if(isOpen) $event.preventDefault()"
          class="fixed inset-0 z-[100] pointer-events-auto overflow-hidden">
         
-        <!-- Dark Dim Backdrop -->
-        <div class="absolute inset-0 bg-zinc-950/75 backdrop-blur-[2px] transition-all duration-300"></div>
+        <!-- Center/Non-target Dark Backdrop -->
+        <div x-show="!hasTarget"
+             class="absolute inset-0 bg-zinc-950/85 transition-opacity duration-300"></div>
 
-        <!-- Spotlight Cutout & Glowing Highlight Box -->
+        <!-- Crisp Cutout Spotlight Highlight (No Blur, 100% Sharp & Clear) -->
         <div x-show="hasTarget"
              :style="`top: ${targetRect.top}px; left: ${targetRect.left}px; width: ${targetRect.width}px; height: ${targetRect.height}px;`"
-             class="absolute pointer-events-none rounded-2xl ring-4 ring-emerald-500/80 shadow-[0_0_0_9999px_rgba(9,9,11,0.75)] shadow-emerald-500/20 transition-all duration-500 ease-out z-[101]">
-            <span class="absolute -top-3 -right-3 flex h-6 w-6">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-6 w-6 bg-emerald-500 text-white text-[10px] font-bold items-center justify-center shadow-xs" x-text="currentStep"></span>
+             class="absolute pointer-events-none rounded-2xl ring-4 ring-emerald-500 ring-offset-2 ring-offset-transparent shadow-[0_0_0_9999px_rgba(9,9,11,0.85)] shadow-emerald-500/30 transition-all duration-300 ease-out z-[101]">
+            <!-- Animated Pulse Ping Indicator -->
+            <span class="absolute -top-3 -right-3 flex h-7 w-7 z-10">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-emerald-500 text-white text-xs font-black items-center justify-center shadow-lg ring-2 ring-white dark:ring-zinc-900" x-text="currentStep"></span>
             </span>
         </div>
 
         <!-- Floating Popover Tooltip / Modal Box -->
-        <div class="fixed inset-0 z-[102] pointer-events-none flex p-4"
-             :class="hasTarget && !isMobile ? 'items-start justify-start' : 'items-center justify-center'">
+        <div class="fixed inset-0 z-[102] pointer-events-none flex"
+             :class="isMobile ? 'items-end justify-center p-3 pb-6' : (hasTarget ? 'items-start justify-start p-4' : 'items-center justify-center p-4')">
             
             <div x-show="isOpen"
-                 x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter="transition ease-out duration-250 transform"
                  x-transition:enter-start="opacity-0 translate-y-4 scale-95"
                  x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave="transition ease-in duration-150 transform"
                  x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                  x-transition:leave-end="opacity-0 translate-y-4 scale-95"
                  :style="tooltipStyle"
-                 class="pointer-events-auto w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/90 dark:border-zinc-700/80 shadow-2xl p-5 sm:p-6 transition-all duration-300 relative overflow-hidden">
+                 class="pointer-events-auto w-full max-w-lg bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-700 shadow-2xl p-5 sm:p-6 transition-all duration-300 relative overflow-hidden">
                 
                 <!-- Background Accent Glow -->
-                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-2xl pointer-events-none"></div>
 
                 <!-- Header: Icon, Step Badge & Close -->
-                <div class="flex items-center justify-between gap-3 mb-3 relative z-10">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 text-lg flex-shrink-0">
+                <div class="flex items-center justify-between gap-3 mb-2.5 relative z-10">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 text-base sm:text-lg flex-shrink-0">
                             <span x-text="currentStepData.iconEmoji">✨</span>
                         </div>
-                        <div>
-                            <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60"
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 inline-block"
                                   x-text="currentStep === 0 ? 'Panduan Pengguna' : (currentStep === totalSteps ? 'Selesai' : `Langkah ${currentStep} dari ${totalSteps - 1}`)">
                             </span>
-                            <h3 class="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-white mt-1 leading-snug" x-text="currentStepData.title"></h3>
+                            <h3 class="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-white mt-0.5 leading-snug truncate" x-text="currentStepData.title"></h3>
                         </div>
                     </div>
 
-                    <button type="button" @click="closeTour(true)" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer" title="Tutup Panduan">
+                    <button type="button" @click="closeTour(true)" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer flex-shrink-0" title="Tutup Panduan">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
 
                 <!-- Subtitle & Content Description -->
-                <div class="relative z-10 my-3 space-y-2">
+                <div class="relative z-10 my-2.5 space-y-1.5">
                     <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400" x-text="currentStepData.subtitle"></p>
                     <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed" x-text="currentStepData.content"></p>
                 </div>
 
                 <!-- Step Progress Dots -->
-                <div class="flex items-center gap-1.5 my-4">
+                <div class="flex items-center gap-1.5 my-3.5">
                     <template x-for="(step, idx) in steps" :key="idx">
                         <div class="h-1.5 rounded-full transition-all duration-300"
                              :class="currentStep === idx ? 'w-6 bg-emerald-500' : (idx < currentStep ? 'w-2 bg-emerald-300 dark:bg-emerald-800' : 'w-2 bg-zinc-200 dark:bg-zinc-800')">
@@ -83,7 +86,7 @@
                     <button type="button" 
                             x-show="currentStep > 0"
                             @click="prevStep()" 
-                            class="px-3.5 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer">
+                            class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer">
                         ← Kembali
                     </button>
 
@@ -182,27 +185,35 @@ document.addEventListener('alpine:init', () => {
         },
         get tooltipStyle() {
             if (!this.hasTarget || this.isMobile) {
-                return 'margin: auto;';
+                return '';
             }
             const spaceBelow = window.innerHeight - (this.targetRect.top + this.targetRect.height);
-            const cardHeight = 300;
+            const cardHeight = 320;
             let top = 0;
-            let left = Math.max(16, Math.min(this.targetRect.left, window.innerWidth - 460));
+            let left = Math.max(20, Math.min(this.targetRect.left, window.innerWidth - 520));
 
             if (spaceBelow > cardHeight + 20) {
-                top = this.targetRect.top + this.targetRect.height + 14;
+                top = this.targetRect.top + this.targetRect.height + 16;
             } else {
-                top = Math.max(16, this.targetRect.top - cardHeight - 14);
+                top = Math.max(20, this.targetRect.top - cardHeight - 16);
             }
             return `position: absolute; top: ${top}px; left: ${left}px; margin: 0;`;
         },
         initTour() {
             window.addEventListener('resize', () => {
                 this.isMobile = window.innerWidth < 768;
-                if (this.isOpen) this.updateSpotlight();
+                if (this.isOpen) this.updatePosition();
             });
 
-            // Check if user is on dashboard and has not completed the tour
+            // Prevent manual scrolling while tour is open
+            window.addEventListener('keydown', (e) => {
+                if (!this.isOpen) return;
+                if (e.key === 'Escape') this.closeTour(true);
+                if (e.key === 'ArrowRight') this.nextStep();
+                if (e.key === 'ArrowLeft') this.prevStep();
+            });
+
+            // Auto start on first visit to dashboard
             const hasSeen = localStorage.getItem('budgetin_onboarding_completed_v1');
             const isDashboard = window.location.pathname.includes('/admin/dashboard') || window.location.pathname === '/admin';
             if (!hasSeen && isDashboard) {
@@ -211,34 +222,42 @@ document.addEventListener('alpine:init', () => {
                 }, 1200);
             }
         },
+        lockScroll() {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        },
+        unlockScroll() {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        },
         startTour() {
             this.currentStep = 0;
             this.isOpen = true;
-            this.updateSpotlight();
+            this.goToStep(0);
         },
         nextStep() {
             if (this.currentStep < this.totalSteps) {
-                this.currentStep++;
-                this.updateSpotlight();
+                this.goToStep(this.currentStep + 1);
             } else {
                 this.closeTour(true);
             }
         },
         prevStep() {
             if (this.currentStep > 0) {
-                this.currentStep--;
-                this.updateSpotlight();
+                this.goToStep(this.currentStep - 1);
             }
         },
         closeTour(markCompleted = true) {
             this.isOpen = false;
             this.hasTarget = false;
+            this.unlockScroll();
             if (markCompleted) {
                 localStorage.setItem('budgetin_onboarding_completed_v1', 'true');
             }
         },
-        updateSpotlight() {
-            const step = this.currentStepData;
+        goToStep(stepIndex) {
+            this.currentStep = stepIndex;
+            const step = this.steps[stepIndex];
             let targetSelector = step.target;
 
             if (step.target === '#tour-quick-catat' && window.innerWidth < 640) {
@@ -247,8 +266,12 @@ document.addEventListener('alpine:init', () => {
 
             if (!targetSelector) {
                 this.hasTarget = false;
+                this.lockScroll();
                 return;
             }
+
+            // Unlock briefly for smooth scrolling into position
+            this.unlockScroll();
 
             this.$nextTick(() => {
                 const el = document.querySelector(targetSelector);
@@ -257,19 +280,40 @@ document.addEventListener('alpine:init', () => {
                     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     
                     setTimeout(() => {
-                        const rect = el.getBoundingClientRect();
-                        const pad = 8;
-                        this.targetRect = {
-                            top: Math.max(0, rect.top - pad),
-                            left: Math.max(0, rect.left - pad),
-                            width: rect.width + (pad * 2),
-                            height: rect.height + (pad * 2),
-                        };
-                    }, 250);
+                        this.updatePosition();
+                        // Lock screen firmly so user cannot scroll away during reading
+                        this.lockScroll();
+                    }, 350);
                 } else {
                     this.hasTarget = false;
+                    this.lockScroll();
                 }
             });
+        },
+        updatePosition() {
+            const step = this.currentStepData;
+            let targetSelector = step.target;
+            if (step.target === '#tour-quick-catat' && window.innerWidth < 640) {
+                targetSelector = '#tour-mobile-catat';
+            }
+            if (!targetSelector) {
+                this.hasTarget = false;
+                return;
+            }
+            const el = document.querySelector(targetSelector);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                const pad = 6;
+                this.targetRect = {
+                    top: Math.max(0, rect.top - pad),
+                    left: Math.max(0, rect.left - pad),
+                    width: rect.width + (pad * 2),
+                    height: rect.height + (pad * 2),
+                };
+                this.hasTarget = true;
+            } else {
+                this.hasTarget = false;
+            }
         }
     }));
 });
