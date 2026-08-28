@@ -75,11 +75,9 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Prevent auto-zoom on iOS when tapping/focusing inputs */
-        @media screen and (max-width: 768px) {
-            input, select, textarea {
-                font-size: 16px !important;
-            }
+        /* Normalize form inputs to clean medium/regular weight without mobile font bloat */
+        input, select, textarea {
+            font-weight: 400;
         }
 
         /* Compact, neat placeholder styling across all inputs */

@@ -34,28 +34,28 @@
 
     <!-- Tipe Transaksi Switcher -->
     <div>
-        <label class="block text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-2">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1.5">
             Tipe Transaksi <span class="text-rose-500">*</span>
         </label>
         <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-xs font-semibold w-full sm:max-w-md">
             <button type="button" 
                     @click="setType('expense')"
                     :class="trxType === 'expense' ? 'bg-rose-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-bold cursor-pointer text-center">
+                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-semibold cursor-pointer text-center">
                 <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 <span class="truncate">Pengeluaran</span>
             </button>
             <button type="button" 
                     @click="setType('income')"
                     :class="trxType === 'income' ? 'bg-emerald-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-bold cursor-pointer text-center">
+                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-semibold cursor-pointer text-center">
                 <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                 <span class="truncate">Pemasukan</span>
             </button>
             <button type="button" 
                     @click="setType('transfer')"
                     :class="trxType === 'transfer' ? 'bg-indigo-600 text-white shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'"
-                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-bold cursor-pointer text-center">
+                    class="px-2 py-2 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 font-semibold cursor-pointer text-center">
                 <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span class="inline sm:hidden">Transfer</span>
                 <span class="hidden sm:inline">Transfer</span>
@@ -68,10 +68,10 @@
     <div x-show="trxType !== 'transfer'">
         <!-- Mode Pengeluaran -->
         <div x-show="trxType === 'expense'">
-            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-rose-600 dark:text-rose-400 mb-1">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-rose-600 dark:text-rose-400 mb-1">
                 Kategori Pengeluaran <span class="text-rose-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-colors" :disabled="trxType !== 'expense'">
                 <option value="">Pilih Kategori Pengeluaran...</option>
                 @foreach($expenseCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $cashTransaction->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -83,10 +83,10 @@
 
         <!-- Mode Pemasukan -->
         <div x-show="trxType === 'income'" style="display: none;">
-            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
+            <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-emerald-600 dark:text-emerald-400 mb-1">
                 Kategori Pemasukan <span class="text-emerald-500">*</span>
             </label>
-            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
+            <select name="category_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'income'">
                 <option value="">Pilih Kategori Pemasukan...</option>
                 @foreach($incomeCategories as $cat)
                     <option value="{{ $cat->id }}" {{ (old('category_id', $cashTransaction->category_id ?? '') == $cat->id) ? 'selected' : '' }}>
@@ -99,10 +99,10 @@
 
     <!-- Akun / Dompet Asal -->
     <div>
-        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1" x-text="trxType === 'transfer' ? 'Dari Akun Asal *' : (trxType === 'expense' ? 'Dari Dompet / Bank *' : 'Masuk Ke Dompet / Bank *')">
             Akun / Dompet
         </label>
-        <select name="account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" required>
+        <select name="account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" required>
             @foreach($cashAccounts as $acc)
                 <option value="{{ $acc->id }}" {{ (old('account_id', $cashTransaction->account_id ?? '') == $acc->id) ? 'selected' : '' }}>
                     {{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})
@@ -113,10 +113,10 @@
 
     <!-- Ke Akun (Hanya tampil untuk Transfer) -->
     <div x-show="trxType === 'transfer'" style="display: none;">
-        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400 mb-1">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-emerald-600 dark:text-emerald-400 mb-1">
             Ke Akun Tujuan <span class="text-emerald-500">*</span>
         </label>
-        <select name="to_account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
+        <select name="to_account_id" class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" :disabled="trxType !== 'transfer'">
             <option value="">Pilih Akun Tujuan...</option>
             @foreach($cashAccounts as $acc)
                 <option value="{{ $acc->id }}" {{ (old('to_account_id', $cashTransaction->to_account_id ?? '') == $acc->id) ? 'selected' : '' }}>
@@ -128,36 +128,36 @@
 
     <!-- Nominal -->
     <div>
-        <label for="amount" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+        <label for="amount" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
             Nominal (Rp) <span class="text-rose-500">*</span>
         </label>
         <input type="text" name="amount" id="amount" value="{{ $cashTransaction->amount ?? '' }}" data-currency required
-               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-bold placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
                placeholder="Rp 0" />
     </div>
 
     <!-- Tanggal Transaksi -->
     <div>
-        <label for="transaction_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+        <label for="transaction_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tanggal Transaksi <span class="text-rose-500">*</span>
         </label>
         <input type="date" name="transaction_date" id="transaction_date" value="{{ isset($cashTransaction->transaction_date) && $cashTransaction->transaction_date ? (is_string($cashTransaction->transaction_date) ? $cashTransaction->transaction_date : $cashTransaction->transaction_date->format('Y-m-d')) : date('Y-m-d') }}" required
-               class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
+               class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
     </div>
 
     <!-- Catatan -->
     <div>
-        <label for="note" class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1">
+        <label for="note" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
             Catatan <span class="text-zinc-400 font-normal normal-case">(Opsional)</span>
         </label>
         <input type="text" name="note" id="note" value="{{ $cashTransaction->note ?? '' }}"
-               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-medium placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+               class="w-full h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
                placeholder="Contoh: Belanja bulanan, bayar listrik" />
     </div>
 
     <!-- Bukti / Struk / Nota (Optional) -->
     <div>
-        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+        <label class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1.5">
             Bukti Transaksi / Struk <span class="text-[10px] sm:text-xs font-normal text-zinc-400 normal-case">(Opsional - JPG, PNG, WEBP, PDF)</span>
         </label>
         
