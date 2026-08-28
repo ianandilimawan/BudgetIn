@@ -115,23 +115,25 @@ Berikan evaluasi keuangan yang ringkas, personal, santun, memotivasi, dan bernas
 
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
 
-        $response = Http::timeout($this->timeout)->post($url, [
-            'contents' => [
-                [
-                    'parts' => [
-                        ['text' => $prompt]
+        $response = Http::timeout($this->timeout)
+            ->retry(2, 500, throw: false)
+            ->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
                     ]
-                ]
-            ],
-            'generationConfig' => [
-                'responseMimeType' => 'application/json',
-                'temperature' => 0.3,
-                'maxOutputTokens' => 800,
-                'thinkingConfig' => [
-                    'thinkingBudget' => 0,
                 ],
-            ]
-        ]);
+                'generationConfig' => [
+                    'responseMimeType' => 'application/json',
+                    'temperature' => 0.3,
+                    'maxOutputTokens' => 800,
+                    'thinkingConfig' => [
+                        'thinkingBudget' => 0,
+                    ],
+                ]
+            ]);
 
         if (!$response->successful()) {
             Log::error('Gemini API HTTP Error', [
