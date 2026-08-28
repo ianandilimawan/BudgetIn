@@ -12,7 +12,9 @@ use App\Http\Controllers\SettingController;
 
 // Public Home / Landing Page
 Route::get('/', function () {
-    return view('welcome');
+    return response()
+        ->view('welcome')
+        ->header('Cache-Control', 'public, max-age=1800, stale-while-revalidate=86400');
 })->name('home');
 
 // Dynamic Sitemap.xml for Search Engines (Google, Bing, etc.)

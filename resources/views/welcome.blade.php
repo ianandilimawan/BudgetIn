@@ -183,7 +183,7 @@
     </noscript>
 
     <!-- Dedicated Lightweight Landing Assets (Tailwind CSS + Alpine.js only, 0 admin bloat) -->
-    @vite(['resources/css/app.css', 'resources/js/landing.js'])
+    @vite(['resources/css/landing.css', 'resources/js/landing.js'])
 
     <style>
         body {
