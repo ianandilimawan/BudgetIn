@@ -340,9 +340,9 @@
                 <label class="block text-[11px] font-semibold text-zinc-500 mb-1">Tipe Transaksi:</label>
                 <select x-model="filterType" class="w-full text-xs px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white">
                     <option value="">Semua Tipe</option>
-                    <option value="expense">🔴 Pengeluaran</option>
-                    <option value="income">🟢 Pemasukan</option>
-                    <option value="transfer">🔄 Transfer / Pindah Kas</option>
+                    <option value="expense">Pengeluaran</option>
+                    <option value="income">Pemasukan</option>
+                    <option value="transfer">Transfer / Pindah Kas</option>
                 </select>
             </div>
 
@@ -353,7 +353,7 @@
                     <option value="">Semua Kategori</option>
                     @if($allCategories)
                         @foreach($allCategories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->type === 'income' ? '🟢' : '🔴' }} {{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}">{{ $cat->name }} ({{ $cat->type === 'income' ? 'Masuk' : 'Keluar' }})</option>
                         @endforeach
                     @endif
                 </select>
@@ -366,7 +366,7 @@
                     <option value="">Semua Dompet</option>
                     @if($cashAccounts)
                         @foreach($cashAccounts as $acc)
-                            <option value="{{ $acc->id }}">{{ $acc->type === 'bank' ? '🏦' : ($acc->type === 'cash' ? '💵' : '📱') }} {{ $acc->name }}</option>
+                            <option value="{{ $acc->id }}">{{ $acc->name }} ({{ $acc->type_name ?? ucfirst($acc->type) }})</option>
                         @endforeach
                     @endif
                 </select>

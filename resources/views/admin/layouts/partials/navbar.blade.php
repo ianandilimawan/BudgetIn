@@ -20,7 +20,7 @@
                 onclick="window.dispatchEvent(new CustomEvent('start-onboarding-tour'))"
                 class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 rounded-xl transition cursor-pointer shadow-2xs"
                 title="Buka Panduan & Tur Fitur Aplikasi">
-                <span class="text-xs">✨</span>
+                <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 <span class="hidden sm:inline">Panduan</span>
             </button>
 

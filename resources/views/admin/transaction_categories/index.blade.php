@@ -70,9 +70,15 @@
                                 <span>{{ $cat->transactions_count }} transaksi</span>
                                 <span>•</span>
                                 @if($cat->is_system || $cat->user_id === null)
-                                    <span class="text-zinc-500">🔒 Bawaan Sistem</span>
+                                    <span class="inline-flex items-center gap-1 text-zinc-500">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                        <span>Bawaan Sistem</span>
+                                    </span>
                                 @else
-                                    <span class="text-indigo-600 dark:text-indigo-400">👤 Kustom</span>
+                                    <span class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                        <span>Kustom</span>
+                                    </span>
                                 @endif
                             </div>
                         </div>

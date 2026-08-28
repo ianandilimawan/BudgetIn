@@ -39,7 +39,7 @@
             <button type="button" @click="activeTab = 'health'"
                     :class="activeTab === 'health' ? 'bg-white dark:bg-zinc-700 text-emerald-700 dark:text-emerald-300 font-bold shadow-xs' : 'text-zinc-500 dark:text-zinc-400 font-medium hover:text-zinc-800 dark:hover:text-zinc-200'"
                     class="py-2 px-1 sm:px-3 rounded-lg text-xs transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 cursor-pointer">
-                <span class="text-sm">✨</span>
+                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 <span class="text-[11px] sm:text-xs font-semibold sm:font-bold whitespace-nowrap">
                     <span class="sm:hidden">Kesehatan</span>
                     <span class="hidden sm:inline">Kesehatan & AI</span>
@@ -188,7 +188,7 @@
                 <div class="space-y-2">
                     <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40">
                         <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
-                            💰
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </span>
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-zinc-900 dark:text-white">Arus Kas & Tabungan</p>
@@ -200,7 +200,7 @@
 
                     <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40">
                         <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
-                            ⚠️
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         </span>
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-zinc-900 dark:text-white">Catatan Pos Anggaran</p>
@@ -212,7 +212,7 @@
 
                     <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40">
                         <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
-                            💡
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                         </span>
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-zinc-900 dark:text-white">Rekomendasi Aksi Cerdas</p>

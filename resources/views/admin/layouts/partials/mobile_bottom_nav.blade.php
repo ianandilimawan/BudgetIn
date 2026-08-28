@@ -134,7 +134,7 @@
                         class="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/30 hover:border-emerald-500/50 transition cursor-pointer text-left">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-sm shadow-xs flex-shrink-0">
-                            ✨
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </div>
                         <div>
                             <p class="text-xs font-bold text-zinc-900 dark:text-white">Tur Panduan Fitur</p>
@@ -166,8 +166,8 @@
                     <a href="{{ route('admin.budget_projects.index') }}" @click="mobileNavOpen = false"
                        class="flex items-center justify-between p-2.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-teal-50/60 dark:hover:bg-teal-950/30 transition group">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-900/60 text-teal-600 dark:text-teal-300 flex items-center justify-center flex-shrink-0 text-base">
-                                💍
+                            <div class="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-900/60 text-teal-600 dark:text-teal-300 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                             </div>
                             <div class="min-w-0">
                                 <p class="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Anggaran Acara & Proyek</p>

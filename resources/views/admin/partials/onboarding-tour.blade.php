@@ -53,7 +53,13 @@
                     <div class="flex items-center justify-between gap-3 mb-2.5 relative z-10">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 text-base flex-shrink-0">
-                                <span x-text="currentStepData.iconEmoji">✨</span>
+                                <template x-if="currentStepData.icon === 'welcome'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'bank'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'chart'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'project'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'catat'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'export'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'finish'"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></template>
                             </div>
                             <div class="min-w-0">
                                 <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 inline-block"
@@ -111,7 +117,7 @@
                                     x-show="currentStep === totalSteps"
                                     @click="closeTour(true)" 
                                     class="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition shadow-lg shadow-emerald-500/30 active:scale-95 cursor-pointer">
-                                <span>Mulai Eksplorasi 🎉</span>
+                                <span>Mulai Eksplorasi</span>
                             </button>
                         </div>
                     </div>
@@ -133,7 +139,8 @@
                      x-transition:enter-end="opacity-100 scale-100"
                      class="pointer-events-auto w-full max-w-xs bg-zinc-900 text-white rounded-3xl border border-zinc-700 shadow-2xl p-4 text-center relative overflow-hidden">
                     <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-xl mx-auto mb-2 shadow-md shadow-emerald-500/30">
-                        <span x-text="currentStepData.iconEmoji">✨</span>
+                        <template x-if="currentStepData.icon === 'welcome'"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></template>
+                        <template x-if="currentStepData.icon === 'finish'"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></template>
                     </div>
                     <h3 class="text-sm font-extrabold text-white" x-text="currentStepData.title"></h3>
                     <p class="text-xs text-zinc-300 mt-1 mb-3.5 leading-relaxed" x-text="currentStepData.content"></p>
@@ -141,7 +148,7 @@
                     <div class="flex items-center justify-center gap-2">
                         <button type="button" x-show="currentStep === 0" @click="closeTour(true)" class="px-3 py-1.5 rounded-xl text-xs text-zinc-400 hover:text-white transition cursor-pointer">Lewati</button>
                         <button type="button" @click="nextStep()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 transition shadow-md shadow-emerald-500/30 cursor-pointer">
-                            <span x-text="currentStep === 0 ? 'Yuk Intip 🚀' : 'Mulai Eksplorasi 🎉'"></span>
+                            <span x-text="currentStep === 0 ? 'Yuk Intip' : 'Mulai Eksplorasi'"></span>
                         </button>
                     </div>
                 </div>
@@ -158,7 +165,13 @@
                         <!-- Left: Mini Icon & Crisp Label (Tap to toggle full explanation) -->
                         <div @click="isExpanded = !isExpanded" class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer select-none" title="Klik untuk baca lengkap">
                             <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-sm flex-shrink-0 shadow-xs">
-                                <span x-text="currentStepData.iconEmoji">✨</span>
+                                <template x-if="currentStepData.icon === 'welcome'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'bank'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'chart'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'project'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'catat'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'export'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></template>
+                                <template x-if="currentStepData.icon === 'finish'"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></template>
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5">
@@ -178,7 +191,7 @@
                                 ‹
                             </button>
                             <button type="button" @click="nextStep()" class="h-7 px-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white flex items-center justify-center text-xs font-bold transition shadow-xs cursor-pointer" title="Lanjut">
-                                <span x-text="currentStep === totalSteps ? 'Selesai 🎉' : 'Lanjut ›'"></span>
+                                <span x-text="currentStep === totalSteps ? 'Selesai' : 'Lanjut ›'"></span>
                             </button>
                             <button type="button" @click="closeTour(true)" class="w-6 h-6 rounded-lg text-zinc-400 hover:text-zinc-200 flex items-center justify-center text-xs transition cursor-pointer" title="Tutup">
                                 ✕
@@ -215,70 +228,70 @@ document.addEventListener('alpine:init', () => {
         steps: [
             {
                 id: 'welcome',
-                title: 'Halo Sobat BudgetIn! 👋',
+                title: 'Halo Sobat BudgetIn!',
                 subtitle: 'Yuk kenalan bentar, 1 menit aja!',
-                iconEmoji: '✨',
-                mobileShortTitle: 'Halo Sobat BudgetIn! 👋',
+                icon: 'welcome',
+                mobileShortTitle: 'Halo Sobat BudgetIn!',
                 mobileShortDesc: 'Kenalan bentar sama fitur keren di sini!',
                 target: null,
-                content: 'Biar ga pusing ngatur duit dan boncos pas akhir bulan, yuk intip fitur-fitur keren di BudgetIn. Cepat & gampang banget kok! 😉',
+                content: 'Biar ga pusing ngatur duit dan boncos pas akhir bulan, yuk intip fitur-fitur keren di BudgetIn. Cepat & gampang banget kok!',
             },
             {
                 id: 'accounts',
-                title: '1. Pantau Semua Dompet & Kas 💳',
+                title: '1. Pantau Semua Dompet & Kas',
                 subtitle: 'Bank, e-wallet, sampe kas jadi satu',
-                iconEmoji: '🏦',
-                mobileShortTitle: 'Pantau Semua Dompet 💳',
+                icon: 'bank',
+                mobileShortTitle: 'Pantau Semua Dompet',
                 mobileShortDesc: 'BCA, GoPay & kas kepantau barengan',
                 target: '#tour-accounts',
                 content: 'Mau BCA, Mandiri, GoPay, OVO, atau uang tunai di dompet, semuanya bisa kamu pantau barengan di sini tanpa ribet buka banyak aplikasi!',
             },
             {
                 id: 'budget-planner',
-                title: '2. Pasang Rem Belanja 🎯',
+                title: '2. Pasang Rem Belanja',
                 subtitle: 'Jatah pos jajan biar saldo ga jebol',
-                iconEmoji: '📊',
-                mobileShortTitle: 'Pasang Rem Belanja 🎯',
+                icon: 'chart',
+                mobileShortTitle: 'Pasang Rem Belanja',
                 mobileShortDesc: 'Batasin pos jajan biar saldo ga jebol',
                 target: '#tour-budget-planner',
                 content: 'Tentukan batas jajan makan, nongkrong, atau belanja bulanan. Begitu mendekati batas, sistem bakal langsung kasih lampu kuning biar kamu ngerem!',
             },
             {
                 id: 'budget-projects',
-                title: '3. Anggaran Acara & Proyek Impian 💍',
+                title: '3. Anggaran Acara & Proyek Impian',
                 subtitle: 'Pernikahan, liburan, & renovasi terpantau rapi',
-                iconEmoji: '💍',
-                mobileShortTitle: 'Proyek & Acara Impian 💍',
+                icon: 'project',
+                mobileShortTitle: 'Proyek & Acara Impian',
                 mobileShortDesc: 'Pagu nikahan & liburan terpisah rapi',
                 target: '#tour-budget-projects',
                 content: 'Mau nikahan 50jt, liburan ke Jepang, atau renovasi rumah? Bikin pos rincian belanja (dekorasi, katering, tiket) biar budget khusus ga kecampur sama uang bulanan!',
             },
             {
                 id: 'quick-catat',
-                title: '4. Catat Instan Sekali Tap ⚡',
+                title: '4. Catat Instan Sekali Tap',
                 subtitle: 'Keluar masuk duit langsung kecatat',
-                iconEmoji: '📝',
-                mobileShortTitle: 'Catat Sekali Tap ⚡',
+                icon: 'catat',
+                mobileShortTitle: 'Catat Sekali Tap',
                 mobileShortDesc: 'Tinggal tap tombol hijau, beres 5 detik!',
                 target: '#tour-quick-catat',
                 content: 'Habis jajan atau dapet transferan? Tinggal tap tombol hijau ini, masukin nominal, upload foto nota kalau ada, dan beres dalam 5 detik!',
             },
             {
                 id: 'filter-export',
-                title: '5. Rekap & Download Excel 📥',
+                title: '5. Rekap & Download Excel',
                 subtitle: 'Butuh laporan? Sekali klik langsung beres',
-                iconEmoji: '📑',
-                mobileShortTitle: 'Rekap & Unduh Excel 📥',
+                icon: 'export',
+                mobileShortTitle: 'Rekap & Unduh Excel',
                 mobileShortDesc: 'Sekali klik jadi file spreadsheet rapi',
                 target: '#tour-filter-export',
                 content: 'Mau cek mutasi bulan lalu atau download pembukuan lengkap ke file Excel? Tinggal pilih periode dan klik ekspor, langsung siap pakai!',
             },
             {
                 id: 'finish',
-                title: 'Mantap, Kamu Siap Tempur! 🚀',
+                title: 'Mantap, Kamu Siap Tempur!',
                 subtitle: 'Waktunya kelola duit lebih bijak',
-                iconEmoji: '🎉',
-                mobileShortTitle: 'Siap Tempur! 🚀',
+                icon: 'finish',
+                mobileShortTitle: 'Siap Tempur!',
                 mobileShortDesc: 'Skor & AI ada di menu Profil, selamat mencoba!',
                 target: null,
                 content: 'Tips keren: Skor Kesehatan Keuangan & analisis pintar dari Gemini AI tersimpan aman di menu Profil Saya. Pasang juga BudgetIn di layar utama HP biar aksesnya makin sat-set!',
