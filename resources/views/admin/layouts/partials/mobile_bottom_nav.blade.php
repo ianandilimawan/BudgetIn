@@ -31,7 +31,7 @@
             </a>
 
             <!-- 3. Raised Quick Action (⚡ Catat) -->
-            <div class="flex flex-col items-center justify-end w-full pb-0.5">
+            <div id="tour-mobile-catat" class="flex flex-col items-center justify-end w-full pb-0.5">
                 @if(request()->routeIs('admin.dashboard*'))
                     <button type="button"
                             onclick="window.dispatchEvent(new CustomEvent('open-quick-modal'))"
@@ -124,6 +124,24 @@
                 </div>
                 <button type="button" @click="mobileNavOpen = false" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Panduan Fitur Button -->
+            <div>
+                <button type="button" 
+                        @click="mobileNavOpen = false; window.dispatchEvent(new CustomEvent('start-onboarding-tour'))"
+                        class="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-500/30 hover:border-emerald-500/50 transition cursor-pointer text-left">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-sm shadow-xs flex-shrink-0">
+                            ✨
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-zinc-900 dark:text-white">Tur Panduan Fitur</p>
+                            <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Pelajari seluruh fungsi BudgetIn</p>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Mulai →</span>
                 </button>
             </div>
 

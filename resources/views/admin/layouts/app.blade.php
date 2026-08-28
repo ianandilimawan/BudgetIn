@@ -392,6 +392,7 @@
     <x-toast />
     <x-confirm-delete-modal />
     @include('admin.layouts.partials.mobile_bottom_nav')
+    @include('admin.partials.onboarding-tour')
     @stack('scripts')
 </body>
 

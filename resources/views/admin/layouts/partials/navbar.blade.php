@@ -15,6 +15,15 @@
         </div>
 
         <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- Panduan Fitur Button -->
+            <button type="button"
+                onclick="window.dispatchEvent(new CustomEvent('start-onboarding-tour'))"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 rounded-xl transition cursor-pointer shadow-2xs"
+                title="Buka Panduan & Tur Fitur Aplikasi">
+                <span class="text-xs">✨</span>
+                <span class="hidden sm:inline">Panduan</span>
+            </button>
+
             <!-- Dark Mode Toggle -->
             <button id="themeToggle"
                 class="p-2 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"

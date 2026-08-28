@@ -474,7 +474,7 @@
         <!-- Desktop Quick Actions (hidden on mobile since bottom navigation bar handles it) -->
         <div class="hidden sm:flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
             @if(auth()->user() && auth()->user()->hasPermission('create-cash_transactions'))
-            <button type="button" @click="quickModal = true"
+            <button id="tour-quick-catat" type="button" @click="quickModal = true"
                 class="inline-flex items-center px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-500/20 whitespace-nowrap flex-shrink-0 cursor-pointer">
                 + Catat Cepat
             </button>
@@ -507,7 +507,7 @@
 
     <!-- Financial Health Score & Smart AI Insights (Gemini Advisor) -->
     @if(isset($financialHealth) && isset($aiInsights))
-    <div x-data="financialAiAdvisor({
+    <div id="tour-ai-insights" x-data="financialAiAdvisor({
             score: {{ $financialHealth['overall_score'] }},
             status: '{{ $financialHealth['status_label'] }}',
             statusColor: '{{ $financialHealth['status_color'] }}',
@@ -678,7 +678,7 @@
     @endif
 
     <!-- 2. Saldo Dompet & Rekening (Full Width Multi-Account Cards) -->
-    <div class="space-y-2 sm:space-y-2.5">
+    <div id="tour-accounts" class="space-y-2 sm:space-y-2.5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
             <div class="flex items-center gap-1.5">
                 <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
@@ -724,12 +724,14 @@
     </div>
 
     <!-- 3. Date Range & Preset Filter Bar with Excel Export -->
-    @include('admin.partials.financial-filter-bar', [
-        'dateRange' => $dateRange,
-        'route' => route('admin.dashboard'),
-        'exportRoute' => route('admin.cash_transactions.export'),
-        'showExport' => true
-    ])
+    <div id="tour-filter-export">
+        @include('admin.partials.financial-filter-bar', [
+            'dateRange' => $dateRange,
+            'route' => route('admin.dashboard'),
+            'exportRoute' => route('admin.cash_transactions.export'),
+            'showExport' => true
+        ])
+    </div>
 
     <!-- 4. 4 Core Stat Metric Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
@@ -859,7 +861,7 @@
     <!-- 6. Target Anggaran (Left 7/12) & Pengeluaran Terbesar (Right 5/12) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch">
         <!-- Target Anggaran per Kategori (Budget Planner) -->
-        <div class="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 flex flex-col justify-between overflow-hidden">
+        <div id="tour-budget-planner" class="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 flex flex-col justify-between overflow-hidden">
             <div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-zinc-100 dark:border-zinc-800">
                     <div class="flex items-center gap-2">
