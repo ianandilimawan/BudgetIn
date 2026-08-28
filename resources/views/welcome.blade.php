@@ -173,32 +173,49 @@
     ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Optimized Google Fonts with Preload & Async Swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap">
+    </noscript>
 
-    <!-- Alpine.js & Tailwind -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Dedicated Lightweight Landing Assets (Tailwind CSS + Alpine.js only, 0 admin bloat) -->
+    @vite(['resources/css/app.css', 'resources/js/landing.js'])
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
 
         .font-heading {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
         }
 
         .ambient-mesh {
             background-image:
-                radial-gradient(at 10% 15%, rgba(16, 185, 129, 0.18) 0px, transparent 50%),
-                radial-gradient(at 90% 10%, rgba(245, 158, 11, 0.15) 0px, transparent 50%),
-                radial-gradient(at 80% 60%, rgba(99, 102, 241, 0.18) 0px, transparent 50%),
-                radial-gradient(at 20% 80%, rgba(6, 182, 212, 0.18) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(236, 72, 153, 0.10) 0px, transparent 50%);
-            animation: ambient-drift 18s ease-in-out infinite alternate;
+                radial-gradient(at 10% 15%, rgba(16, 185, 129, 0.16) 0px, transparent 50%),
+                radial-gradient(at 90% 10%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
+                radial-gradient(at 80% 60%, rgba(99, 102, 241, 0.14) 0px, transparent 50%),
+                radial-gradient(at 20% 80%, rgba(6, 182, 212, 0.14) 0px, transparent 50%);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        @media (min-width: 768px) {
+            .ambient-mesh {
+                animation: ambient-drift 20s ease-in-out infinite alternate;
+            }
+        }
+
+        /* Performance boost for offscreen sections */
+        .landing-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 600px;
         }
 
         @keyframes ambient-drift {
@@ -302,13 +319,13 @@
             <!-- Brand with Icon as "B" -->
             <a href="/" class="flex items-center shrink-0 group">
                 @if ($appLogo)
-                    <img src="{{ asset('storage/' . $appLogo) }}" alt="{{ $appName }}" class="h-7 sm:h-8 w-auto mr-1.5">
+                    <img src="{{ asset('storage/' . $appLogo) }}" alt="{{ $appName }}" width="32" height="32" decoding="async" class="h-7 sm:h-8 w-auto mr-1.5">
                     <span class="font-heading font-black text-lg sm:text-xl tracking-tight text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                         {{ $appName }}<span class="text-emerald-500">.</span>
                     </span>
                 @else
                     <div class="flex items-center">
-                        <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-md shadow-emerald-500/20 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
+                        <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" width="36" height="36" decoding="async" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-md shadow-emerald-500/20 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
                         <span class="font-heading font-black text-lg sm:text-xl tracking-tight text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors ml-1">
                             udget<span class="text-emerald-500">In</span><span class="text-emerald-500">.</span>
                         </span>
@@ -517,7 +534,7 @@
                     <div class="hidden lg:block lg:col-span-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 p-3.5 shadow-xs space-y-4">
                         <!-- Sidebar Logo -->
                         <div class="flex items-center pb-3 border-b border-zinc-100 dark:border-zinc-800">
-                            <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-6 h-6 rounded-lg mr-1.5">
+                            <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" width="24" height="24" decoding="async" class="w-6 h-6 rounded-lg mr-1.5">
                             <span class="font-extrabold text-sm text-zinc-900 dark:text-white">Budget<span class="text-emerald-500">In</span>.</span>
                         </div>
 
@@ -989,7 +1006,7 @@
         </div>
 
         <!-- 4. Bento Grid Real Features Section -->
-        <div id="fitur" class="text-left mb-20 sm:mb-28">
+        <div id="fitur" class="text-left mb-20 sm:mb-28 landing-section">
             <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
                 <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
@@ -1075,7 +1092,7 @@
         </div>
 
         <!-- 5. Cara Kerja 3 Langkah Mudah -->
-        <div class="max-w-4xl mx-auto mb-20 sm:mb-28 text-left">
+        <div class="max-w-4xl mx-auto mb-20 sm:mb-28 text-left landing-section">
             <div class="text-center max-w-xl mx-auto mb-8 sm:mb-10">
                 <span class="px-3.5 py-1 rounded-full bg-cyan-100 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -1123,7 +1140,7 @@
         </div>
 
         <!-- 6. Comparison: Cara Lama vs Pakai BudgetIn -->
-        <div class="max-w-4xl mx-auto mb-20 sm:mb-28 text-left">
+        <div class="max-w-4xl mx-auto mb-20 sm:mb-28 text-left landing-section">
             <div class="text-center max-w-xl mx-auto mb-8 sm:mb-10">
                 <span class="px-3.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
@@ -1186,7 +1203,7 @@
         </div>
 
         <!-- 7. Interactive FAQ Accordion -->
-        <div id="faq" x-data="{ active: null }" class="max-w-3xl mx-auto mb-20 sm:mb-28 text-left">
+        <div id="faq" x-data="{ active: null }" class="max-w-3xl mx-auto mb-20 sm:mb-28 text-left landing-section">
             <div class="text-center max-w-xl mx-auto mb-8 sm:mb-10">
                 <span class="px-3.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -1261,7 +1278,7 @@
         </div>
 
         <!-- 8. Grand Bottom CTA Banner -->
-        <div class="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-6 sm:p-14 text-center relative overflow-hidden shadow-2xl text-white">
+        <div class="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-6 sm:p-14 text-center relative overflow-hidden shadow-2xl text-white landing-section">
             <div class="max-w-2xl mx-auto relative z-10">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -1286,7 +1303,7 @@
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-center sm:text-left">
             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2">
                 <div class="flex items-center">
-                    <img src="{{ asset('images/logo-icon.svg') }}" alt="B" class="w-4 h-4 rounded-md inline-block mr-0.5">
+                    <img src="{{ asset('images/logo-icon.svg') }}" alt="BudgetIn" width="16" height="16" decoding="async" class="w-4 h-4 rounded-md inline-block mr-0.5">
                     <span class="font-heading font-black text-zinc-800 dark:text-white text-xs sm:text-sm">udget<span class="text-emerald-500">In</span>.</span>
                 </div>
                 <span>•</span>
