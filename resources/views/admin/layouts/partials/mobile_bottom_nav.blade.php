@@ -279,6 +279,21 @@
             </div>
             @endif
 
+            <!-- PWA Install Banner (Appears when installable on mobile) -->
+            <div id="pwaInstallContainer" style="display: none;" class="p-3 rounded-2xl bg-gradient-to-r from-emerald-600/10 via-teal-600/10 to-indigo-600/10 border border-emerald-500/30 items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <img src="/icons/icon-96x96.png" alt="BudgetIn" class="w-8 h-8 rounded-xl shadow-xs flex-shrink-0">
+                    <div class="min-w-0">
+                        <h5 class="text-xs font-bold text-zinc-900 dark:text-white truncate">Install Aplikasi</h5>
+                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400">Pasang di layar utama HP</p>
+                    </div>
+                </div>
+                <button type="button" id="pwaInstallBtn"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-xs transition flex-shrink-0 cursor-pointer">
+                    Install
+                </button>
+            </div>
+
             <!-- Akun Profil -->
             <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800">
                 <a href="{{ route('admin.profile.index') }}" @click="mobileNavOpen = false"

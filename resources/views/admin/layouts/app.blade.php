@@ -7,11 +7,26 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($settings) ? $settings->app_name : config('app.name', 'Laravel') }} - Admin</title>
 
+    <!-- PWA Web App Manifest & Mobile Capability Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#059669">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="{{ isset($settings) ? $settings->app_name : 'BudgetIn' }}">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+
     @if (isset($settings) && $settings->favicon)
         <link rel="icon" type="image/x-icon"
             href="{{ \App\Services\FileUploadService::getFileUrl($settings->favicon) }}">
         <link rel="shortcut icon" type="image/x-icon"
             href="{{ \App\Services\FileUploadService::getFileUrl($settings->favicon) }}">
+    @else
+        <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+        <link rel="icon" type="image/svg+xml" href="/images/logo-icon.svg">
     @endif
 
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -80,6 +95,40 @@
             font-weight: 400;
         }
 
+        /* Clean cross-browser date input normalization for mobile Safari & Android */
+        input[type="date"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        input[type="date"]::-webkit-date-and-time-value {
+            text-align: left;
+            min-height: 1.25em;
+            line-height: inherit;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.15s ease;
+            padding: 0;
+            margin: 0;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+
+        .dark input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
         /* Compact, neat placeholder styling across all inputs */
         ::placeholder,
         input::placeholder,
@@ -88,6 +137,167 @@
             font-size: 0.75rem !important; /* 12px / text-xs */
             font-weight: 400 !important;
             opacity: 0.75 !important;
+        }
+
+        /* Flatpickr Custom Styling for Clean Modern UI & Dark Mode */
+        .flatpickr-calendar {
+            background: #ffffff !important;
+            border: 1px solid #e4e4e7 !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+            font-family: inherit !important;
+            padding: 8px !important;
+            z-index: 9999 !important;
+        }
+
+        .dark .flatpickr-calendar {
+            background: #18181b !important;
+            border-color: #27272a !important;
+            color: #f4f4f5 !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .flatpickr-calendar::before,
+        .flatpickr-calendar::after {
+            display: none !important;
+        }
+
+        .flatpickr-months {
+            padding: 4px 0 8px !important;
+        }
+
+        .flatpickr-month {
+            color: inherit !important;
+            fill: inherit !important;
+        }
+
+        .flatpickr-current-month {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: inherit !important;
+            padding: 0 !important;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            font-weight: 600 !important;
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+        .flatpickr-current-month input.cur-year {
+            font-weight: 600 !important;
+            color: inherit !important;
+        }
+
+        .flatpickr-months .flatpickr-prev-month,
+        .flatpickr-months .flatpickr-next-month {
+            color: #71717a !important;
+            fill: #71717a !important;
+            padding: 6px !important;
+            border-radius: 0.5rem !important;
+        }
+
+        .flatpickr-months .flatpickr-prev-month:hover,
+        .flatpickr-months .flatpickr-next-month:hover {
+            color: #18181b !important;
+            fill: #18181b !important;
+            background: #f4f4f5 !important;
+        }
+
+        .dark .flatpickr-months .flatpickr-prev-month:hover,
+        .dark .flatpickr-months .flatpickr-next-month:hover {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+            background: #27272a !important;
+        }
+
+        .flatpickr-weekdays {
+            margin-bottom: 4px !important;
+        }
+
+        span.flatpickr-weekday {
+            color: #a1a1aa !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+        }
+
+        .flatpickr-day {
+            border-radius: 0.625rem !important;
+            font-size: 12px !important;
+            color: #27272a !important;
+            height: 34px !important;
+            line-height: 34px !important;
+            margin: 1px !important;
+            border: 1px solid transparent !important;
+        }
+
+        .dark .flatpickr-day {
+            color: #e4e4e7 !important;
+        }
+
+        .flatpickr-day:hover {
+            background: #f4f4f5 !important;
+            border-color: transparent !important;
+        }
+
+        .dark .flatpickr-day:hover {
+            background: #27272a !important;
+        }
+
+        .flatpickr-day.today {
+            border-color: #6366f1 !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover {
+            background: #4f46e5 !important;
+            border-color: #4f46e5 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.flatpickr-disabled,
+        .flatpickr-day.flatpickr-disabled:hover {
+            color: #d4d4d8 !important;
+        }
+
+        .dark .flatpickr-day.flatpickr-disabled {
+            color: #3f3f46 !important;
+        }
+
+        /* SweetAlert2 Popup Global & Mobile Modern Sizing */
+        .swal2-container .swal2-popup {
+            font-family: inherit !important;
+            font-size: 0.875rem !important;
+        }
+
+        .swal2-title {
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+        }
+
+        .swal2-html-container {
+            font-size: 0.8125rem !important;
+            line-height: 1.5 !important;
+        }
+
+        @media (max-width: 640px) {
+            .swal2-container .swal2-popup {
+                padding: 1rem !important;
+                width: 90% !important;
+                max-width: 330px !important;
+                border-radius: 1.25rem !important;
+            }
+
+            .swal2-title {
+                font-size: 0.9375rem !important;
+            }
+
+            .swal2-html-container {
+                font-size: 0.75rem !important;
+            }
         }
 
         /* Desktop sidebar collapsed state */
@@ -394,6 +604,52 @@
     @include('admin.layouts.partials.mobile_bottom_nav')
     @include('admin.partials.onboarding-tour')
     @stack('scripts')
+
+    <!-- PWA Service Worker & Install Prompt Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('PWA ServiceWorker registered with scope:', registration.scope);
+                    })
+                    .catch(function(err) {
+                        console.warn('PWA ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+
+        // PWA Install Prompt Event Listener
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            const container = document.getElementById('pwaInstallContainer');
+            if (container) container.style.display = 'flex';
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const installBtn = document.getElementById('pwaInstallBtn');
+            if (installBtn) {
+                installBtn.addEventListener('click', async function() {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        const container = document.getElementById('pwaInstallContainer');
+                        if (container) container.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        window.addEventListener('appinstalled', function() {
+            const container = document.getElementById('pwaInstallContainer');
+            if (container) container.style.display = 'none';
+            deferredPrompt = null;
+        });
+    </script>
 </body>
 
 </html>

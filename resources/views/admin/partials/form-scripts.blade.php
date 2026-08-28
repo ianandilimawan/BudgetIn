@@ -280,6 +280,45 @@
         // Initialize TomSelect on page load
         initSelect2();
 
+        // Initialize Flatpickr for inputs with data-datepicker attribute
+        function initFlatpickr() {
+            if (typeof flatpickr === 'undefined') return;
+
+            document.querySelectorAll('input[data-datepicker]').forEach(function(input) {
+                if (input._flatpickr) return;
+
+                const defaultFormat = input.getAttribute('data-date-format') || 'j F Y'; // e.g. "28 Agustus 2026"
+                const defaultVal = input.value || '';
+
+                flatpickr(input, {
+                    altInput: true,
+                    altFormat: defaultFormat,
+                    dateFormat: 'Y-m-d',
+                    locale: 'id',
+                    disableMobile: true,
+                    altInputClass: input.className,
+                    defaultDate: defaultVal || 'today',
+                    onChange: function(selectedDates, dateStr) {
+                        input.value = dateStr;
+                        input.dispatchEvent(new Event('change'));
+                        input.dispatchEvent(new Event('input'));
+                    }
+                });
+            });
+        }
+
+        if (typeof flatpickr !== 'undefined') {
+            initFlatpickr();
+        } else {
+            var checkFlatpickr = setInterval(function() {
+                if (typeof flatpickr !== 'undefined') {
+                    clearInterval(checkFlatpickr);
+                    initFlatpickr();
+                }
+            }, 100);
+            setTimeout(function() { clearInterval(checkFlatpickr); }, 5000);
+        }
+
         @if (isset($currencyFields) && !empty($currencyFields))
             // Initialize currency formatting for inputs with data-currency attribute
             function initCurrencyFormatting() {

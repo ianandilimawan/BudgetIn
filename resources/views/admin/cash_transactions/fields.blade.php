@@ -141,8 +141,13 @@
         <label for="transaction_date" class="block text-[11px] sm:text-xs uppercase tracking-wider font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tanggal Transaksi <span class="text-rose-500">*</span>
         </label>
-        <input type="date" name="transaction_date" id="transaction_date" value="{{ isset($cashTransaction->transaction_date) && $cashTransaction->transaction_date ? (is_string($cashTransaction->transaction_date) ? $cashTransaction->transaction_date : $cashTransaction->transaction_date->format('Y-m-d')) : date('Y-m-d') }}" required
-               class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer" />
+        <div class="relative w-full">
+            <input type="text" name="transaction_date" id="transaction_date" 
+                   value="{{ isset($cashTransaction->transaction_date) && $cashTransaction->transaction_date ? (is_string($cashTransaction->transaction_date) ? $cashTransaction->transaction_date : $cashTransaction->transaction_date->format('Y-m-d')) : date('Y-m-d') }}" 
+                   data-datepicker 
+                   required
+                   class="w-full max-w-full min-w-0 box-border h-[40px] sm:h-[42px] px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition cursor-pointer leading-normal block" />
+        </div>
     </div>
 
     <!-- Catatan -->

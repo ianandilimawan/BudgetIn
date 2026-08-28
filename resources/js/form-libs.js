@@ -46,3 +46,11 @@ window.Tagify = Tagify;
 // AutoNumeric (currency formatting)
 import AutoNumeric from 'autonumeric';
 window.AutoNumeric = AutoNumeric;
+
+// Flatpickr (modern localized datepicker)
+import flatpickr from 'flatpickr';
+import { Indonesian } from 'flatpickr/dist/l10n/id.js';
+import 'flatpickr/dist/flatpickr.min.css';
+window.flatpickr = flatpickr;
+flatpickr.localize(Indonesian);
+
