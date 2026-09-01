@@ -13,7 +13,7 @@
   <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS v4"></a>
   <a href="https://livewire.laravel.com"><img src="https://img.shields.io/badge/Livewire-v4.x-FB70A9?style=for-the-badge&logo=livewire&logoColor=white" alt="Livewire"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.3+"></a>
-  <a href="https://github.com/ianandilimawan/BudgetIn"><img src="https://img.shields.io/badge/Tests-109%20Passed%20(382%20Assertions)-10B981?style=for-the-badge" alt="Test Suite"></a>
+  <a href="https://github.com/ianandilimawan/BudgetIn"><img src="https://img.shields.io/badge/Tests-113%20Passed%20(391%20Assertions)-10B981?style=for-the-badge" alt="Test Suite"></a>
 </p>
 
 ---
@@ -208,15 +208,16 @@ php artisan test --filter=RecurringTransactionTest
 ✓ Feature/SecurityAuditTest ........... 8 passed
 ✓ Feature/UserActivationSecurityTest .. 7 passed
 ...
-TOTAL: 109 passed (382 assertions) - 100% SUCCESS
+TOTAL: 113 passed (391 assertions) - 100% SUCCESS
 ```
 
 ---
 
-## 🛡️ Dokumentasi Keamanan & Uji Penetrasi (Pentest)
+## 📚 Dokumentasi Sistem & Alur Aplikasi
 
+- 📖 [**Panduan Lengkap Fitur & Alur Kerja Aplikasi (FITUR_DAN_ALUR_APLIKASI.md)**](FITUR_DAN_ALUR_APLIKASI.md): Dokumentasi mendalam tentang seluruh modul, diagram urutan (*Mermaid*), alur kerja multi-wallet, target pagu anggaran, otomasi transaksi rutin, dan konsultasi kesehatan finansial AI.
 - 📘 [**Panduan Alur Sistem untuk Pentest (PENTEST_FLOW_GUIDE.md)**](PENTEST_FLOW_GUIDE.md): Peta arsitektur, boundary multi-tenancy, RBAC matrix, alur logika bisnis, dan OWASP checklist.
-- 📋 [**Laporan Remediasi Hasil Pentest (PENTEST_REMEDIATION_REPORT.md)**](PENTEST_REMEDIATION_REPORT.md): Rincian lengkap 4 perbaikan kerentanan (XSS, Type Whitelist, DoS Balance Max, Excel Formula Injection) beserta panduan pengujian ulang (*retest guide*).
+- 📋 [**Laporan Remediasi Hasil Pentest (PENTEST_REMEDIATION_REPORT.md)**](PENTEST_REMEDIATION_REPORT.md): Rincian lengkap perbaikan kerentanan keamanan (XSS, Type Whitelist, DoS Balance Max, Excel Formula Injection, IDOR Project Scoping) beserta panduan pengujian ulang (*retest guide*).
 
 ---
 

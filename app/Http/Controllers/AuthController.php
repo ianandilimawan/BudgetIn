@@ -190,6 +190,13 @@ class AuthController extends Controller
 
         // OTP is correct
         $user = User::find($userId);
+        if (!$user || !$user->is_active) {
+            Cache::forget('login_otp_' . $userId);
+            Cache::forget($attemptsKey);
+            $request->session()->forget(['otp_user_id', 'otp_remember']);
+            return redirect()->route('admin.login')->with('error', 'Akun Anda tidak aktif atau tidak ditemukan.');
+        }
+
         $remember = $request->session()->get('otp_remember', false);
 
         Auth::login($user, $remember);

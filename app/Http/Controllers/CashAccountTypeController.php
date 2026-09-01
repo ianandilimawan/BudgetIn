@@ -31,7 +31,7 @@ class CashAccountTypeController extends Controller
             ->get()
             ->map(function ($type) {
                 $type->can_delete = $type->isDeletableBy(auth()->user());
-                $type->can_edit = ($type->user_id === auth()->id()) || auth()->user()->hasRole('super_admin');
+                $type->can_edit = ($type->user_id === auth()->id()) || auth()->user()->hasRole(['super-admin', 'super_admin']);
                 return $type;
             });
 
@@ -102,8 +102,10 @@ class CashAccountTypeController extends Controller
 
     public function update(Request $request, CashAccountType $cashAccountType)
     {
+        $isSuperAdmin = auth()->user()->hasRole(['super-admin', 'super_admin']);
+
         // Protect system types from being edited by regular users
-        if (($cashAccountType->is_system || $cashAccountType->user_id === null) && !auth()->user()->hasRole('super_admin')) {
+        if (($cashAccountType->is_system || $cashAccountType->user_id === null) && !$isSuperAdmin) {
             $msg = 'Tipe akun bawaan sistem tidak dapat diubah.';
             if ($request->wantsJson()) {
                 return response()->json(['success' => false, 'message' => $msg], 403);
@@ -111,8 +113,8 @@ class CashAccountTypeController extends Controller
             return redirect()->back()->with('error', $msg);
         }
 
-        // Protect other users' custom types
-        if ($cashAccountType->user_id !== null && $cashAccountType->user_id !== auth()->id() && !auth()->user()->hasRole('super_admin')) {
+        // Protect other users' custom types (strict tenant isolation)
+        if ($cashAccountType->user_id !== null && $cashAccountType->user_id !== auth()->id()) {
             $msg = 'Anda tidak memiliki izin untuk mengubah tipe akun ini.';
             if ($request->wantsJson()) {
                 return response()->json(['success' => false, 'message' => $msg], 403);
@@ -168,8 +170,8 @@ class CashAccountTypeController extends Controller
             ], 403);
         }
 
-        // 2. Ownership check: Only owner or super_admin can delete
-        if ($cashAccountType->user_id !== auth()->id() && !auth()->user()->hasRole('super_admin')) {
+        // 2. Ownership check: Only owner can delete their custom type
+        if ($cashAccountType->user_id !== auth()->id()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak memiliki izin untuk menghapus tipe akun ini.'

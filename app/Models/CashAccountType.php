@@ -82,6 +82,6 @@ class CashAccountType extends Model
             return false;
         }
 
-        return $this->user_id === $u->id || $u->hasRole('super_admin');
+        return $this->user_id === $u->id;
     }
 }

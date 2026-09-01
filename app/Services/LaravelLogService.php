@@ -264,7 +264,12 @@ class LaravelLogService
      */
     public static function deleteLogFile(string $fileName): bool
     {
-        $logPath = storage_path('logs/' . $fileName);
+        $sanitizedName = basename($fileName);
+        if (!str_ends_with($sanitizedName, '.log')) {
+            return false;
+        }
+
+        $logPath = storage_path('logs/' . $sanitizedName);
 
         if (!File::exists($logPath)) {
             return false;
@@ -281,7 +286,12 @@ class LaravelLogService
      */
     public static function clearLogFile(string $fileName): bool
     {
-        $logPath = storage_path('logs/' . $fileName);
+        $sanitizedName = basename($fileName);
+        if (!str_ends_with($sanitizedName, '.log')) {
+            return false;
+        }
+
+        $logPath = storage_path('logs/' . $sanitizedName);
 
         if (!File::exists($logPath)) {
             return false;

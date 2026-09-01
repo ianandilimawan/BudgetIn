@@ -12,6 +12,7 @@ use App\Services\FileUploadService;
 use App\Services\GeminiAiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class BudgetProjectController extends Controller
 {
@@ -313,16 +314,31 @@ class BudgetProjectController extends Controller
             abort(403, 'Akses ditolak.');
         }
 
+        $userId = auth()->id();
         $request->validate([
-            'account_id' => 'required|exists:cash_accounts,id',
-            'budget_project_item_id' => 'nullable|exists:budget_project_items,id',
-            'category_id' => 'nullable|exists:transaction_categories,id',
+            'account_id' => [
+                'required',
+                Rule::exists('cash_accounts', 'id')->where('user_id', $userId),
+            ],
+            'budget_project_item_id' => [
+                'nullable',
+                Rule::exists('budget_project_items', 'id')->where('budget_project_id', $budgetProject->id),
+            ],
+            'category_id' => [
+                'nullable',
+                Rule::exists('transaction_categories', 'id')->where(function ($q) use ($userId) {
+                    $q->whereNull('user_id')->orWhere('user_id', $userId);
+                }),
+            ],
             'amount' => 'required|numeric|min:1|max:999999999999.99',
             'transaction_date' => 'required|date',
             'note' => 'required|string|max:255',
-            'proof' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
+            'proof' => 'nullable|file|mimes:jpeg,png,jpg,webp,pdf|max:5120',
         ], [
             'account_id.required' => 'Pilih rekening/dompet sumber pembayaran.',
+            'account_id.exists' => 'Akun/dompet yang dipilih tidak valid atau bukan milik Anda.',
+            'budget_project_item_id.exists' => 'Pos rincian yang dipilih tidak valid.',
+            'category_id.exists' => 'Kategori yang dipilih tidak valid.',
             'amount.required' => 'Nominal pengeluaran wajib diisi.',
             'amount.max' => 'Nominal pengeluaran tidak boleh melebihi Rp 999.999.999.999.',
             'transaction_date.required' => 'Tanggal transaksi wajib diisi.',
@@ -331,7 +347,7 @@ class BudgetProjectController extends Controller
 
         $proofPath = null;
         if ($request->hasFile('proof')) {
-            $proofPath = FileUploadService::uploadFile($request->file('proof'), 'proofs');
+            $proofPath = FileUploadService::uploadFile($request->file('proof'), null, 'proofs');
         }
 
         $transaction = CashTransaction::create([

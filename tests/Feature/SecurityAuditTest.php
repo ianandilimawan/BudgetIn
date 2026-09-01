@@ -191,4 +191,79 @@ class SecurityAuditTest extends TestCase
         $response->assertStatus(200);
         $this->assertTrue(str_contains($response->headers->get('content-type'), 'spreadsheetml'));
     }
+
+    public function test_user_cannot_log_project_transaction_with_other_users_account(): void
+    {
+        $victim = \App\Models\User::factory()->create(['is_active' => true]);
+        $victimAccount = \App\Models\CashAccount::create([
+            'user_id' => $victim->id,
+            'name' => 'Victim Wallet',
+            'type' => 'cash',
+            'initial_balance' => 1000000,
+            'is_active' => true,
+        ]);
+
+        $project = \App\Models\BudgetProject::create([
+            'user_id' => $this->regularUser->id,
+            'name' => 'Proyek Liburan',
+            'target_amount' => 5000000,
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($this->regularUser)->post(route('admin.budget_projects.transactions.store', $project->id), [
+            'account_id' => $victimAccount->id,
+            'amount' => 100000,
+            'transaction_date' => now()->format('Y-m-d'),
+            'note' => 'Unauthorized account usage attempt',
+        ]);
+
+        $response->assertSessionHasErrors('account_id');
+        $this->assertDatabaseMissing('cash_transactions', [
+            'budget_project_id' => $project->id,
+            'account_id' => $victimAccount->id,
+        ]);
+    }
+
+    public function test_log_deletion_path_traversal_is_blocked(): void
+    {
+        $admin = \App\Models\User::factory()->create(['is_active' => true]);
+        $adminRole = \App\Models\Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
+        $admin->assignRole($adminRole);
+
+        // Attempt path traversal deletion targeting .env
+        $this->actingAs($admin)->delete(route('admin.laravel-logs.destroy', ['fileName' => '../../.env']));
+
+        // Ensure .env still exists
+        $this->assertFileExists(base_path('.env'));
+    }
+
+    public function test_svg_avatar_upload_is_rejected(): void
+    {
+        Storage::fake('public');
+
+        $svgPayload = '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>';
+        $file = UploadedFile::fake()->createWithContent('malicious.svg', $svgPayload);
+
+        $response = $this->actingAs($this->regularUser)->put(route('admin.profile.update'), [
+            'name' => 'Audited User',
+            'email' => $this->regularUser->email,
+            'avatar' => $file,
+        ]);
+
+        $response->assertSessionHasErrors('avatar');
+    }
+
+    public function test_inactive_user_cannot_complete_otp_verification(): void
+    {
+        $inactiveUser = \App\Models\User::factory()->create(['is_active' => false]);
+        Cache::put('login_otp_' . $inactiveUser->id, '123456', now()->addMinutes(5));
+
+        $response = $this->withSession(['otp_user_id' => $inactiveUser->id])
+            ->post(route('admin.login.otp.post'), [
+                'otp' => '123456',
+            ]);
+
+        $response->assertRedirect(route('admin.login'));
+        $this->assertGuest();
+    }
 }
