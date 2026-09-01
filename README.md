@@ -13,7 +13,7 @@
   <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS v4"></a>
   <a href="https://livewire.laravel.com"><img src="https://img.shields.io/badge/Livewire-v4.x-FB70A9?style=for-the-badge&logo=livewire&logoColor=white" alt="Livewire"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.3+"></a>
-  <a href="https://github.com/ianandilimawan/BudgetIn"><img src="https://img.shields.io/badge/Tests-89%20Passed%20(288%20Assertions)-10B981?style=for-the-badge" alt="Test Suite"></a>
+  <a href="https://github.com/ianandilimawan/BudgetIn"><img src="https://img.shields.io/badge/Tests-109%20Passed%20(382%20Assertions)-10B981?style=for-the-badge" alt="Test Suite"></a>
 </p>
 
 ---
@@ -198,17 +198,25 @@ php artisan test --filter=RecurringTransactionTest
 ```text
 ✓ Unit/CashSummaryServiceTest ......... 6 passed
 ✓ Feature/AuthTest .................... 4 passed
-✓ Feature/CashAccountTest ............. 12 passed
+✓ Feature/CashAccountTest ............. 14 passed
 ✓ Feature/CashTransactionTest ......... 13 passed
-✓ Feature/CategoryBudgetTest .......... 4 passed
+✓ Feature/CategoryBudgetTest .......... 7 passed
+✓ Feature/BudgetProjectTest ........... 5 passed
 ✓ Feature/RecurringTransactionTest .... 5 passed
 ✓ Feature/RegistrationTest ............ 4 passed
-✓ Feature/TenantSecurityAuditTest ..... 8 passed
-✓ Feature/SecurityAuditTest ........... 5 passed
+✓ Feature/TenantSecurityAuditTest ..... 10 passed
+✓ Feature/SecurityAuditTest ........... 8 passed
 ✓ Feature/UserActivationSecurityTest .. 7 passed
 ...
-TOTAL: 89 passed (288 assertions) - 100% SUCCESS
+TOTAL: 109 passed (382 assertions) - 100% SUCCESS
 ```
+
+---
+
+## 🛡️ Dokumentasi Keamanan & Uji Penetrasi (Pentest)
+
+- 📘 [**Panduan Alur Sistem untuk Pentest (PENTEST_FLOW_GUIDE.md)**](PENTEST_FLOW_GUIDE.md): Peta arsitektur, boundary multi-tenancy, RBAC matrix, alur logika bisnis, dan OWASP checklist.
+- 📋 [**Laporan Remediasi Hasil Pentest (PENTEST_REMEDIATION_REPORT.md)**](PENTEST_REMEDIATION_REPORT.md): Rincian lengkap 4 perbaikan kerentanan (XSS, Type Whitelist, DoS Balance Max, Excel Formula Injection) beserta panduan pengujian ulang (*retest guide*).
 
 ---
 

@@ -111,4 +111,84 @@ class SecurityAuditTest extends TestCase
 
         $this->assertDatabaseHas('cash_transactions', ['id' => $tx->id]);
     }
+
+    public function test_invalid_cash_account_type_is_blocked_by_whitelist_validation(): void
+    {
+        \App\Models\CashAccountType::firstOrCreate(
+            ['code' => 'cash'],
+            ['name' => 'Tunai', 'is_active' => true, 'is_system' => true]
+        );
+
+        $permission = \App\Models\Permission::firstOrCreate(['name' => 'create-cash_accounts', 'slug' => 'create-cash_accounts']);
+        $this->regularUser->givePermissionTo($permission);
+
+        // Attempt to create an account with arbitrary unwhitelisted type 'root' / 'admin'
+        $response = $this->actingAs($this->regularUser)->post(route('admin.cash_accounts.store'), [
+            'name' => 'Hacker Wallet',
+            'type' => 'root',
+            'initial_balance' => 50000,
+            'is_active' => true,
+        ]);
+
+        $response->assertSessionHasErrors('type');
+        $this->assertDatabaseMissing('cash_accounts', ['name' => 'Hacker Wallet']);
+    }
+
+    public function test_excessive_initial_balance_is_blocked_with_validation_error(): void
+    {
+        \App\Models\CashAccountType::firstOrCreate(
+            ['code' => 'cash'],
+            ['name' => 'Tunai', 'is_active' => true, 'is_system' => true]
+        );
+
+        $permission = \App\Models\Permission::firstOrCreate(['name' => 'create-cash_accounts', 'slug' => 'create-cash_accounts']);
+        $this->regularUser->givePermissionTo($permission);
+
+        // Attempt to send enormous balance string that would cause DB integer/numeric overflow
+        $response = $this->actingAs($this->regularUser)->post(route('admin.cash_accounts.store'), [
+            'name' => 'Overflow Wallet',
+            'type' => 'cash',
+            'initial_balance' => 'Rp 999999999999999999999999999999.99',
+            'is_active' => true,
+        ]);
+
+        $response->assertSessionHasErrors('initial_balance');
+        $this->assertDatabaseMissing('cash_accounts', ['name' => 'Overflow Wallet']);
+    }
+
+    public function test_excel_export_sanitizes_dangerous_formula_injection_payloads(): void
+    {
+        $permission = \App\Models\Permission::create(['name' => 'view-cash_transactions', 'slug' => 'view-cash_transactions']);
+        $this->regularUser->givePermissionTo($permission);
+
+        $account = \App\Models\CashAccount::create([
+            'user_id' => $this->regularUser->id,
+            'name' => '=CMD|\' /C calc\'!A0',
+            'type' => 'cash',
+            'initial_balance' => 100000,
+            'is_active' => true,
+        ]);
+
+        $category = \App\Models\TransactionCategory::create([
+            'user_id' => $this->regularUser->id,
+            'name' => '@HYPERLINK("http://evil.com")',
+            'type' => 'expense',
+            'is_active' => true,
+        ]);
+
+        \App\Models\CashTransaction::create([
+            'user_id' => $this->regularUser->id,
+            'account_id' => $account->id,
+            'category_id' => $category->id,
+            'type' => 'expense',
+            'amount' => 50000,
+            'transaction_date' => now()->format('Y-m-d'),
+            'note' => '=1+1',
+        ]);
+
+        $response = $this->actingAs($this->regularUser)->get(route('admin.cash_transactions.export', ['period' => 'all_time']));
+
+        $response->assertStatus(200);
+        $this->assertTrue(str_contains($response->headers->get('content-type'), 'spreadsheetml'));
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCashAccountRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class UpdateCashAccountRequest extends FormRequest
 
         if ($this->has('initial_balance') && !is_null($this->initial_balance)) {
             $cleaned = preg_replace('/[^\d.-]/', '', str_replace(['Rp', ' ', '.'], '', (string) $this->initial_balance));
-            $mergeData['initial_balance'] = is_numeric($cleaned) ? (float) $cleaned : 0;
+            $mergeData['initial_balance'] = is_numeric($cleaned) ? (float) $cleaned : $cleaned;
         }
 
         if ($this->has('is_active')) {
@@ -42,13 +43,26 @@ class UpdateCashAccountRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = auth()->id();
+
         return [
             'name' => 'required|string|max:100',
-            'type' => 'required|string|max:50',
+            'type' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::exists('cash_account_types', 'code')->where(function ($query) use ($userId) {
+                    $query->where('is_active', true)
+                        ->where(function ($q) use ($userId) {
+                            $q->whereNull('user_id')
+                                ->orWhere('user_id', $userId);
+                        });
+                }),
+            ],
             'account_number' => 'nullable|string|max:100',
             'icon' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:50',
-            'initial_balance' => 'required|numeric|min:0',
+            'initial_balance' => 'required|numeric|min:0|max:999999999999.99',
             'is_active' => 'boolean',
         ];
     }
@@ -63,8 +77,11 @@ class UpdateCashAccountRequest extends FormRequest
         return [
             'name.required' => 'Nama akun / dompet wajib diisi.',
             'type.required' => 'Pilih tipe akun.',
+            'type.exists' => 'Tipe akun yang dipilih tidak valid atau tidak tersedia dalam katalog.',
             'initial_balance.required' => 'Saldo awal wajib diisi.',
-            'initial_balance.numeric' => 'Saldo awal harus berupa angka.',
+            'initial_balance.numeric' => 'Saldo awal harus berupa angka valid.',
+            'initial_balance.min' => 'Saldo awal tidak boleh bernilai negatif.',
+            'initial_balance.max' => 'Nominal saldo awal tidak boleh melebihi Rp 999.999.999.999.',
         ];
     }
 }

@@ -66,7 +66,7 @@ class CreateCashTransactionRequest extends FormRequest
             'to_account_id' => $isTransfer ? 'required|exists:cash_accounts,id|different:account_id' : 'nullable|exists:cash_accounts,id',
             'category_id' => $isTransfer ? 'nullable|exists:transaction_categories,id' : 'required|exists:transaction_categories,id',
             'type' => 'nullable|in:income,expense,transfer',
-            'amount' => 'required|numeric|min:0.01',
+            'amount' => 'required|numeric|min:0.01|max:999999999999.99',
             'transaction_date' => 'required|date',
             'note' => 'nullable|string|max:255',
             'proof' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf,heic|max:10240',
@@ -88,6 +88,7 @@ class CreateCashTransactionRequest extends FormRequest
             'amount.required' => 'Nominal transaksi wajib diisi.',
             'amount.numeric' => 'Nominal transaksi harus berupa angka.',
             'amount.min' => 'Nominal transaksi minimal Rp 1.',
+            'amount.max' => 'Nominal transaksi tidak boleh melebihi Rp 999.999.999.999.',
             'transaction_date.required' => 'Tanggal transaksi wajib diisi.',
         ];
     }

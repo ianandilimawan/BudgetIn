@@ -45,11 +45,23 @@ trait HasImportExport
 
         $headers = $fillableFields;
         $allRows = [];
+
+        // ponytail: Standard OWASP Excel/CSV formula injection defense. Prefix dangerous leading characters with a single quote.
+        $sanitizeFormula = function ($value) {
+            if (is_string($value) && $value !== '') {
+                $firstChar = $value[0];
+                if (in_array($firstChar, ['=', '+', '-', '@', "\t", "\r", "\n"])) {
+                    return "'" . $value;
+                }
+            }
+            return $value;
+        };
+
         // ponytail: Using cursor() streams rows sequentially from DB to prevent memory exhaustion on large tables.
         foreach ($modelClass::query()->cursor() as $record) {
             $row = [];
             foreach ($fillableFields as $field) {
-                $row[] = $record->$field;
+                $row[] = $sanitizeFormula($record->$field);
             }
             $allRows[] = $row;
         }

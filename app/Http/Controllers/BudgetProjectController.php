@@ -69,16 +69,17 @@ class BudgetProjectController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:20',
-            'target_amount' => 'required|numeric|min:1',
+            'target_amount' => 'required|numeric|min:1|max:999999999999.99',
             'target_date' => 'nullable|date',
             'note' => 'nullable|string|max:1000',
             'items' => 'nullable|array',
             'items.*.name' => 'required_with:items|string|max:255',
-            'items.*.target_amount' => 'required_with:items|numeric|min:0',
+            'items.*.target_amount' => 'required_with:items|numeric|min:0|max:999999999999.99',
         ], [
             'name.required' => 'Nama proyek / rencana acara wajib diisi.',
             'target_amount.required' => 'Total pagu anggaran wajib diisi.',
             'target_amount.min' => 'Total pagu anggaran minimal Rp 1.',
+            'target_amount.max' => 'Total pagu anggaran tidak boleh melebihi Rp 999.999.999.999.',
         ]);
 
         DB::beginTransaction();
@@ -164,7 +165,7 @@ class BudgetProjectController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:20',
-            'target_amount' => 'required|numeric|min:1',
+            'target_amount' => 'required|numeric|min:1|max:999999999999.99',
             'target_date' => 'nullable|date',
             'status' => 'required|in:active,completed,cancelled',
             'note' => 'nullable|string|max:1000',
@@ -225,11 +226,12 @@ class BudgetProjectController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'target_amount' => 'required|numeric|min:0',
+            'target_amount' => 'required|numeric|min:0|max:999999999999.99',
             'note' => 'nullable|string|max:500',
         ], [
             'name.required' => 'Nama pos rincian wajib diisi.',
             'target_amount.required' => 'Target anggaran pos wajib diisi.',
+            'target_amount.max' => 'Target anggaran pos tidak boleh melebihi Rp 999.999.999.999.',
         ]);
 
         $item = BudgetProjectItem::create([
@@ -255,7 +257,7 @@ class BudgetProjectController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'target_amount' => 'required|numeric|min:0',
+            'target_amount' => 'required|numeric|min:0|max:999999999999.99',
             'status' => 'required|in:pending,in_progress,completed',
             'note' => 'nullable|string|max:500',
         ]);
@@ -315,13 +317,14 @@ class BudgetProjectController extends Controller
             'account_id' => 'required|exists:cash_accounts,id',
             'budget_project_item_id' => 'nullable|exists:budget_project_items,id',
             'category_id' => 'nullable|exists:transaction_categories,id',
-            'amount' => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:1|max:999999999999.99',
             'transaction_date' => 'required|date',
             'note' => 'required|string|max:255',
             'proof' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
         ], [
             'account_id.required' => 'Pilih rekening/dompet sumber pembayaran.',
             'amount.required' => 'Nominal pengeluaran wajib diisi.',
+            'amount.max' => 'Nominal pengeluaran tidak boleh melebihi Rp 999.999.999.999.',
             'transaction_date.required' => 'Tanggal transaksi wajib diisi.',
             'note.required' => 'Keterangan pengeluaran wajib diisi.',
         ]);

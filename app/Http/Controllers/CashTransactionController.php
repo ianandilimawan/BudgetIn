@@ -171,6 +171,17 @@ class CashTransactionController extends Controller
         $totalIncome = 0;
         $totalExpense = 0;
 
+        // ponytail: Standard OWASP Excel/CSV formula injection defense. Prefix dangerous leading characters with a single quote.
+        $sanitizeFormula = function ($value) {
+            if (is_string($value) && $value !== '') {
+                $firstChar = $value[0];
+                if (in_array($firstChar, ['=', '+', '-', '@', "\t", "\r", "\n"])) {
+                    return "'" . $value;
+                }
+            }
+            return $value;
+        };
+
         foreach ($transactions as $t) {
             if ($t->type === 'income') {
                 $totalIncome += $t->amount;
@@ -187,14 +198,14 @@ class CashTransactionController extends Controller
 
             $writer->addRow(Row::fromValues([
                 $index++,
-                '#TRX-' . str_pad($t->id, 5, '0', STR_PAD_LEFT),
+                $sanitizeFormula('#TRX-' . str_pad($t->id, 5, '0', STR_PAD_LEFT)),
                 $t->transaction_date ? Carbon::parse($t->transaction_date)->format('d/m/Y') : '-',
-                $typeLabel,
-                $t->category->name ?? ($t->type === 'transfer' ? 'Pindah Dana' : '-'),
-                $accountLabel,
+                $sanitizeFormula($typeLabel),
+                $sanitizeFormula($t->category->name ?? ($t->type === 'transfer' ? 'Pindah Dana' : '-')),
+                $sanitizeFormula($accountLabel),
                 (float) $t->amount,
-                $t->note ?? '',
-                $t->user->name ?? 'Admin',
+                $sanitizeFormula($t->note ?? ''),
+                $sanitizeFormula($t->user->name ?? 'Admin'),
                 $t->created_at ? $t->created_at->format('d/m/Y H:i') : '-'
             ]));
         }

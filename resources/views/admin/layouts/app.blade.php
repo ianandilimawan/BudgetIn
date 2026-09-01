@@ -370,14 +370,24 @@
             toast.className =
                 `${colors[type] || colors.info} rounded-xl p-4 shadow-lg min-w-[300px] max-w-md transform transition-all duration-300 ease-in-out opacity-0 translate-x-8`;
 
-            const messageLines = message.split('\n');
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            const messageLines = String(message || '').split('\n');
             toast.innerHTML = `
                 <div class="flex items-start">
                     <div class="flex-shrink-0 mr-3 mt-0.5">
                         ${icons[type] || icons.info}
                     </div>
                     <div class="flex-1">
-                        ${messageLines.map(line => `<p class="text-sm font-semibold text-zinc-900 dark:text-white">${line}</p>`).join('')}
+                        ${messageLines.map(line => `<p class="text-sm font-semibold text-zinc-900 dark:text-white">${escapeHtml(line)}</p>`).join('')}
                     </div>
                     <button onclick="closeToast('${toastId}')" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>

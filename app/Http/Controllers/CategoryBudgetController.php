@@ -190,7 +190,7 @@ class CategoryBudgetController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:transaction_categories,id',
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:0|max:999999999999.99',
             'month' => 'nullable|integer|between:1,12',
             'year' => 'nullable|integer|min:2020|max:2099',
         ]);
@@ -254,7 +254,7 @@ class CategoryBudgetController extends Controller
         $request->validate([
             'budgets' => 'required|array',
             'budgets.*.category_id' => 'required|exists:transaction_categories,id',
-            'budgets.*.amount' => 'required|numeric|min:0',
+            'budgets.*.amount' => 'required|numeric|min:0|max:999999999999.99',
             'month' => 'required|integer|between:1,12',
             'year' => 'required|integer|min:2020|max:2099',
         ]);
