@@ -12,10 +12,15 @@ use App\Http\Controllers\SettingController;
 
 // Public Home / Landing Page
 Route::get('/', function () {
+    if (\Illuminate\Support\Facades\Auth::check()) {
+        return redirect()->route('admin.dashboard');
+    }
     return response()
         ->view('welcome')
-        ->header('Cache-Control', 'public, max-age=1800, stale-while-revalidate=86400');
+        ->header('Cache-Control', 'no-cache, private');
 })->name('home');
+
+Route::redirect('/home', '/dashboard');
 
 // Dynamic Sitemap.xml for Search Engines (Google, Bing, etc.)
 Route::get('/sitemap.xml', function () {
