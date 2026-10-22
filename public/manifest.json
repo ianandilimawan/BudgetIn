@@ -2,7 +2,7 @@
   "name": "BudgetIn - Manajemen Keuangan",
   "short_name": "BudgetIn",
   "description": "Aplikasi Manajemen Keuangan, Anggaran, & Arus Kas Pribadi",
-  "start_url": "/admin/dashboard",
+  "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -70,21 +70,21 @@
       "name": "Catat Transaksi",
       "short_name": "Catat",
       "description": "Tambah transaksi pengeluaran/pemasukan baru",
-      "url": "/admin/cash_transactions/create",
+      "url": "/cash_transactions/create",
       "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Mutasi Keuangan",
       "short_name": "Mutasi",
       "description": "Lihat histori mutasi arus kas",
-      "url": "/admin/cash_transactions",
+      "url": "/cash_transactions",
       "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Dompet & Kas",
       "short_name": "Dompet",
       "description": "Kelola rekening dan dompet saldo",
-      "url": "/admin/cash_accounts",
+      "url": "/cash_accounts",
       "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ]

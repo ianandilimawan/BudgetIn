@@ -48,6 +48,12 @@ Route::get('/sitemap.xml', function () {
 })->name('sitemap');
 
 // Application routes with 'admin.' name prefix
+Route::redirect('/admin/dashboard', '/dashboard');
+Route::redirect('/admin/cash_transactions/create', '/cash_transactions/create');
+Route::redirect('/admin/cash_transactions', '/cash_transactions');
+Route::redirect('/admin/cash_accounts', '/cash_accounts');
+Route::redirect('/admin', '/dashboard');
+
 Route::name('admin.')->group(function () {
     // Public Guest routes (login & register)
     Route::middleware('guest')->group(function () {
